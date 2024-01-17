@@ -93,12 +93,20 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * route params
+     * route params indexed
      *
      * @var array
     */
     protected array $params = [];
 
+
+
+    /**
+     * matches params
+     *
+     * @var array
+    */
+    protected array $matches = [];
 
 
 
@@ -421,16 +429,21 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @param string $path
+     * @param string $uri
      * @return bool
     */
-    public function matchPath(string $path): bool
+    public function matchPath(string $uri): bool
     {
-        if (! preg_match("#^$this->pattern$#i", $path, $matches)) {
+        $path    = $this->normalizeRequestPath($uri);
+        $pattern = $this->getPattern();
+
+        if (! preg_match("#^$pattern$#i", $path, $matches)) {
             return false;
         }
 
-        $this->params = $this->resolveParams($matches);
+        $this->matches = $matches;
+        $this->params  = $this->resolveParams($matches);
+        $this->options(compact('uri'));
 
         return true;
     }
@@ -521,12 +534,13 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @param string $regex
+     * @param string $path
+     *
      * @return string
     */
-    private function normalizeRegex(string $regex): string
+    private function normalizeRequestPath(string $path): string
     {
-        return str_replace('(', '(?:', $regex);
+        return parse_url($path, PHP_URL_PATH);
     }
 
 
