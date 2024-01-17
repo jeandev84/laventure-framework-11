@@ -12,7 +12,7 @@ namespace Laventure\Component\Routing\Route\Collection;
  *
  * @package  Laventure\Component\Routing\Route\Collection
  */
-class RouteCollection
+class RouteCollection implements RouteCollectionInterface
 {
 
 }

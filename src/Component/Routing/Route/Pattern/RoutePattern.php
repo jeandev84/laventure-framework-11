@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Laventure\Component\Routing\Route;
+namespace Laventure\Component\Routing\Route\Pattern;
 
 /**
  * RoutePattern
@@ -10,7 +10,7 @@ namespace Laventure\Component\Routing\Route;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Routing\Route
+ * @package  Laventure\Component\Routing\Route\Pattern
  */
 class RoutePattern
 {
@@ -44,7 +44,7 @@ class RoutePattern
     public function __construct(string $name, string $regex)
     {
         $this->name  = $name;
-        $this->regex = $this->normalizeRegex($regex);
+        $this->regex = $this->normalize($regex);
     }
 
 
@@ -73,12 +73,23 @@ class RoutePattern
     /**
      * @return string[]
     */
-    public function getExpressions(): array
+    public function toArray(): array
     {
-        return [
-            "#{{$this->name}}#",
-            "#{{$this->name}}.?#"
-        ];
+         return [
+             "#{{$this->name}}#"   => "(?P<$this->name>$this->regex)",
+             "#{{$this->name}}.?#" => "?(?P<$this->name>$this->regex)?"
+         ];
+    }
+
+
+
+
+    /**
+     * @return string[]
+    */
+    public function getPlaceholders(): array
+    {
+        return array_keys($this->toArray());
     }
 
 
@@ -89,10 +100,7 @@ class RoutePattern
     */
     public function getReplaces(): array
     {
-        return [
-            "(?P<$this->name>$this->regex)",
-            "?(?P<$this->name>$this->regex)?"
-        ];
+        return array_values($this->toArray());
     }
 
 
@@ -105,7 +113,7 @@ class RoutePattern
     */
     public function replace(string $path): string
     {
-        return preg_replace($this->getExpressions(), $this->getReplaces(), $path);
+        return preg_replace($this->getPlaceholders(), $this->getReplaces(), $path);
     }
 
 
@@ -115,7 +123,7 @@ class RoutePattern
      * @param string $regex
      * @return string
     */
-    private function normalizeRegex(string $regex): string
+    private function normalize(string $regex): string
     {
         return str_replace('(', '(?:', $regex);
     }

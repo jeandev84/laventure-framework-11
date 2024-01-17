@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route;
 
+use Laventure\Component\Routing\Route\Pattern\RoutePattern;
+
 /**
  * Route
  *
@@ -12,7 +14,7 @@ namespace Laventure\Component\Routing\Route;
  *
  * @package  Laventure\Component\Routing\Route
 */
-class Route implements RouteInterface
+class Route implements RouteInterface, \ArrayAccess
 {
 
     /**
@@ -125,7 +127,12 @@ class Route implements RouteInterface
      * @param mixed $action
      * @param string $name
     */
-    public function __construct(array $methods, string $path, mixed $action, string $name = '')
+    public function __construct(
+        array $methods,
+        string $path,
+        mixed $action,
+        string $name = ''
+    )
     {
         $this->methods($methods)
              ->path($path)
@@ -235,6 +242,29 @@ class Route implements RouteInterface
     /**
      * @inheritdoc
     */
+    public function hasOption(string $name): bool
+    {
+        return isset($this->options[$name]);
+    }
+
+
+
+
+
+    /**
+     * @inheritdoc
+    */
+    public function getOption(string $name, $default = null): mixed
+    {
+        return $this->options[$name] ?? $default;
+    }
+
+
+
+    /**
+     * @param array $methods
+     * @return $this
+    */
     public function methods(array $methods): static
     {
          $this->methods = $methods;
@@ -246,7 +276,8 @@ class Route implements RouteInterface
 
 
     /**
-     * @inheritdoc
+     * @param string $path
+     * @return $this
     */
     public function path(string $path): static
     {
@@ -260,9 +291,9 @@ class Route implements RouteInterface
 
 
 
-
     /**
-     * @inheritdoc
+     * @param mixed $action
+     * @return $this
     */
     public function action(mixed $action): static
     {
@@ -273,9 +304,9 @@ class Route implements RouteInterface
 
 
 
-
     /**
-     * @inheritdoc
+     * @param string $name
+     * @return $this
     */
     public function name(string $name): static
     {
@@ -288,7 +319,8 @@ class Route implements RouteInterface
 
 
     /**
-     * @inheritdoc
+     * @param string $pattern
+     * @return $this
     */
     public function pattern(string $pattern): static
     {
@@ -301,19 +333,15 @@ class Route implements RouteInterface
 
 
     /**
-     * Route patterns
-     *
-     * @param string $name
-     * @param string $regex
-     * @return $this
+     * @inheritdoc
     */
     public function where(string $name, string $regex): static
     {
         $pattern               = new RoutePattern($name, $regex);
-        $this->wheres[$name]   = $pattern->getExpressions();
+        $this->wheres[$name]   = $pattern->getPlaceholders();
         $this->replaces[$name] = $pattern->getReplaces();
         $this->pattern         = $pattern->replace($this->pattern);
-        $this->patterns[$name] = $regex;
+        $this->patterns[$name] = $pattern;
 
         return $this;
     }
@@ -337,9 +365,7 @@ class Route implements RouteInterface
 
 
     /**
-     * @param string $middleware
-     *
-     * @return $this
+     * @inheritdoc
     */
     public function middleware(string $middleware): static
     {
@@ -380,33 +406,35 @@ class Route implements RouteInterface
 
 
 
+
     /**
-     * Determine if the given name exist in options
+     * Determine if the given method in route methods
      *
-     * @param string $name
-     *
+     * @param string $method
      * @return bool
     */
-    public function hasOption(string $name): bool
+    public function matchMethod(string $method):  bool
     {
-        return isset($this->options[$name]);
+        return in_array($method, $this->methods);
     }
-
-
 
 
 
     /**
-     * @param string $name
-     *
-     * @param $default
-     *
-     * @return mixed
+     * @param string $path
+     * @return bool
     */
-    public function getOption(string $name, $default = null): mixed
+    public function matchPath(string $path): bool
     {
-        return $this->options[$name] ?? $default;
+        if (! preg_match("#^$this->pattern$#i", $path, $matches)) {
+            return false;
+        }
+
+        $this->params = $this->resolveParams($matches);
+
+        return true;
     }
+
 
 
 
@@ -415,8 +443,9 @@ class Route implements RouteInterface
     */
     public function match(string $method, string $path): bool
     {
-
+        return $this->matchMethod($method) && $this->matchPath($path);
     }
+
 
 
 
@@ -425,7 +454,7 @@ class Route implements RouteInterface
     */
     public function generateUri(array $params = []): string
     {
-
+         return '';
     }
 
 
@@ -498,5 +527,20 @@ class Route implements RouteInterface
     private function normalizeRegex(string $regex): string
     {
         return str_replace('(', '(?:', $regex);
+    }
+
+
+
+
+    /**
+     * @param array $matches
+     *
+     * @return array
+    */
+    private function resolveParams(array $matches): array
+    {
+        return array_filter($matches, function ($key) {
+            return !is_numeric($key);
+        }, ARRAY_FILTER_USE_KEY);
     }
 }

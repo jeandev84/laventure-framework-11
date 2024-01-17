@@ -19,14 +19,14 @@ use Laventure\Component\Routing\Route\RouteInterface;
 interface RouteCollectionInterface
 {
      /**
-      * @return Route[]
+      * @return RouteInterface[]
      */
      public function getRoutes(): array;
 
 
 
      /**
-      * @return Route[]
+      * @return RouteInterface[]
      */
      public function getNamedRoutes(): array;
 
@@ -36,9 +36,9 @@ interface RouteCollectionInterface
      /**
        * @param string $name
        *
-       * @return Route
+       * @return RouteInterface
       */
-      public function getNamedRoute(string $name): Route;
+      public function getNamedRoute(string $name): RouteInterface;
 
 
 

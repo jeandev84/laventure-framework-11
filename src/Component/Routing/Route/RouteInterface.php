@@ -13,7 +13,7 @@ namespace Laventure\Component\Routing\Route;
  *
  * @package  Laventure\Component\Routing\Route
 */
-interface RouteInterface extends \ArrayAccess
+interface RouteInterface
 {
 
     /**
@@ -115,53 +115,30 @@ interface RouteInterface extends \ArrayAccess
 
 
 
+
     /**
-     * @param string $path
+     * Route patterns
      *
-     * @return $this
-    */
-    public function path(string $path): static;
-
-
-
-
-    /**
-     * @param string $pattern
-     *
-     * @return $this
-    */
-    public function pattern(string $pattern): static;
-
-
-
-
-
-    /**
-     * @param array $methods
-     *
-     * @return $this
-    */
-    public function methods(array $methods): static;
-
-
-
-
-    /**
-     * @param mixed $action
-     *
-     * @return $this
-    */
-    public function action(mixed $action): static;
-
-
-
-
-    /**
      * @param string $name
+     * @param string $regex
+     * @return $this
+    */
+    public function where(string $name, string $regex): static;
+
+
+
+
+
+
+    /**
+     * Route middleware
+     *
+     * @param string $middleware
      *
      * @return $this
     */
-    public function name(string $name): static;
+    public function middleware(string $middleware): static;
+
 
 
 
@@ -174,6 +151,7 @@ interface RouteInterface extends \ArrayAccess
      * @return $this
     */
     public function wheres(array $patterns): static;
+
 
 
 
@@ -201,6 +179,36 @@ interface RouteInterface extends \ArrayAccess
      * @return $this
     */
     public function options(array $options): static;
+
+
+
+
+
+    /**
+     * Determine if the given name exist in options
+     *
+     * @param string $name
+     *
+     * @return bool
+    */
+    public function hasOption(string $name): bool;
+
+
+
+
+
+
+    /**
+     * Returns route option
+     *
+     * @param string $name
+     *
+     * @param $default
+     *
+     * @return mixed
+    */
+    public function getOption(string $name, $default = null): mixed;
+
 
 
 
