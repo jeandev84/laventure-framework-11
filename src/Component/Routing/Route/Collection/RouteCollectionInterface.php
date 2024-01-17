@@ -18,6 +18,16 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 interface RouteCollectionInterface
 {
+
+     /**
+      * @param RouteInterface $route
+      *
+      * @return RouteInterface
+     */
+     public function addRoute(RouteInterface $route): RouteInterface;
+
+
+
      /**
       * @return RouteInterface[]
      */
@@ -36,9 +46,9 @@ interface RouteCollectionInterface
      /**
        * @param string $name
        *
-       * @return RouteInterface
+       * @return RouteInterface|null
       */
-      public function getNamedRoute(string $name): RouteInterface;
+      public function getNamedRoute(string $name): ?RouteInterface;
 
 
 

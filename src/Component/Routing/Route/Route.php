@@ -65,30 +65,11 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @var array
-    */
-    protected array $wheres = [];
-
-
-
-    /**
      * route patterns
      *
-     * @var array
+     * @var RoutePattern[]
     */
     protected array $patterns = [];
-
-
-
-
-    /**
-     * route patterns replaces
-     *
-     * @var array
-    */
-    protected array $replaces = [];
-
-
 
 
 
@@ -176,7 +157,7 @@ class Route implements RouteInterface, \ArrayAccess
     /**
      * @inheritDoc
     */
-    public function getName(): ?string
+    public function getName(): string
     {
          return $this->name;
     }
@@ -346,8 +327,6 @@ class Route implements RouteInterface, \ArrayAccess
     public function where(string $name, string $regex): static
     {
         $pattern               = new RoutePattern($name, $regex);
-        $this->wheres[$name]   = $pattern->getPlaceholders();
-        $this->replaces[$name] = $pattern->getReplaces();
         $this->pattern         = $pattern->replace($this->pattern);
         $this->patterns[$name] = $pattern;
 
@@ -467,7 +446,13 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function generateUri(array $params = []): string
     {
-         return '';
+         $path = $this->getPath();
+         foreach ($params as $name => $value) {
+             if (isset($this->patterns[$name])) {
+                 $path = $this->patterns[$name]->replaceByValues($path, [$value, $value]);
+             }
+         }
+         return $path;
     }
 
 

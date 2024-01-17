@@ -6,6 +6,7 @@ namespace Laventure\Component\Routing;
 use Laventure\Component\Routing\Route\Collection\RouteCollection;
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
+use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Route\RouteInterface;
 
 /**
@@ -39,12 +40,27 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
+     * @param RouteInterface $route
+     *
+     * @return RouteInterface
+    */
+    public function add(RouteInterface $route): RouteInterface
+    {
+        return $this->collection->addRoute($route);
+    }
+
+
+
+
+    /**
      * @inheritDoc
     */
     public function map($methods, string $path, mixed $action, string $name = ''): RouteInterface
     {
-
+        return $this->add(new Route($methods, $path, $action, $name));
     }
+
+
 
 
 
@@ -53,7 +69,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function get(string $path, mixed $action, string $name = ''): RouteInterface
     {
-
+          return $this->map(['GET'], $path, $action, $name);
     }
 
 
@@ -64,7 +80,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function post(string $path, mixed $action, string $name = ''): RouteInterface
     {
-
+        return $this->map(['POST'], $path, $action, $name);
     }
 
 
@@ -74,7 +90,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function put(string $path, mixed $action, string $name = ''): RouteInterface
     {
-
+        return $this->map(['PUT'], $path, $action, $name);
     }
 
 
@@ -85,7 +101,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function patch(string $path, mixed $action, string $name = ''): RouteInterface
     {
-
+        return $this->map(['PATCH'], $path, $action, $name);
     }
 
 
@@ -96,7 +112,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function delete(string $path, mixed $action, string $name = ''): RouteInterface
     {
-
+        return $this->map(['DELETE'], $path, $action, $name);
     }
 
 
@@ -144,6 +160,10 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function generate(string $name, array $params = []): ?string
     {
-        return '';
+        if (!$this->collection->hasNamedRoute($name)) {
+            return null;
+        }
+
+        return $this->collection->getNamedRoute($name)->generateUri($params);
     }
 }

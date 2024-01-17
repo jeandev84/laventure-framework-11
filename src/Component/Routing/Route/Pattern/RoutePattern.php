@@ -28,12 +28,6 @@ class RoutePattern
 
 
 
-    /**
-     * @var string
-    */
-    protected string $pattern;
-
-
 
 
     /**
@@ -114,6 +108,21 @@ class RoutePattern
     public function replace(string $path): string
     {
         return preg_replace($this->getPlaceholders(), $this->getReplaces(), $path);
+    }
+
+
+    
+
+    /**
+     * Replace placeholders by values
+     *
+     * @param string $path
+     * @param array $values
+     * @return string
+    */
+    public function replaceByValues(string $path, array $values): string
+    {
+        return preg_replace($this->getPlaceholders(), $values, $path);
     }
 
 
