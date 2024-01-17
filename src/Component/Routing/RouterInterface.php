@@ -35,17 +35,19 @@ interface RouterInterface
       *
       * @param string $method
       *
-      * @param string $uri
+      * @param string $path
       *
-      * @return Route|false
+      * @return RouteInterface|false
      */
-     public function match(string $method, string $uri): Route|false;
+     public function match(string $method, string $path): RouteInterface|false;
 
 
 
 
 
      /**
+      * Generate route path
+      *
       * @param string $name
       * @param array $params
       * @return string|null

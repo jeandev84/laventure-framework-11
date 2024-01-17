@@ -73,7 +73,7 @@ class RoutePattern
     /**
      * @return string[]
     */
-    public function getPatterns(): array
+    public function getExpressions(): array
     {
         return [
             "#{{$this->name}}#",
@@ -105,7 +105,7 @@ class RoutePattern
     */
     public function replace(string $path): string
     {
-        return preg_replace($this->getPatterns(), $this->getReplaces(), $path);
+        return preg_replace($this->getExpressions(), $this->getReplaces(), $path);
     }
 
 

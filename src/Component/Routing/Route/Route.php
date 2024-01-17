@@ -309,10 +309,10 @@ class Route implements RouteInterface
     */
     public function where(string $name, string $regex): static
     {
-        $resolver              = new RoutePattern($name, $regex);
-        $this->wheres[$name]   = $resolver->getPatterns();
-        $this->replaces[$name] = $resolver->getReplaces();
-        $this->pattern         = $resolver->replace($this->pattern);
+        $pattern               = new RoutePattern($name, $regex);
+        $this->wheres[$name]   = $pattern->getExpressions();
+        $this->replaces[$name] = $pattern->getReplaces();
+        $this->pattern         = $pattern->replace($this->pattern);
         $this->patterns[$name] = $regex;
 
         return $this;
