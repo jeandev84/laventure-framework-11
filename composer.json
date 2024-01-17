@@ -1,0 +1,45 @@
+{
+  "name": "laventure/framework",
+  "description": "MVC framework using php language for building web application",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Laventure\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PHPUnitTest\\": "tests/phpunit"
+    }
+  },
+  "authors": [
+    {
+      "name": "Jean-Claude",
+      "email": "jeanyao@ymail.com"
+    }
+  ],
+  "require": {
+    "php": ">= 8.1",
+    "psr/cache": "^3.0",
+    "psr/container": "^2.0",
+    "psr/event-dispatcher": "^1.0",
+    "psr/http-client": "^1.0",
+    "psr/http-factory": "^1.0",
+    "psr/http-message": "^2.0",
+    "psr/http-server-handler": "^1.0",
+    "psr/http-server-middleware": "^1.0",
+    "psr/log": "^3.0",
+    "ext-curl": "*"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "^9.5",
+    "spatie/phpunit-watcher": "^1.23",
+    "squizlabs/php_codesniffer": "^3.8",
+    "symfony/var-dumper": "^6.4"
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
