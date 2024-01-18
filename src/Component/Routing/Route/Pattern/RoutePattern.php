@@ -105,7 +105,7 @@ class RoutePattern
      *
      * @return string
     */
-    public function replacePlaceholders(string $path): string
+    public function replace(string $path): string
     {
         return preg_replace($this->getPlaceholders(), $this->getReplaces(), $path);
     }
@@ -120,7 +120,7 @@ class RoutePattern
      * @param array $values
      * @return string
     */
-    public function replaceByValues(string $path, array $values): string
+    public function replaceValues(string $path, array $values): string
     {
         return preg_replace($this->getPlaceholders(), $values, $path);
     }

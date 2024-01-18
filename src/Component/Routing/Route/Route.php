@@ -354,7 +354,7 @@ class Route implements RouteInterface, \ArrayAccess
     public function where(string $name, string $regex): static
     {
         $pattern               = new RoutePattern($name, $regex);
-        $this->pattern         = $pattern->replacePlaceholders($this->pattern);
+        $this->pattern         = $pattern->replace($this->pattern);
         $this->patterns[$name] = $pattern;
 
         return $this;
@@ -508,7 +508,7 @@ class Route implements RouteInterface, \ArrayAccess
         $path     = $this->getPath();
         foreach ($params as $name => $value) {
             if (isset($this->patterns[$name])) {
-                $path = $this->patterns[$name]->replaceByValues($path, [$value, $value]);
+                $path = $this->patterns[$name]->replaceValues($path, [$value, $value]);
             }
         }
 
@@ -648,28 +648,27 @@ class Route implements RouteInterface, \ArrayAccess
     }
 
 
-
-
     /**
      * @param array $callback
-     *
      * @return mixed
     */
     private function resolveActionFromArray(array $callback): mixed
     {
-        return $callback;
+          $separator = "::";
+          $callback  = join($separator, $callback);
 
-        /*
-        $count = count($callback);
+          if (stripos($callback, $separator) === false) {
+             $callback .= "{$separator}__invoke";
+          }
 
-        dd($count);
+          $callback = explode($separator, $callback);
 
-        $controller = $callback[0];
-        $action     = (count($callback) === 1) ? '__invoke' : $callback[1];
+          $controller = $callback[0];
+          $action     = $callback[1];
 
-        $this->options(compact('controller', 'action'));
+          $this->options(compact('controller', 'action'));
 
-        return join('::', $callback);
-        */
+          return join($separator, $callback);
+
     }
 }

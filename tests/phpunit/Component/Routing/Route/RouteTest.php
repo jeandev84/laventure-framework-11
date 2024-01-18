@@ -56,11 +56,11 @@ class RouteTest extends TestCase
                                           'id' => '\d+'
                                       ]);
 
-          $route9 = Route::create(['GET'], '/{_locale}/blog', [], 'blog.home')
+          $route9 = Route::create(['GET'], '/{_locale}/blog', $func, 'blog.home')
               ->wheres(['_locale' => '\w+',]);
 
 
-          $route10 = Route::create(['GET'], '/profile/{username?}', [], 'profile')
+          $route10 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')
                                       ->wheres(['username' => '\w+']);
 
 
@@ -98,13 +98,13 @@ class RouteTest extends TestCase
           $route3 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
                                       ->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
 
-          $route4 = Route::create(['GET'], '/{_locale}/blog', [], 'blog.home')->wheres(['_locale' => '\w+',]);
+          $route4 = Route::create(['GET'], '/{_locale}/blog', $func, 'blog.home')->wheres(['_locale' => '\w+',]);
 
-          $route5 = Route::create(['GET'], '/profile/{username?}', [], 'profile')
+          $route5 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')
               ->wheres(['username' => '\w+']);
 
 
-          $route6 = Route::create(['GET'], '/users/(\d+)', [], 'users.show');
+          $route6 = Route::create(['GET'], '/users/(\d+)', $func, 'users.show');
 
 
           $this->assertTrue($route1->match('GET', '/admin/posts'));
@@ -133,10 +133,10 @@ class RouteTest extends TestCase
 
       public function testAction(): void
       {
-          $route2 = Route::create(['GET'], '/', [HomeController::class], 'contact');
+          $route1 = Route::create(['GET'], '/', [HomeController::class], 'contact');
 
           
-          $this->assertTrue(true);
+          $this->assertSame(HomeController::class . "::__invoke", $route1->getAction());
       }
 
 
