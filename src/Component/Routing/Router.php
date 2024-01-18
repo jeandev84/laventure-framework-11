@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing;
 
-use Laventure\Component\Routing\Route\Collection\RouteCollection;
+use Laventure\Component\Routing\Configuration\RouterConfigurationInterface;
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
-use Laventure\Component\Routing\Route\Route;
+use Laventure\Component\Routing\Route\Factory\RouteFactoryInterface;
+use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
+use Laventure\Component\Routing\Route\Resolver\RouteResolverInterface;
 use Laventure\Component\Routing\Route\RouteInterface;
 
 /**
@@ -22,20 +24,78 @@ class Router implements RouterInterface, RouteCollectorInterface
 {
 
     /**
+     * @var RouterConfigurationInterface
+    */
+    protected RouterConfigurationInterface $config;
+
+
+    /**
      * @var RouteCollectionInterface
     */
     protected RouteCollectionInterface $collection;
 
 
+
     /**
-     * @param RouteCollectionInterface|null $collection
+     * @var RouteGroupInterface
     */
-    public function __construct(
-        RouteCollectionInterface $collection = null
-    )
+    protected RouteGroupInterface $group;
+
+
+    /**
+     * @var RouteFactoryInterface
+    */
+    protected RouteFactoryInterface $routeFactory;
+
+
+
+    /**
+     * @var RouteResolverInterface
+    */
+    protected RouteResolverInterface $routeResolver;
+
+
+
+    /**
+     * @param RouterConfigurationInterface $config
+    */
+    public function __construct(RouterConfigurationInterface $config)
     {
-        $this->collection = $collection ?: new RouteCollection();
+        $this->config        = $config;
+        $this->collection    = $config->getRouteCollection();
+        $this->group         = $config->getRouteGroup();
+        $this->routeFactory  = $config->getRouteFactory();
+        $this->routeResolver = $config->getRouteResolver();
     }
+
+
+
+
+    /**
+     * @param $methods
+     * @param string $path
+     * @param mixed $action
+     * @param string $name
+     * @return RouteInterface
+    */
+    public function makeRoute(
+        $methods,
+        string $path,
+        mixed $action,
+        string $name = ''
+    ): RouteInterface
+    {
+         $methods = $this->routeResolver->resolveMethods($methods);
+         $path    = $this->routeResolver->resolvePath($path);
+         $action  = $this->routeResolver->resolveAction($action);
+         $name    = $this->routeResolver->resolveName($name);
+
+         return $this->routeFactory->createRoute(
+             $methods, $path, $action, $name
+         );
+    }
+
+
 
 
 
@@ -53,9 +113,7 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
-     * @param string $name
-     *
-     * @return bool
+     * @inheritdoc
     */
     public function hasRoute(string $name): bool
     {
@@ -67,8 +125,7 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
-     * @param string $name
-     * @return RouteInterface|null
+     * @inheritdoc
     */
     public function getRoute(string $name): ?RouteInterface
     {
@@ -84,7 +141,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function map($methods, string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->addRoute(new Route($methods, $path, $action, $name));
+        return $this->addRoute($this->makeRoute($methods, $path, $action, $name));
     }
 
 
@@ -160,6 +217,17 @@ class Router implements RouterInterface, RouteCollectorInterface
     public function getCollection(): RouteCollectionInterface
     {
         return $this->collection;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function getConfiguration(): RouterConfigurationInterface
+    {
+        return $this->config;
     }
 
 

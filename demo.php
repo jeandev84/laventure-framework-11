@@ -1,12 +1,13 @@
 <?php
 
-use Laventure\Component\Routing\Route\Route;
+use Laventure\Component\Routing\Configuration\RouterConfiguration;
 use Laventure\Component\Routing\Router;
 
 require 'vendor/autoload.php';
 
 
-$router = new Router();
+$config = new RouterConfiguration("App\\Http\\Controllers");
+$router = new Router($config);
 
 /*
 $router->get('/admin', function () {

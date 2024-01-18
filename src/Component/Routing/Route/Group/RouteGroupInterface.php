@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing\Route\Group;
 
 
+use Laventure\Component\Routing\Route\Group\Invoker\RouteGroupInvokerInterface;
+
 /**
  * RouteGroupInterface
  *
@@ -51,4 +53,61 @@ interface RouteGroupInterface
       * @return array
      */
      public function getMiddlewares(): array;
+
+
+
+    /**
+     * @param RouteGroupInvokerInterface $invoker
+     *
+     * @return mixed
+     */
+    public function group(RouteGroupInvokerInterface $invoker): mixed;
+
+
+
+
+    /**
+     * @param string $path
+     * @return $this
+    */
+    public function path(string $path): static;
+
+
+
+
+    /**
+     * @param string $namespace
+     * @return $this
+    */
+    public function namespace(string $namespace): static;
+
+
+
+
+    /**
+     * @param string $name
+     * @return $this
+    */
+    public function name(string $name): static;
+
+
+
+
+    /**
+     * @param array $middlewares
+     *
+     * @return $this
+    */
+    public function middlewares(array $middlewares): static;
+
+
+
+
+
+    /**
+     * Refresh attributes
+     *
+     * @return void
+    */
+    public function clear(): void;
 }

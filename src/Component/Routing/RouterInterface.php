@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing;
 
 
+use Laventure\Component\Routing\Configuration\RouterConfigurationInterface;
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Route\RouteInterface;
@@ -26,6 +27,15 @@ interface RouterInterface
       * @return RouteCollectionInterface
      */
      public function getCollection(): RouteCollectionInterface;
+
+
+
+     /**
+      * Returns router configuration
+      *
+      * @return RouterConfigurationInterface
+     */
+     public function getConfiguration(): RouterConfigurationInterface;
 
 
 
@@ -53,4 +63,31 @@ interface RouterInterface
       * @return string|null
      */
      public function generate(string $name, array $params = []): ?string;
+
+
+
+
+
+     /**
+      * Determine if exists route by given name
+      *
+      * @param string $name
+      *
+      * @return bool
+     */
+     public function hasRoute(string $name): bool;
+
+
+
+
+
+
+    /**
+     * Returns named route
+     *
+     * @param string $name
+     *
+     * @return RouteInterface|null
+    */
+    public function getRoute(string $name): ?RouteInterface;
 }
