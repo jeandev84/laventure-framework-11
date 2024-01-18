@@ -354,7 +354,7 @@ class Route implements RouteInterface, \ArrayAccess
     public function where(string $name, string $regex): static
     {
         $pattern               = new RoutePattern($name, $regex);
-        $this->pattern         = $pattern->replace($this->pattern);
+        $this->pattern         = $pattern->replacePlaceholders($this->pattern);
         $this->patterns[$name] = $pattern;
 
         return $this;
@@ -505,13 +505,25 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function generatePath(array $params = []): string
     {
-        $path = $this->getPath();
+        $path     = $this->getPath();
         foreach ($params as $name => $value) {
             if (isset($this->patterns[$name])) {
                 $path = $this->patterns[$name]->replaceByValues($path, [$value, $value]);
             }
         }
+
         return $path;
+    }
+
+
+
+
+    /**
+     * @return int
+    */
+    public function getPatternCount(): int
+    {
+        return count($this->patterns);
     }
 
 

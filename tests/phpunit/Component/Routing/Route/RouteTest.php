@@ -152,10 +152,17 @@ class RouteTest extends TestCase
            }, 'admin.users.delete')->wheres(['name' => '\w+', 'isOptional' => '\d+']);
 
 
+           $route3 = Route::create(['GET'], '/profile/{name}/{country?}', function () {
+              return "My Profile";
+           }, 'admin.users.delete')->wheres(['name' => '\w+', 'country' => '\w+']);
+
+
            $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
 
 
            $this->assertSame('/profile/brown/3', $route2->generatePath(['name' => 'brown', 'isOptional' => 3]));
            $this->assertSame('/profile/brown/', $route2->generatePath(['name' => 'brown', 'isOptional' => null]));
+
+           # $this->assertSame('/profile/alex/', $route3->generatePath(['name' => 'alex']));
       }
 }

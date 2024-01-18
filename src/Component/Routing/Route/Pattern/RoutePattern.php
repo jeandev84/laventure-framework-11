@@ -37,8 +37,8 @@ class RoutePattern
     */
     public function __construct(string $name, string $regex)
     {
-        $this->name  = $name;
-        $this->regex = $this->normalize($regex);
+        $this->name      = $name;
+        $this->regex     = $this->normalizeRegex($regex);
     }
 
 
@@ -105,7 +105,7 @@ class RoutePattern
      *
      * @return string
     */
-    public function replace(string $path): string
+    public function replacePlaceholders(string $path): string
     {
         return preg_replace($this->getPlaceholders(), $this->getReplaces(), $path);
     }
@@ -132,7 +132,7 @@ class RoutePattern
      * @param string $regex
      * @return string
     */
-    private function normalize(string $regex): string
+    private function normalizeRegex(string $regex): string
     {
         return str_replace('(', '(?:', $regex);
     }
