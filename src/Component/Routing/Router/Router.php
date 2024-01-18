@@ -57,6 +57,22 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
+     * @var array
+    */
+    protected array $patterns = [];
+
+
+
+
+    /**
+     * @var Resource[]
+    */
+    public array $resources = [];
+
+
+
+
+    /**
      * @param RouterConfigurationInterface $config
     */
     public function __construct(RouterConfigurationInterface $config)
@@ -72,54 +88,49 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
-     * @param $methods
-     * @param string $path
-     * @param mixed $action
-     * @param string $name
-     * @return RouteInterface
-    */
-    public function makeRoute(
-        $methods,
-        string $path,
-        mixed $action,
-        string $name = ''
-    ): RouteInterface {
-        $methods = $this->routeResolver->resolveMethods($methods);
-        $path    = $this->routeResolver->resolvePath($path);
-        $action  = $this->routeResolver->resolveAction($action);
-        $name    = $this->routeResolver->resolveName($name);
-
-        return $this->routeFactory->createRoute(
-            $methods,
-            $path,
-            $action,
-            $name
-        );
-    }
-
-
-
-
-
-    /**
-     * @param RouteInterface $route
+     * @param array $patterns
      *
-     * @return RouteInterface
+     * @return $this
     */
-    public function addRoute(RouteInterface $route): RouteInterface
+    public function patterns(array $patterns): static
     {
-        return $this->collection->addRoute($route);
+        foreach ($patterns as $name => $pattern) {
+            $this->pattern($name, $pattern);
+        }
+
+        return $this;
     }
 
 
 
 
     /**
-     * @inheritdoc
+     * @param string $name
+     *
+     * @param string $pattern
+     *
+     * @return $this
     */
-    public function hasRoute(string $name): bool
+    public function pattern(string $name, string $pattern): static
     {
-        return $this->collection->hasNamedRoute($name);
+        $this->patterns[$name] = $pattern;
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function path(string $path): static
+    {
+        $this->group->path($path);
+
+        return $this;
     }
 
 
@@ -127,11 +138,48 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
-     * @inheritdoc
-    */
-    public function getRoute(string $name): ?RouteInterface
+     * @param string $namespace
+     *
+     * @return $this
+     */
+    public function namespace(string $namespace): static
     {
-        return $this->collection->getNamedRoute($name);
+        $this->group->namespace($namespace);
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function name(string $name): static
+    {
+        $this->group->name($name);
+
+        return $this;
+    }
+
+
+
+
+
+
+
+    /**
+     * @param array $middlewares
+     *
+     * @return $this
+     */
+    public function middlewares(array $middlewares): static
+    {
+        $this->group->middlewares($middlewares);
+
+        return $this;
     }
 
 
@@ -155,7 +203,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function get(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map(['GET'], $path, $action, $name);
+        return $this->map('GET', $path, $action, $name);
     }
 
 
@@ -166,7 +214,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function post(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map(['POST'], $path, $action, $name);
+        return $this->map('POST', $path, $action, $name);
     }
 
 
@@ -176,7 +224,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function put(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map(['PUT'], $path, $action, $name);
+        return $this->map('PUT', $path, $action, $name);
     }
 
 
@@ -187,7 +235,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function patch(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map(['PATCH'], $path, $action, $name);
+        return $this->map('PATCH', $path, $action, $name);
     }
 
 
@@ -198,38 +246,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function delete(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map(['DELETE'], $path, $action, $name);
-    }
-
-
-
-    /**
-     * @inheritDoc
-    */
-    public function getRoutes(): array
-    {
-        return $this->getCollection()->getRoutes();
-    }
-
-
-
-    /**
-     * @inheritDoc
-    */
-    public function getCollection(): RouteCollectionInterface
-    {
-        return $this->collection;
-    }
-
-
-
-
-    /**
-     * @inheritDoc
-    */
-    public function getConfiguration(): RouterConfigurationInterface
-    {
-        return $this->config;
+        return $this->map('DELETE', $path, $action, $name);
     }
 
 
@@ -262,5 +279,154 @@ class Router implements RouterInterface, RouteCollectorInterface
         }
 
         return $this->getRoute($name)->generatePath($params);
+    }
+
+
+
+
+    /**
+     * @param $methods
+     * @param string $path
+     * @param mixed $action
+     * @param string $name
+     * @return RouteInterface
+     */
+    public function makeRoute(
+        $methods,
+        string $path,
+        mixed $action,
+        string $name = ''
+    ): RouteInterface {
+
+        $methods = $this->resolveMethods($methods);
+        $path    = $this->resolvePath($path);
+        $action  = $this->resolveAction($action);
+        $name    = $this->resolveName($name);
+
+        return $this->routeFactory->createRoute(
+            $methods,
+            $path,
+            $action,
+            $name
+        );
+    }
+
+
+
+
+
+    /**
+     * @param RouteInterface $route
+     *
+     * @return RouteInterface
+     */
+    public function addRoute(RouteInterface $route): RouteInterface
+    {
+        return $this->collection->addRoute($route);
+    }
+
+
+
+
+    /**
+     * @inheritdoc
+     */
+    public function hasRoute(string $name): bool
+    {
+        return $this->collection->hasNamedRoute($name);
+    }
+
+
+
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getRoute(string $name): ?RouteInterface
+    {
+        return $this->collection->getNamedRoute($name);
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getRoutes(): array
+    {
+        return $this->getCollection()->getRoutes();
+    }
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getCollection(): RouteCollectionInterface
+    {
+        return $this->collection;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getConfiguration(): RouterConfigurationInterface
+    {
+        return $this->config;
+    }
+
+
+
+
+
+
+
+    /**
+     * @param $methods
+     * @return array
+     */
+    private function resolveMethods($methods): array
+    {
+        return $this->routeResolver->resolveMethods($methods);
+    }
+
+
+
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function resolvePath(string $path): string
+    {
+        return $this->routeResolver->resolvePath($path);
+    }
+
+
+
+    /**
+     * @param mixed $action
+     * @return mixed
+     */
+    private function resolveAction(mixed $action): mixed
+    {
+        return $this->routeResolver->resolveAction($action);
+    }
+
+
+
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    private function resolveName(string $name): string
+    {
+        return $this->routeResolver->resolveName($name);
     }
 }

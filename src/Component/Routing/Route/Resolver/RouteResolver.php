@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing\Route\Resolver;
 
 use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
+use RuntimeException;
 
 /**
  * RouteResolver
@@ -84,6 +85,13 @@ class RouteResolver implements RouteResolverInterface
     public function resolveAction(mixed $action): array|callable
     {
         if ($this->actionFromString($action)) {
+
+            if (!$this->namespace) {
+                throw new RuntimeException(
+                    "Could not resolve action ($action) because namespace is not specified"
+                );
+            }
+
             $action     = explode('@', $action, 2);
             $controller = sprintf('%s\\%s', $this->namespace, $action[0]);
             return [$controller, $action[1]];
