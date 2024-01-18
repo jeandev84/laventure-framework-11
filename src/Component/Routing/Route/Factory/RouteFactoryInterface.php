@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Factory;
 
+use Laventure\Component\Routing\Route\Resolver\RouteResolverInterface;
 use Laventure\Component\Routing\Route\RouteInterface;
 
 /**

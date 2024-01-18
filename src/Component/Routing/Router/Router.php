@@ -73,6 +73,13 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
+     * @var array
+    */
+    private array $routeMiddlewares = [];
+
+
+
+    /**
      * @param RouterConfigurationInterface $config
     */
     public function __construct(RouterConfigurationInterface $config)
@@ -82,6 +89,19 @@ class Router implements RouterInterface, RouteCollectorInterface
         $this->group         = $config->getRouteGroup();
         $this->routeFactory  = $config->getRouteFactory();
         $this->routeResolver = $config->getRouteResolver();
+    }
+
+
+
+    /**
+     * @param array $middlewares
+     * @return $this
+    */
+    public function middlewares(array $middlewares): static
+    {
+        $this->routeMiddlewares[] = $middlewares;
+
+        return $this;
     }
 
 
@@ -174,8 +194,8 @@ class Router implements RouterInterface, RouteCollectorInterface
      * @param array $middlewares
      *
      * @return $this
-     */
-    public function middlewares(array $middlewares): static
+    */
+    public function middleware(array $middlewares): static
     {
         $this->group->middlewares($middlewares);
 
@@ -298,17 +318,15 @@ class Router implements RouterInterface, RouteCollectorInterface
         string $name = ''
     ): RouteInterface {
 
-        $methods = $this->resolveMethods($methods);
-        $path    = $this->resolvePath($path);
-        $action  = $this->resolveAction($action);
-        $name    = $this->resolveName($name);
+        $methods     = $this->resolveMethods($methods);
+        $path        = $this->resolvePath($path);
+        $action      = $this->resolveAction($action);
+        $name        = $this->resolveName($name);
+        $middlewares = $this->resolveMiddlewares($this->routeMiddlewares);
 
-        return $this->routeFactory->createRoute(
-            $methods,
-            $path,
-            $action,
-            $name
-        );
+        return $this->routeFactory->createRoute($methods, $path, $action, $name)
+                                  ->wheres($this->patterns)
+                                  ->middlewares($middlewares);
     }
 
 
@@ -428,5 +446,17 @@ class Router implements RouterInterface, RouteCollectorInterface
     private function resolveName(string $name): string
     {
         return $this->routeResolver->resolveName($name);
+    }
+
+
+
+
+    /**
+     * @param array $middlewares
+     * @return array
+    */
+    private function resolveMiddlewares(array $middlewares): array
+    {
+        return $this->routeResolver->resolveMiddlewares($middlewares);
     }
 }

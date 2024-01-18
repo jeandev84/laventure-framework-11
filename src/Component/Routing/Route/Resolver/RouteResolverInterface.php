@@ -55,4 +55,15 @@ interface RouteResolverInterface
      * @return string
     */
     public function resolveName(string $name): string;
+
+
+
+
+
+    /**
+     * @param array $middlewares
+     *
+     * @return array
+    */
+    public function resolveMiddlewares(array $middlewares): array;
 }

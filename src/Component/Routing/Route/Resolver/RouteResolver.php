@@ -105,6 +105,16 @@ class RouteResolver implements RouteResolverInterface
     /**
      * @inheritDoc
     */
+    public function resolveMiddlewares(array $middlewares): array
+    {
+        return array_merge($this->group->getMiddlewares(), $middlewares);
+    }
+
+
+
+    /**
+     * @inheritDoc
+    */
     public function resolveName(string $name): string
     {
         return sprintf('%s%s', $this->group->getName(), $name);
