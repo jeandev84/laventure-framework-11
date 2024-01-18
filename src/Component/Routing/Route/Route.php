@@ -654,21 +654,21 @@ class Route implements RouteInterface, \ArrayAccess
     */
     private function resolveActionFromArray(array $callback): mixed
     {
-          $separator = "::";
-          $callback  = join($separator, $callback);
+        $separator = "::";
+        $callback  = join($separator, $callback);
 
-          if (stripos($callback, $separator) === false) {
-             $callback .= "{$separator}__invoke";
-          }
+        if (stripos($callback, $separator) === false) {
+            $callback .= "{$separator}__invoke";
+        }
 
-          $callback = explode($separator, $callback);
+        $callback = explode($separator, $callback);
 
-          $controller = $callback[0];
-          $action     = $callback[1];
+        $controller = $callback[0];
+        $action     = $callback[1];
 
-          $this->options(compact('controller', 'action'));
+        $this->options(compact('controller', 'action'));
 
-          return join($separator, $callback);
+        return join($separator, $callback);
 
     }
 }
