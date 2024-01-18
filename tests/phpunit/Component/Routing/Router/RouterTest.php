@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace PHPUnitTest\Component\Routing;
+namespace PHPUnitTest\Component\Routing\Router;
 
 
 use PHPUnit\Framework\TestCase;
+use PHPUnitTest\App\Factory\RouterTestFactory;
 use PHPUnitTest\App\Http\Controllers\Admin\BookController;
 use PHPUnitTest\App\Http\Controllers\SiteController;
 use PHPUnitTest\App\Http\Middlewares\IsAdminMiddleware;
-use PHPUnitTest\Component\Routing\Factory\RouterTestFactory;
 
 /**
  * RouterTest
@@ -17,7 +17,7 @@ use PHPUnitTest\Component\Routing\Factory\RouterTestFactory;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  PHPUnitTest\Component\Routing
+ * @package  PHPUnitTest\Component\Routing\Router
 */
 class RouterTest extends TestCase
 {

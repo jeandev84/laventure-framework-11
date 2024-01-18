@@ -525,7 +525,7 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public static function create($methods, string $path, mixed $action, string $name = ''): static
     {
-         return new self($methods, $path, $action, $name);
+        return new self($methods, $path, $action, $name);
     }
 
 

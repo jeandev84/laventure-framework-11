@@ -1,8 +1,6 @@
 <?php
 
-use Laventure\Component\Routing\Configuration\RouterConfiguration;
 use Laventure\Component\Routing\Router\Router;
-use PHPUnitTest\Component\Routing\Factory\RouteTestFactory;
 
 require 'vendor/autoload.php';
 
@@ -60,7 +58,4 @@ dump($route);
 dump($route->matchPath('/profile/'));
 */
 
-$route1 = RouteTestFactory::create(['GET'], '/users/(\d+)', [], 'users');
-
-dump($route1->matchPath('/users/1'));
 

@@ -117,7 +117,11 @@ class RouteTest extends TestCase
           $this->assertTrue($route4->match('GET', '/en/blog'));
           $this->assertTrue($route5->match('GET', '/profile'));
           $this->assertTrue($route5->match('GET', '/profile/'));
-          $this->assertTrue($route5->match('GET', '/profilesss')); # TODO fix it not critical but i'll do it more better
+
+          # TODO fix it not critical but i'll do it more better
+          $this->assertTrue($route5->match('GET', '/profilesss'));
+          ## TODO end
+
           $this->assertTrue($route5->matchPath('/profile/john'));
           $this->assertTrue($route5->matchPath('/profile/john'));
           $this->assertTrue($route6->matchPath('/users/1'));
@@ -143,6 +147,15 @@ class RouteTest extends TestCase
                return "Delete user";
            }, 'admin.users.delete')->wheres(['id' => '\d+', 'slug' => '[a-z\-0-9]+']);
 
-           $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
+          $route2 = Route::create(['GET'], '/profile/{name}/{isOptional?}', function () {
+              return "My Profile";
+          }, 'admin.users.delete')->wheres(['name' => '\w+', 'isOptional' => '\d+']);
+
+
+          $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
+
+           # TODO fix bug when
+           $this->assertSame('/profile/brown/3', $route2->generatePath(['name' => 'brown', 'isOptional' => 3]));
+           $this->assertSame('/profile/brown/', $route2->generatePath(['name' => 'brown', 'isOptional' => null]));
       }
 }

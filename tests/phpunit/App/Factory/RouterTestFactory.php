@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace PHPUnitTest\Component\Routing\Factory;
+namespace PHPUnitTest\App\Factory;
 
-use Laventure\Component\Routing\Configuration\RouterConfiguration;
 use Laventure\Component\Routing\Router\Router;
 
 /**
@@ -13,7 +12,7 @@ use Laventure\Component\Routing\Router\Router;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  PHPUnitTest\Component\Routing\Factory
+ * @package  PHPUnitTest\App\Factory
 */
 class RouterTestFactory
 {
