@@ -41,7 +41,7 @@ class RouteResolver implements RouteResolverInterface
         string $namespace
     ) {
         $this->group     = $group;
-        $this->namespace = $namespace;
+        $this->namespace = trim($namespace, "\\");
     }
 
 
@@ -65,7 +65,15 @@ class RouteResolver implements RouteResolverInterface
     */
     public function resolvePath(string $path): string
     {
-        return '';
+        if ($prefix = $this->group->getPath()) {
+            $path = sprintf(
+                '%s/%s',
+                trim($prefix, '/'),
+                ltrim($path, '/')
+            );
+        }
+
+        return $path;
     }
 
 
@@ -73,9 +81,15 @@ class RouteResolver implements RouteResolverInterface
     /**
      * @inheritDoc
     */
-    public function resolveAction(mixed $action): mixed
+    public function resolveAction(mixed $action): array|callable
     {
-        return '';
+        if ($this->actionFromString($action)) {
+            $action     = explode('@', $action, 2);
+            $controller = sprintf('%s\\%s', $this->namespace, $action[0]);
+            return [$controller, $action[1]];
+        }
+
+        return $action;
     }
 
 
@@ -85,6 +99,18 @@ class RouteResolver implements RouteResolverInterface
     */
     public function resolveName(string $name): string
     {
-        return '';
+        return sprintf('%s%s', $this->group->getName(), $name);
+    }
+
+
+
+    /**
+     * @param $action
+     *
+     * @return bool
+    */
+    private function actionFromString($action): bool
+    {
+        return is_string($action) && stripos($action, '@') !== false;
     }
 }
