@@ -19,9 +19,7 @@ use Laventure\Component\Routing\Router\RouterInterface;
 interface RouterFactoryInterface
 {
     /**
-     * @param RouteCollection $collection
-     *
      * @return RouterInterface
     */
-    public function createRouter(RouteCollection $collection): RouterInterface;
+    public function createRouter(): RouterInterface;
 }

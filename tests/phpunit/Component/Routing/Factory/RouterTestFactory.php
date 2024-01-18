@@ -21,6 +21,6 @@ class RouterTestFactory
 
      public static function create(): Router
      {
-         return  new Router(self::NAMESPACE);
+         return new Router(self::NAMESPACE);
      }
 }
