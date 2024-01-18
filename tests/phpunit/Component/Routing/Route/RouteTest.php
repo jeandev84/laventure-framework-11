@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace PHPUnitTest\Component\Routing\Route;
 
+use Closure;
 use Laventure\Component\Routing\Route\Route;
 use PHPUnit\Framework\TestCase;
+use PHPUnitTest\App\Http\Controllers\BlogController;
 use PHPUnitTest\App\Http\Controllers\HomeController;
+use PHPUnitTest\App\Http\Controllers\MethodTestController;
 use PHPUnitTest\App\Http\Controllers\SiteController;
 use PHPUnitTest\Component\Routing\Factory\RouteFactory;
 
@@ -24,7 +27,7 @@ class RouteTest extends TestCase
       public function testMatchMethod(): void
       {
           $route1 = new Route(['GET'], '/', function () {
-              return "Привет! друзья";
+              return "Home page";
           }, 'home');
 
           $route2 = new Route(['GET', 'POST'], '/contact', function () {
@@ -133,10 +136,20 @@ class RouteTest extends TestCase
 
       public function testAction(): void
       {
+          $func = function () {
+              return "Hello world";
+          };
+
           $route1 = Route::create(['GET'], '/', [HomeController::class], 'contact');
+          $route2 = Route::create(['GET'], '/test', [MethodTestController::class, 'testFirstMethod'], 'method.test');
+          $route3 = Route::create(['GET'], '/foo', $func, 'foo');
+          $route4 = Route::create(['GET'], '/admin/list', 'admin/list/index.php', 'foo');
 
           
           $this->assertSame(HomeController::class . "::__invoke", $route1->getAction());
+          $this->assertSame(MethodTestController::class . "::testFirstMethod", $route2->getAction());
+          $this->assertInstanceOf(Closure::class, $route3->getAction());
+          $this->assertSame('admin/list/index.php', $route4->getAction());
       }
 
 
