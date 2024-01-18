@@ -8,7 +8,7 @@ use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
 use Laventure\Component\Routing\Route\Group\DTO\RouteGroupAttributesInterface;
 
 /**
- * RouteGroupInvokerInterface
+ * GroupInvokerInterface
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -16,7 +16,7 @@ use Laventure\Component\Routing\Route\Group\DTO\RouteGroupAttributesInterface;
  *
  * @package  Laventure\Component\Routing\Route\Group\Invoker
 */
-interface RouteGroupInvokerInterface
+interface GroupInvokerInterface
 {
 
       /**

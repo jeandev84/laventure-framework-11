@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing\Route\Group;
 
 use Laventure\Component\Routing\Route\Group\DTO\RouteGroupAttributesInterface;
-use Laventure\Component\Routing\Route\Group\Invoker\RouteGroupInvokerInterface;
+use Laventure\Component\Routing\Route\Group\Invoker\GroupInvokerInterface;
 
 /**
  * RouteGroup
@@ -139,7 +139,7 @@ class RouteGroup implements RouteGroupInterface
     /**
      * @inheritDoc
     */
-    public function group(RouteGroupInvokerInterface $invoker): mixed
+    public function group(GroupInvokerInterface $invoker): mixed
     {
         $this->attributes($invoker->getAttributes());
         $invoker->invoke();
