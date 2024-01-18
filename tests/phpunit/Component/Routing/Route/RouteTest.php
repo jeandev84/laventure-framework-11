@@ -132,14 +132,17 @@ class RouteTest extends TestCase
            $func1 = function () {return "Delete user";};
            $route1 = Route::create(['DELETE'], '/admin/users/{slug}/{id}', $func1, 'admin.users.delete')
                            ->wheres(['id' => '\d+', 'slug' => '[a-z\-0-9]+']);
-           $route2 = Route::create(['GET'], '/profile/{name}/{isOptional?}', [\stdClass::class, '__invoke'], 'admin.users.delete')
+           $route2 = Route::create(['GET'], '/foo/{name}/{isOptional?}', [\stdClass::class, '__invoke'], 'foo')
                            ->wheres(['name' => '\w+', 'isOptional' => '\d+']);
-           $route3 = Route::create(['GET'], '/profile/{name}/{country?}', [\stdClass::class, '__invoke'], 'admin.users.delete')
+
+           $route3 = Route::create(['GET'], '/profile/{name}/{country?}', [\stdClass::class, '__invoke'], 'profile')
                            ->wheres(['name' => '\w+', 'country' => '\w+']);
 
            $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
-           $this->assertSame('/profile/brown/3', $route2->generatePath(['name' => 'brown', 'isOptional' => 3]));
-           $this->assertSame('/profile/brown/', $route2->generatePath(['name' => 'brown', 'isOptional' => null]));
-           # $this->assertSame('/profile/alex/', $route3->generatePath(['name' => 'alex']));
+           $this->assertSame('/foo/brown/3', $route2->generatePath(['name' => 'brown', 'isOptional' => 3]));
+           $this->assertSame('/foo/brown/', $route2->generatePath(['name' => 'brown', 'isOptional' => null]));
+           $this->assertSame('/profile/alex/', $route3->generatePath(['name' => 'alex', 'country' => '']));
+           $this->assertSame('/profile/alex/', $route3->generatePath(['name' => 'alex', 'country' => false]));
+           $this->assertSame('/profile/alex/', $route3->generatePath(['name' => 'alex', 'country' => null]));
       }
 }
