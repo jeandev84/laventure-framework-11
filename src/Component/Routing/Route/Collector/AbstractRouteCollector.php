@@ -10,6 +10,7 @@ use Laventure\Component\Routing\Route\Factory\RouteFactory;
 use Laventure\Component\Routing\Route\Factory\RouteFactoryInterface;
 use Laventure\Component\Routing\Route\Group\Invoker\GroupInvokerFactory;
 use Laventure\Component\Routing\Route\Group\Invoker\GroupInvokerFactoryInterface;
+use Laventure\Component\Routing\Route\Group\Invoker\GroupInvokerInterface;
 use Laventure\Component\Routing\Route\Group\RouteGroup;
 use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
 use Laventure\Component\Routing\Route\Methods\Enums\HttpMethod;
@@ -323,6 +324,21 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
 
 
 
+    /**
+     * @inheritDoc
+    */
+    public function group(array $attributes, Closure $routes): static
+    {
+        $this->group->group($this->makeGroupInvoker($attributes, $routes));
+
+        return $this;
+    }
+
+
+
+
+
+
 
 
 
@@ -451,6 +467,8 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
 
         return $this;
     }
+
+
 
 
 
@@ -631,6 +649,23 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
 
 
 
+
+    /**
+     * @param GroupInvokerFactoryInterface $groupInvokerFactory
+     *
+     * @return $this
+    */
+    public function withGroupInvokerFactory(GroupInvokerFactoryInterface $groupInvokerFactory): static
+    {
+        $this->groupInvokerFactory = $groupInvokerFactory;
+
+        return $this;
+    }
+
+
+
+
+
     /**
      * @param $methods
      * @param string $path
@@ -689,6 +724,20 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
     public function makeApiResource(string $name, string $controller): ResourceInterface
     {
         return $this->resourceFactory->createApiResource($name, $controller);
+    }
+
+
+
+
+
+    /**
+     * @param array $attributes
+     * @param Closure $routes
+     * @return GroupInvokerInterface
+    */
+    public function makeGroupInvoker(array $attributes, Closure $routes): GroupInvokerInterface
+    {
+        return $this->groupInvokerFactory->createInvoker($attributes, $routes, $this);
     }
 
 }

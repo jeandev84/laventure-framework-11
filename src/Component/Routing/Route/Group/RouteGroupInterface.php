@@ -55,14 +55,6 @@ interface RouteGroupInterface
 
 
 
-    /**
-     * @param GroupInvokerInterface $invoker
-     *
-     * @return mixed
-     */
-    public function group(GroupInvokerInterface $invoker): mixed;
-
-
 
 
     /**
@@ -98,6 +90,18 @@ interface RouteGroupInterface
      * @return $this
     */
     public function middlewares(array $middlewares): static;
+
+
+
+
+
+    /**
+     * @param GroupInvokerInterface $invoker
+     *
+     * @return mixed
+    */
+    public function group(GroupInvokerInterface $invoker): mixed;
+
 
 
 

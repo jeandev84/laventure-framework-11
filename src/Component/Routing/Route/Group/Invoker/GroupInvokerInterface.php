@@ -30,7 +30,7 @@ interface GroupInvokerInterface
       /**
        * @return callable
       */
-      public function getRoutesMapper(): callable;
+      public function getRoutes(): callable;
 
 
 
@@ -41,7 +41,7 @@ interface GroupInvokerInterface
        *
        * @return RouteCollectorInterface
       */
-      public function getRouteCollector(): RouteCollectorInterface;
+      public function getCollector(): RouteCollectorInterface;
 
 
 

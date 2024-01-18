@@ -55,7 +55,7 @@ class GroupInvoker implements GroupInvokerInterface
     /**
      * @inheritDoc
     */
-    public function getRoutesMapper(): callable
+    public function getRoutes(): callable
     {
         return $this->routes;
     }
@@ -67,7 +67,7 @@ class GroupInvoker implements GroupInvokerInterface
     /**
      * @inheritDoc
     */
-    public function getRouteCollector(): RouteCollectorInterface
+    public function getCollector(): RouteCollectorInterface
     {
          return $this->collector;
     }
