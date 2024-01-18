@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Router;
 
-
 use Laventure\Component\Routing\Configuration\RouterConfigurationInterface;
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Collector\RouteCollector;
@@ -21,19 +20,18 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 class Router extends RouteCollector implements RouterInterface
 {
-
     /**
      * @inheritDoc
     */
     public function match(string $method, string $path): RouteInterface|false
     {
-         foreach ($this->getRoutes() as $route) {
-             if ($route->match($method, $path)) {
+        foreach ($this->getRoutes() as $route) {
+            if ($route->match($method, $path)) {
                 return $route;
-             }
-         }
+            }
+        }
 
-         return false;
+        return false;
     }
 
 

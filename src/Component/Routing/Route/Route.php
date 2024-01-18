@@ -394,10 +394,7 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * Determine if the given method in route methods
-     *
-     * @param string $method
-     * @return bool
+     * @inheritdoc
     */
     public function matchMethod(string $method): bool
     {
@@ -407,8 +404,7 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @param string $uri
-     * @return bool
+     * @inheritdoc
     */
     public function matchPath(string $uri): bool
     {
@@ -420,7 +416,7 @@ class Route implements RouteInterface, \ArrayAccess
         }
 
         $this->matches = $matches;
-        $this->params  = $this->resolveParams($matches);
+        $this->params  = $this->filterParams($matches);
         $this->options(compact('uri'));
 
         return true;
@@ -535,7 +531,7 @@ class Route implements RouteInterface, \ArrayAccess
      *
      * @return array
     */
-    private function resolveParams(array $matches): array
+    private function filterParams(array $matches): array
     {
         return array_filter($matches, function ($key) {
             return !is_numeric($key);

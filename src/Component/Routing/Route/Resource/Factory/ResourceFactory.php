@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resource\Factory;
@@ -21,7 +22,6 @@ use Laventure\Component\Routing\Route\Resource\Types\WebResource;
  */
 class ResourceFactory implements ResourceFactoryInterface
 {
-
     /**
      * @inheritDoc
     */
@@ -41,7 +41,7 @@ class ResourceFactory implements ResourceFactoryInterface
     */
     public function createWebResource(string $name, string $controller): ResourceInterface
     {
-         return new WebResource($name, $controller);
+        return new WebResource($name, $controller);
     }
 
 

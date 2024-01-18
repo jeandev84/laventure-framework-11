@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Group\Invoker;
-
 
 use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
 use Laventure\Component\Routing\Route\Group\DTO\RouteGroupAttributesInterface;
@@ -18,39 +18,38 @@ use Laventure\Component\Routing\Route\Group\DTO\RouteGroupAttributesInterface;
 */
 interface GroupInvokerInterface
 {
-
-      /**
-       * @return RouteGroupAttributesInterface
-      */
-      public function getAttributes(): RouteGroupAttributesInterface;
-
-
-
-
-      /**
-       * @return callable
-      */
-      public function getRoutes(): callable;
+    /**
+     * @return RouteGroupAttributesInterface
+    */
+    public function getAttributes(): RouteGroupAttributesInterface;
 
 
 
 
-
-      /**
-       * Returns route collector
-       *
-       * @return RouteCollectorInterface
-      */
-      public function getCollector(): RouteCollectorInterface;
+    /**
+     * @return callable
+    */
+    public function getRoutes(): callable;
 
 
 
 
 
-      /**
-       * Call routes (calling routes invoker)
-       *
-       * @return mixed
-      */
-      public function invoke(): mixed;
+    /**
+     * Returns route collector
+     *
+     * @return RouteCollectorInterface
+    */
+    public function getCollector(): RouteCollectorInterface;
+
+
+
+
+
+    /**
+     * Call routes (calling routes invoker)
+     *
+     * @return mixed
+    */
+    public function invoke(): mixed;
 }

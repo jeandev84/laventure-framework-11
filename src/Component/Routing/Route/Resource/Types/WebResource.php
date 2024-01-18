@@ -20,7 +20,6 @@ use Laventure\Component\Routing\Route\Resource\Resource;
 */
 class WebResource extends Resource
 {
-
     /**
      * @param string $name
      * @param string $controller

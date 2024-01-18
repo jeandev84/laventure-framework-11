@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resource\Types;
@@ -19,7 +20,6 @@ use Laventure\Component\Routing\Route\Resource\Resource;
 */
 class ApiResource extends Resource
 {
-
     /**
      * @param string $name
      * @param string $controller

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resolver;
@@ -16,15 +17,13 @@ use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
  */
 class RouteResolverFactory implements RouteResolverFactoryInterface
 {
-
     /**
      * @inheritDoc
     */
     public function createRouteResolver(
         RouteGroupInterface $group,
         string $namespace
-    ): RouteResolverInterface
-    {
+    ): RouteResolverInterface {
         return new RouteResolver($group, $namespace);
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route;
 
+use Laventure\Component\Routing\Route\Matcher\RouteMatcherInterface;
+
 /**
  * RouteInterface
  *
@@ -13,7 +15,7 @@ namespace Laventure\Component\Routing\Route;
  *
  * @package  Laventure\Component\Routing\Route
 */
-interface RouteInterface
+interface RouteInterface extends RouteMatcherInterface
 {
     /**
      * Returns route path
@@ -208,22 +210,6 @@ interface RouteInterface
     */
     public function getOption(string $name, $default = null): mixed;
 
-
-
-
-
-
-
-    /**
-     * Determine if the current request match route
-     *
-     * @param string $method
-     *
-     * @param string $path
-     *
-     * @return bool
-    */
-    public function match(string $method, string $path): bool;
 
 
 

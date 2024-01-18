@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resolver;
-
 
 use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
 
@@ -17,13 +17,13 @@ use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
  */
 interface RouteResolverFactoryInterface
 {
-     /**
-      * @param RouteGroupInterface $group
-      * @param string $namespace
-      * @return RouteResolverInterface
-     */
-     public function createRouteResolver(
-         RouteGroupInterface $group,
-         string $namespace
-     ): RouteResolverInterface;
+    /**
+     * @param RouteGroupInterface $group
+     * @param string $namespace
+     * @return RouteResolverInterface
+    */
+    public function createRouteResolver(
+        RouteGroupInterface $group,
+        string $namespace
+    ): RouteResolverInterface;
 }

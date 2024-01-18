@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resource\Decorator;
@@ -18,51 +19,49 @@ use Laventure\Component\Routing\Route\RouteInterface;
  */
 class ResourceCollectorDecorator
 {
+    /**
+     * @var RouteCollectorInterface
+    */
+    protected RouteCollectorInterface $collector;
 
 
-       /**
-        * @var RouteCollectorInterface
-       */
-       protected RouteCollectorInterface $collector;
-
-
-       /**
-        * @var string
-       */
-       protected string $controller;
-
-
-
-
-       /**
-         * @param RouteCollectorInterface $collector
-         * @param string $controller
-       */
-       public function __construct(RouteCollectorInterface $collector, string $controller)
-       {
-            $this->collector  = $collector;
-            $this->controller = $controller;
-       }
+    /**
+     * @var string
+    */
+    protected string $controller;
 
 
 
 
-      /**
-       *  Collect route called by each kind methods
-       *  Example : $this->map('GET|POST|PUT|DELETE', '/any', [], 'any');
-       *
-       * @param $methods
-       * @param string $path
-       * @param mixed $action
-       * @param string $name
-       * @return RouteInterface
-      */
-      public function map($methods, string $path, mixed $action, string $name = ''): RouteInterface
-      {
-            $route = $this->collector->map($methods, $path, $action, $name);
+    /**
+      * @param RouteCollectorInterface $collector
+      * @param string $controller
+    */
+    public function __construct(RouteCollectorInterface $collector, string $controller)
+    {
+        $this->collector  = $collector;
+        $this->controller = $controller;
+    }
 
-            return $this->collector->controller($this->controller, $route);
-      }
+
+
+
+    /**
+     *  Collect route called by each kind methods
+     *  Example : $this->map('GET|POST|PUT|DELETE', '/any', [], 'any');
+     *
+     * @param $methods
+     * @param string $path
+     * @param mixed $action
+     * @param string $name
+     * @return RouteInterface
+    */
+    public function map($methods, string $path, mixed $action, string $name = ''): RouteInterface
+    {
+        $route = $this->collector->map($methods, $path, $action, $name);
+
+        return $this->collector->controller($this->controller, $route);
+    }
 
 
 

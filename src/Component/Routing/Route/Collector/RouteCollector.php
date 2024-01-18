@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Collector;
-
 
 /**
  * RouteCollector
@@ -15,5 +15,4 @@ namespace Laventure\Component\Routing\Route\Collector;
 */
 class RouteCollector extends AbstractRouteCollector
 {
-
 }

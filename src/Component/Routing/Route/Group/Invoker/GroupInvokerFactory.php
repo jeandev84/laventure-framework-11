@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Group\Invoker;
@@ -17,7 +18,6 @@ use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
  */
 class GroupInvokerFactory implements GroupInvokerFactoryInterface
 {
-
     /**
      * @inheritDoc
     */

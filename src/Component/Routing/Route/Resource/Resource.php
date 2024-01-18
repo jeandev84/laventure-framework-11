@@ -19,8 +19,6 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 abstract class Resource implements ResourceInterface
 {
-
-
     /**
      * @var string
     */

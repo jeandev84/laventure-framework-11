@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Group\Invoker;
@@ -19,8 +20,6 @@ use Laventure\Component\Routing\Route\Group\DTO\RouteGroupAttributesInterface;
  */
 class GroupInvoker implements GroupInvokerInterface
 {
-
-
     /**
      * @param array $attributes
      * @param Closure $routes
@@ -30,8 +29,7 @@ class GroupInvoker implements GroupInvokerInterface
         protected array $attributes,
         protected Closure $routes,
         protected RouteCollectorInterface $collector
-    )
-    {
+    ) {
     }
 
 
@@ -43,9 +41,9 @@ class GroupInvoker implements GroupInvokerInterface
     {
         return new RouteGroupAttributes(
             $this->attributes['path'] ?? '',
-       $this->attributes['namespace'] ?? '',
-           $this->attributes['name'] ?? '',
-      $this->attributes['middlewares'] ?? []
+            $this->attributes['namespace'] ?? '',
+            $this->attributes['name'] ?? '',
+            $this->attributes['middlewares'] ?? []
         );
     }
 
@@ -59,8 +57,8 @@ class GroupInvoker implements GroupInvokerInterface
     {
         return $this->routes;
     }
-    
-    
+
+
 
 
 
@@ -69,7 +67,7 @@ class GroupInvoker implements GroupInvokerInterface
     */
     public function getCollector(): RouteCollectorInterface
     {
-         return $this->collector;
+        return $this->collector;
     }
 
 

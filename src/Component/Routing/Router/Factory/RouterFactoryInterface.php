@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Router\Factory;
 
-use Laventure\Component\Routing\Configuration\RouterConfigurationInterface;
+use Laventure\Component\Routing\Route\Collection\RouteCollection;
 use Laventure\Component\Routing\Router\RouterInterface;
 
 /**
@@ -19,8 +19,9 @@ use Laventure\Component\Routing\Router\RouterInterface;
 interface RouterFactoryInterface
 {
     /**
-     * @param RouterConfigurationInterface $config
+     * @param RouteCollection $collection
+     *
      * @return RouterInterface
     */
-    public function createRouter(RouterConfigurationInterface $config): RouterInterface;
+    public function createRouter(RouteCollection $collection): RouterInterface;
 }
