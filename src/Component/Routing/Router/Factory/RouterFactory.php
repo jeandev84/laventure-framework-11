@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Router\Factory;
@@ -17,7 +18,6 @@ use Laventure\Component\Routing\Router\RouterInterface;
 */
 class RouterFactory implements RouterFactoryInterface
 {
-
     /**
      * @param string $namespace
     */
