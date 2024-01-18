@@ -26,15 +26,10 @@ class RouteTest extends TestCase
 
       public function testMatchMethod(): void
       {
-          $route1 = new Route(['GET'], '/', function () {
-              return "Home page";
-          }, 'home');
-
-          $route2 = new Route(['GET', 'POST'], '/contact', function () {
-              return "Contact";
-          }, 'contact');
-
-
+          $func1  = function () { return "Home page"; };
+          $func2  = function () { return "Home page"; };
+          $route1 = new Route(['GET'], '/', $func1, 'home');
+          $route2 = new Route(['GET', 'POST'], '/contact', $func2, 'contact');
           $this->assertTrue($route1->matchMethod('GET'));
           $this->assertTrue($route2->matchMethod('GET'));
           $this->assertTrue($route2->matchMethod('POST'));
@@ -51,20 +46,10 @@ class RouteTest extends TestCase
           $route4 = Route::create(['GET'], 'foo', $func, 'foo');
           $route5 = Route::create(['GET'], '/admin-posts', $func, 'admin.posts');
           $route6 = Route::create(['GET'], '/admin/posts', $func, 'admin.posts');
-          $route7 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
-                                      ->where('id', '\d+');
-          $route8 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
-                                      ->wheres([
-                                          'slug' => '[a-z\-0-9]+',
-                                          'id' => '\d+'
-                                      ]);
-
-          $route9 = Route::create(['GET'], '/{_locale}/blog', $func, 'blog.home')
-              ->wheres(['_locale' => '\w+',]);
-
-
-          $route10 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')
-                                      ->wheres(['username' => '\w+']);
+          $route7 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')->where('id', '\d+');
+          $route8 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
+          $route9 = Route::create(['GET'], '/{_locale}/blog', $func, 'blog.home')->wheres(['_locale' => '\w+',]);
+          $route10 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')->wheres(['username' => '\w+']);
 
 
           $this->assertTrue($route1->matchPath('/'));
@@ -96,17 +81,10 @@ class RouteTest extends TestCase
       {
           $func = function () {};
           $route1 = Route::create(['GET'], '/admin/posts', $func, 'admin.posts');
-          $route2 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
-                                     ->where('id', '\d+');
-          $route3 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
-                                      ->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
-
+          $route2 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')->where('id', '\d+');
+          $route3 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
           $route4 = Route::create(['GET'], '/{_locale}/blog', $func, 'blog.home')->wheres(['_locale' => '\w+',]);
-
-          $route5 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')
-              ->wheres(['username' => '\w+']);
-
-
+          $route5 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')->wheres(['username' => '\w+']);
           $route6 = Route::create(['GET'], '/users/(\d+)', $func, 'users.show');
 
 
@@ -120,11 +98,7 @@ class RouteTest extends TestCase
           $this->assertTrue($route4->match('GET', '/en/blog'));
           $this->assertTrue($route5->match('GET', '/profile'));
           $this->assertTrue($route5->match('GET', '/profile/'));
-
-          # TODO fix it not critical but i'll do it more better
           $this->assertTrue($route5->match('GET', '/profilesss'));
-          ## TODO end
-
           $this->assertTrue($route5->matchPath('/profile/john'));
           $this->assertTrue($route5->matchPath('/profile/john'));
           $this->assertTrue($route6->matchPath('/users/1'));
