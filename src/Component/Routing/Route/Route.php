@@ -444,7 +444,7 @@ class Route implements RouteInterface, \ArrayAccess
     /**
      * @inheritDoc
     */
-    public function generateUri(array $params = []): string
+    public function generatePath(array $params = []): string
     {
          $path = $this->getPath();
          foreach ($params as $name => $value) {

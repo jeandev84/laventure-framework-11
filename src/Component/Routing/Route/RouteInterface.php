@@ -238,5 +238,5 @@ interface RouteInterface
      *
      * @return string
     */
-    public function generateUri(array $params = []): string;
+    public function generatePath(array $params = []): string;
 }

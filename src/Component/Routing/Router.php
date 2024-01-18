@@ -44,10 +44,37 @@ class Router implements RouterInterface, RouteCollectorInterface
      *
      * @return RouteInterface
     */
-    public function add(RouteInterface $route): RouteInterface
+    public function addRoute(RouteInterface $route): RouteInterface
     {
         return $this->collection->addRoute($route);
     }
+
+
+
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+    */
+    public function hasRoute(string $name): bool
+    {
+        return $this->collection->hasNamedRoute($name);
+    }
+
+
+
+
+
+    /**
+     * @param string $name
+     * @return RouteInterface|null
+    */
+    public function getRoute(string $name): ?RouteInterface
+    {
+        return $this->collection->getNamedRoute($name);
+    }
+
 
 
 
@@ -57,7 +84,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function map($methods, string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->add(new Route($methods, $path, $action, $name));
+        return $this->addRoute(new Route($methods, $path, $action, $name));
     }
 
 
@@ -160,10 +187,10 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function generate(string $name, array $params = []): ?string
     {
-        if (!$this->collection->hasNamedRoute($name)) {
+        if (!$this->hasRoute($name)) {
             return null;
         }
 
-        return $this->collection->getNamedRoute($name)->generateUri($params);
+        return $this->getRoute($name)->generatePath($params);
     }
 }
