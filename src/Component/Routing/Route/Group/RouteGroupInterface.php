@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Group;
-
 
 use Laventure\Component\Routing\Route\Group\Invoker\RouteGroupInvokerInterface;
 
@@ -17,42 +17,41 @@ use Laventure\Component\Routing\Route\Group\Invoker\RouteGroupInvokerInterface;
  */
 interface RouteGroupInterface
 {
-
-     /**
-      * Returns path
-      *
-      * @return string
-     */
-     public function getPath(): string;
-
-
-
-
-     /**
-      * Returns namespace
-      *
-      * @return string
-     */
-     public function getNamespace(): string;
-
-
-
-     /**
-      * Returns name
-      *
-      * @return string
-     */
-     public function getName(): string;
+    /**
+     * Returns path
+     *
+     * @return string
+    */
+    public function getPath(): string;
 
 
 
 
-     /**
-      * Returns middlewares
-      *
-      * @return array
-     */
-     public function getMiddlewares(): array;
+    /**
+     * Returns namespace
+     *
+     * @return string
+    */
+    public function getNamespace(): string;
+
+
+
+    /**
+     * Returns name
+     *
+     * @return string
+    */
+    public function getName(): string;
+
+
+
+
+    /**
+     * Returns middlewares
+     *
+     * @return array
+    */
+    public function getMiddlewares(): array;
 
 
 

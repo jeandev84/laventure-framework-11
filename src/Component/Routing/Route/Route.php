@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route;
@@ -16,7 +17,6 @@ use Laventure\Component\Routing\Route\Pattern\RoutePattern;
 */
 class Route implements RouteInterface, \ArrayAccess
 {
-
     /**
      * route methods
      *
@@ -121,8 +121,7 @@ class Route implements RouteInterface, \ArrayAccess
         string $path,
         mixed $action,
         string $name = ''
-    )
-    {
+    ) {
         $this->methods($methods)
              ->path($path)
              ->action($action)
@@ -147,7 +146,7 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function getAction(): mixed
     {
-         return $this->action;
+        return $this->action;
     }
 
 
@@ -159,7 +158,7 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function getName(): string
     {
-         return $this->name;
+        return $this->name;
     }
 
 
@@ -256,9 +255,9 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function methods(array $methods): static
     {
-         $this->methods = $methods;
+        $this->methods = $methods;
 
-         return $this;
+        return $this;
     }
 
 
@@ -369,11 +368,11 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function middlewares(array $middlewares): static
     {
-         foreach ($middlewares as $middleware) {
-             $this->middleware($middleware);
-         }
+        foreach ($middlewares as $middleware) {
+            $this->middleware($middleware);
+        }
 
-         return $this;
+        return $this;
     }
 
 
@@ -400,7 +399,7 @@ class Route implements RouteInterface, \ArrayAccess
      * @param string $method
      * @return bool
     */
-    public function matchMethod(string $method):  bool
+    public function matchMethod(string $method): bool
     {
         return in_array($method, $this->methods);
     }
@@ -446,13 +445,13 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function generatePath(array $params = []): string
     {
-         $path = $this->getPath();
-         foreach ($params as $name => $value) {
-             if (isset($this->patterns[$name])) {
-                 $path = $this->patterns[$name]->replaceByValues($path, [$value, $value]);
-             }
-         }
-         return $path;
+        $path = $this->getPath();
+        foreach ($params as $name => $value) {
+            if (isset($this->patterns[$name])) {
+                $path = $this->patterns[$name]->replaceByValues($path, [$value, $value]);
+            }
+        }
+        return $path;
     }
 
 

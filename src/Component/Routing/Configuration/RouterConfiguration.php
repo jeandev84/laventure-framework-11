@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Configuration;
@@ -23,7 +24,6 @@ use Laventure\Component\Routing\Route\Resolver\RouteResolverInterface;
 */
 class RouterConfiguration implements RouterConfigurationInterface
 {
-
     /**
      * @var string
     */

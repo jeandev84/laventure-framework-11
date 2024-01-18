@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Group;
@@ -17,8 +18,6 @@ use Laventure\Component\Routing\Route\Group\Invoker\RouteGroupInvokerInterface;
 */
 class RouteGroup implements RouteGroupInterface
 {
-
-
     /**
      * @var array
     */
@@ -132,7 +131,7 @@ class RouteGroup implements RouteGroupInterface
     */
     public function getMiddlewares(): array
     {
-         return $this->middlewares;
+        return $this->middlewares;
     }
 
 
@@ -142,18 +141,18 @@ class RouteGroup implements RouteGroupInterface
     */
     public function group(RouteGroupInvokerInterface $invoker): mixed
     {
-         $this->attributes($invoker->getAttributes());
-         $invoker->invoke();
-         $this->clear();
-         return $this;
+        $this->attributes($invoker->getAttributes());
+        $invoker->invoke();
+        $this->clear();
+        return $this;
     }
 
-    
-    
+
+
 
     /**
      * @param RouteGroupAttributesInterface $dto
-     * 
+     *
      * @return $this
     */
     public function attributes(RouteGroupAttributesInterface $dto): static
@@ -162,7 +161,7 @@ class RouteGroup implements RouteGroupInterface
              ->namespace($dto->getNamespace())
              ->name($dto->getName())
              ->middlewares($dto->getMiddlewares());
-        
+
         return $this;
     }
 

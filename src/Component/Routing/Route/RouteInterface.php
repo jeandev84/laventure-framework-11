@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route;
-
 
 /**
  * RouteInterface
@@ -15,7 +15,6 @@ namespace Laventure\Component\Routing\Route;
 */
 interface RouteInterface
 {
-
     /**
      * Returns route path
      *

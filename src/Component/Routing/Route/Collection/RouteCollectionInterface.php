@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Collection;
-
 
 use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Route\RouteInterface;
@@ -18,46 +18,45 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 interface RouteCollectionInterface
 {
+    /**
+     * @param RouteInterface $route
+     *
+     * @return RouteInterface
+    */
+    public function addRoute(RouteInterface $route): RouteInterface;
 
-     /**
-      * @param RouteInterface $route
+
+
+    /**
+     * @return RouteInterface[]
+    */
+    public function getRoutes(): array;
+
+
+
+    /**
+     * @return RouteInterface[]
+    */
+    public function getNamedRoutes(): array;
+
+
+
+
+    /**
+      * @param string $name
       *
-      * @return RouteInterface
+      * @return RouteInterface|null
      */
-     public function addRoute(RouteInterface $route): RouteInterface;
-
-
-
-     /**
-      * @return RouteInterface[]
-     */
-     public function getRoutes(): array;
-
-
-
-     /**
-      * @return RouteInterface[]
-     */
-     public function getNamedRoutes(): array;
-
-
-
-
-     /**
-       * @param string $name
-       *
-       * @return RouteInterface|null
-      */
-      public function getNamedRoute(string $name): ?RouteInterface;
+    public function getNamedRoute(string $name): ?RouteInterface;
 
 
 
 
 
-       /**
-        * @param string $name
-        *
-        * @return bool
-       */
-       public function hasNamedRoute(string $name): bool;
+    /**
+     * @param string $name
+     *
+     * @return bool
+    */
+    public function hasNamedRoute(string $name): bool;
 }

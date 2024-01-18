@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resolver;
-
 
 /**
  * RouteResolverInterface
@@ -15,44 +15,44 @@ namespace Laventure\Component\Routing\Route\Resolver;
  */
 interface RouteResolverInterface
 {
-      /**
-       * Resolve route methods
-       *
-       * @param $methods
-       *
-       * @return array
-      */
-      public function resolveMethods($methods): array;
+    /**
+     * Resolve route methods
+     *
+     * @param $methods
+     *
+     * @return array
+    */
+    public function resolveMethods($methods): array;
 
 
 
-      /**
-       * Resolve route path
-       *
-       * @param string $path
-       * @return string
-      */
-      public function resolvePath(string $path): string;
-
-
-
-
-      /**
-       * Resolve route action
-       *
-       * @param mixed $action
-       * @return mixed
-      */
-      public function resolveAction(mixed $action): mixed;
+    /**
+     * Resolve route path
+     *
+     * @param string $path
+     * @return string
+    */
+    public function resolvePath(string $path): string;
 
 
 
 
+    /**
+     * Resolve route action
+     *
+     * @param mixed $action
+     * @return mixed
+    */
+    public function resolveAction(mixed $action): mixed;
 
-      /**
-       * @param string $name
-       *
-       * @return string
-      */
-      public function resolveName(string $name): string;
+
+
+
+
+    /**
+     * @param string $name
+     *
+     * @return string
+    */
+    public function resolveName(string $name): string;
 }

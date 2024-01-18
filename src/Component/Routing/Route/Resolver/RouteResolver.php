@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resolver;
@@ -16,7 +17,6 @@ use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
  */
 class RouteResolver implements RouteResolverInterface
 {
-
     /**
      * @var RouteGroupInterface
     */
@@ -39,8 +39,7 @@ class RouteResolver implements RouteResolverInterface
     public function __construct(
         RouteGroupInterface $group,
         string $namespace
-    )
-    {
+    ) {
         $this->group     = $group;
         $this->namespace = $namespace;
     }

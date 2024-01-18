@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Laventure\Component\Routing;
+namespace Laventure\Component\Routing\Router;
 
 use Laventure\Component\Routing\Configuration\RouterConfigurationInterface;
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
@@ -18,11 +19,10 @@ use Laventure\Component\Routing\Route\RouteInterface;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Routing
+ * @package  Laventure\Component\Routing\Router
 */
 class Router implements RouterInterface, RouteCollectorInterface
 {
-
     /**
      * @var RouterConfigurationInterface
     */
@@ -83,16 +83,18 @@ class Router implements RouterInterface, RouteCollectorInterface
         string $path,
         mixed $action,
         string $name = ''
-    ): RouteInterface
-    {
-         $methods = $this->routeResolver->resolveMethods($methods);
-         $path    = $this->routeResolver->resolvePath($path);
-         $action  = $this->routeResolver->resolveAction($action);
-         $name    = $this->routeResolver->resolveName($name);
+    ): RouteInterface {
+        $methods = $this->routeResolver->resolveMethods($methods);
+        $path    = $this->routeResolver->resolvePath($path);
+        $action  = $this->routeResolver->resolveAction($action);
+        $name    = $this->routeResolver->resolveName($name);
 
-         return $this->routeFactory->createRoute(
-             $methods, $path, $action, $name
-         );
+        return $this->routeFactory->createRoute(
+            $methods,
+            $path,
+            $action,
+            $name
+        );
     }
 
 
@@ -153,7 +155,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function get(string $path, mixed $action, string $name = ''): RouteInterface
     {
-          return $this->map(['GET'], $path, $action, $name);
+        return $this->map(['GET'], $path, $action, $name);
     }
 
 
@@ -238,13 +240,13 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function match(string $method, string $path): RouteInterface|false
     {
-         foreach ($this->getRoutes() as $route) {
-             if ($route->match($method, $path)) {
-                 return $route;
-             }
-         }
+        foreach ($this->getRoutes() as $route) {
+            if ($route->match($method, $path)) {
+                return $route;
+            }
+        }
 
-         return false;
+        return false;
     }
 
 

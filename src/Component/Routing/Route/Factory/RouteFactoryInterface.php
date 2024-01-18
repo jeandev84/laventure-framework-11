@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Factory;
-
 
 use Laventure\Component\Routing\Route\RouteInterface;
 
@@ -17,17 +17,17 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 interface RouteFactoryInterface
 {
-     /**
-      * @param array $methods
-      * @param string $path
-      * @param mixed $action
-      * @param string $name
-      * @return RouteInterface
-     */
-     public function createRoute(
-         array $methods,
-         string $path,
-         mixed  $action,
-         string $name = ''
-     ): RouteInterface;
+    /**
+     * @param array $methods
+     * @param string $path
+     * @param mixed $action
+     * @param string $name
+     * @return RouteInterface
+    */
+    public function createRoute(
+        array $methods,
+        string $path,
+        mixed  $action,
+        string $name = ''
+    ): RouteInterface;
 }

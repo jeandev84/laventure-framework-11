@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Factory;
@@ -17,7 +18,6 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 class RouteFactory implements RouteFactoryInterface
 {
-
     /**
      * @inheritdoc
     */
@@ -26,8 +26,7 @@ class RouteFactory implements RouteFactoryInterface
         string $path,
         mixed $action,
         string $name = ''
-    ): RouteInterface
-    {
+    ): RouteInterface {
         return new Route($methods, $path, $action, $name);
     }
 }

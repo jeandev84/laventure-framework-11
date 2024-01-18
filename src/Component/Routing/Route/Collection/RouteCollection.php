@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Collection;
@@ -16,7 +17,6 @@ use Laventure\Component\Routing\Route\RouteInterface;
  */
 class RouteCollection implements RouteCollectionInterface
 {
-
     /**
      * @var RouteInterface[]
     */
@@ -38,11 +38,11 @@ class RouteCollection implements RouteCollectionInterface
     */
     public function addRoute(RouteInterface $route): RouteInterface
     {
-         if ($name = $route->getName()) {
-             $this->namedRoutes[$name] = $route;
-         }
+        if ($name = $route->getName()) {
+            $this->namedRoutes[$name] = $route;
+        }
 
-         return $this->routes[] = $route;
+        return $this->routes[] = $route;
     }
 
 

@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Configuration;
-
 
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Factory\RouteFactoryInterface;
@@ -20,48 +20,47 @@ use Laventure\Component\Routing\Route\Resolver\RouteResolverInterface;
 */
 interface RouterConfigurationInterface
 {
-
-     /**
-      * Returns route factory
-      *
-      * @return RouteFactoryInterface
-     */
-     public function getRouteFactory(): RouteFactoryInterface;
-
-
-     /**
-      * Returns route collection
-      *
-      * @return RouteCollectionInterface
-     */
-     public function getRouteCollection(): RouteCollectionInterface;
+    /**
+     * Returns route factory
+     *
+     * @return RouteFactoryInterface
+    */
+    public function getRouteFactory(): RouteFactoryInterface;
 
 
-
-     /**
-      * Returns route group
-      *
-      * @return RouteGroupInterface
-     */
-     public function getRouteGroup(): RouteGroupInterface;
+    /**
+     * Returns route collection
+     *
+     * @return RouteCollectionInterface
+    */
+    public function getRouteCollection(): RouteCollectionInterface;
 
 
 
-
-     /**
-      * Route resolve
-      *
-      * @return RouteResolverInterface
-     */
-     public function getRouteResolver(): RouteResolverInterface;
+    /**
+     * Returns route group
+     *
+     * @return RouteGroupInterface
+    */
+    public function getRouteGroup(): RouteGroupInterface;
 
 
 
 
-     /**
-      * Returns controller namespace
-      *
-      * @return string
-     */
-     public function getNamespace(): string;
+    /**
+     * Route resolve
+     *
+     * @return RouteResolverInterface
+    */
+    public function getRouteResolver(): RouteResolverInterface;
+
+
+
+
+    /**
+     * Returns controller namespace
+     *
+     * @return string
+    */
+    public function getNamespace(): string;
 }

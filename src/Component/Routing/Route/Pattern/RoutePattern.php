@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Pattern;
@@ -14,7 +15,6 @@ namespace Laventure\Component\Routing\Route\Pattern;
  */
 class RoutePattern
 {
-
     /**
      * @var string
     */
@@ -69,10 +69,10 @@ class RoutePattern
     */
     public function toArray(): array
     {
-         return [
-             "#{{$this->name}}#"   => "(?P<$this->name>$this->regex)",
-             "#{{$this->name}}.?#" => "?(?P<$this->name>$this->regex)?"
-         ];
+        return [
+            "#{{$this->name}}#"   => "(?P<$this->name>$this->regex)",
+            "#{{$this->name}}.?#" => "?(?P<$this->name>$this->regex)?"
+        ];
     }
 
 
@@ -111,7 +111,7 @@ class RoutePattern
     }
 
 
-    
+
 
     /**
      * Replace placeholders by values
