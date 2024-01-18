@@ -516,6 +516,32 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+    /**
+     * @param $methods
+     * @param string $path
+     * @param mixed $action
+     * @param string $name
+     * @return static
+    */
+    public static function create($methods, string $path, mixed $action, string $name = ''): static
+    {
+         return new self($methods, $path, $action, $name);
+    }
+
+
+
+
+
+    /**
+     * @param array $route
+     * @return static
+    */
+    public static function createFromArray(array $route): static
+    {
+        return self::create($route['methods'], $route['path'], $route['action'], $route['name']);
+    }
+
+
 
 
 

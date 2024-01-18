@@ -6,7 +6,8 @@ namespace PHPUnitTest\Component\Routing\Route;
 use Laventure\Component\Routing\Route\Route;
 use PHPUnit\Framework\TestCase;
 use PHPUnitTest\App\Http\Controllers\HomeController;
-use PHPUnitTest\Component\Routing\Factory\RouteTestFactory;
+use PHPUnitTest\App\Http\Controllers\SiteController;
+use PHPUnitTest\Component\Routing\Factory\RouteFactory;
 
 /**
  * RouteTest
@@ -41,25 +42,25 @@ class RouteTest extends TestCase
       public function testMatchPath(): void
       {
           $func = function () {};
-          $route1 = RouteTestFactory::create(['GET'], '/', $func, 'home');
-          $route2 = RouteTestFactory::create(['GET'], '/about', $func, 'about');
-          $route3 = RouteTestFactory::create(['GET'], '/foo', $func, 'foo');
-          $route4 = RouteTestFactory::create(['GET'], 'foo', $func, 'foo');
-          $route5 = RouteTestFactory::create(['GET'], '/admin-posts', $func, 'admin.posts');
-          $route6 = RouteTestFactory::create(['GET'], '/admin/posts', $func, 'admin.posts');
-          $route7 = RouteTestFactory::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
+          $route1 = Route::create(['GET'], '/', $func, 'home');
+          $route2 = Route::create(['GET'], '/about', $func, 'about');
+          $route3 = Route::create(['GET'], '/foo', $func, 'foo');
+          $route4 = Route::create(['GET'], 'foo', $func, 'foo');
+          $route5 = Route::create(['GET'], '/admin-posts', $func, 'admin.posts');
+          $route6 = Route::create(['GET'], '/admin/posts', $func, 'admin.posts');
+          $route7 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
                                       ->where('id', '\d+');
-          $route8 = RouteTestFactory::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
+          $route8 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
                                       ->wheres([
                                           'slug' => '[a-z\-0-9]+',
                                           'id' => '\d+'
                                       ]);
 
-          $route9 = RouteTestFactory::create(['GET'], '/{_locale}/blog', [], 'blog.home')
+          $route9 = Route::create(['GET'], '/{_locale}/blog', [], 'blog.home')
               ->wheres(['_locale' => '\w+',]);
 
 
-          $route10 = RouteTestFactory::create(['GET'], '/profile/{username?}', [], 'profile')
+          $route10 = Route::create(['GET'], '/profile/{username?}', [], 'profile')
                                       ->wheres(['username' => '\w+']);
 
 
@@ -91,19 +92,19 @@ class RouteTest extends TestCase
       public function testMatch(): void
       {
           $func = function () {};
-          $route1 = RouteTestFactory::create(['GET'], '/admin/posts', $func, 'admin.posts');
-          $route2 = RouteTestFactory::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
+          $route1 = Route::create(['GET'], '/admin/posts', $func, 'admin.posts');
+          $route2 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
                                      ->where('id', '\d+');
-          $route3 = RouteTestFactory::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
+          $route3 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
                                       ->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
 
-          $route4 = RouteTestFactory::create(['GET'], '/{_locale}/blog', [], 'blog.home')->wheres(['_locale' => '\w+',]);
+          $route4 = Route::create(['GET'], '/{_locale}/blog', [], 'blog.home')->wheres(['_locale' => '\w+',]);
 
-          $route5 = RouteTestFactory::create(['GET'], '/profile/{username?}', [], 'profile')
+          $route5 = Route::create(['GET'], '/profile/{username?}', [], 'profile')
               ->wheres(['username' => '\w+']);
 
 
-          $route6 = RouteTestFactory::create(['GET'], '/users/(\d+)', [], 'users.show');
+          $route6 = Route::create(['GET'], '/users/(\d+)', [], 'users.show');
 
 
           $this->assertTrue($route1->match('GET', '/admin/posts'));
@@ -125,9 +126,20 @@ class RouteTest extends TestCase
 
 
 
+
+      public function testAction(): void
+      {
+          $route2 = Route::create(['GET'], '/', [HomeController::class], 'contact');
+
+          
+          $this->assertTrue(true);
+      }
+
+
+
       public function testGeneratePath(): void
       {
-           $route1 = RouteTestFactory::create(['DELETE'], '/admin/users/{slug}/{id}', function () {
+           $route1 = Route::create(['DELETE'], '/admin/users/{slug}/{id}', function () {
                return "Delete user";
            }, 'admin.users.delete')->wheres(['id' => '\d+', 'slug' => '[a-z\-0-9]+']);
 
