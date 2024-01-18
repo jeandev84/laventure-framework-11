@@ -2,6 +2,7 @@
 
 use Laventure\Component\Routing\Configuration\RouterConfiguration;
 use Laventure\Component\Routing\Router\Router;
+use PHPUnitTest\Component\Routing\Factory\RouteTestFactory;
 
 require 'vendor/autoload.php';
 
@@ -51,11 +52,15 @@ echo PHP_EOL;
 
 
 dump($router->match('DELETE', '/admin/users/salut-les-amis/3'));
-*/
 
 $route = new \Laventure\Component\Routing\Route\Route(['GET'], '/profile/{username?}', [], 'bar');
 $route->wheres(['username' => '\w+']);
 
 dump($route);
 dump($route->matchPath('/profile/'));
+*/
+
+$route1 = RouteTestFactory::create(['GET'], '/users/(\d+)', [], 'users');
+
+dump($route1->matchPath('/users/1'));
 

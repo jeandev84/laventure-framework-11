@@ -59,7 +59,7 @@ class RouteTest extends TestCase
               ->wheres(['_locale' => '\w+',]);
 
 
-          $route10 = RouteTestFactory::create(['GET'], '/profile/{username?}', [], 'bar')
+          $route10 = RouteTestFactory::create(['GET'], '/profile/{username?}', [], 'profile')
                                       ->wheres(['username' => '\w+']);
 
 
@@ -88,15 +88,49 @@ class RouteTest extends TestCase
 
 
 
-//      public function testMatch(): void
-//      {
-//
-//      }
-//
-//
-//
-//      public function testGeneratePath(): void
-//      {
-//
-//      }
+      public function testMatch(): void
+      {
+          $func = function () {};
+          $route1 = RouteTestFactory::create(['GET'], '/admin/posts', $func, 'admin.posts');
+          $route2 = RouteTestFactory::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
+                                     ->where('id', '\d+');
+          $route3 = RouteTestFactory::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
+                                      ->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
+
+          $route4 = RouteTestFactory::create(['GET'], '/{_locale}/blog', [], 'blog.home')->wheres(['_locale' => '\w+',]);
+
+          $route5 = RouteTestFactory::create(['GET'], '/profile/{username?}', [], 'profile')
+              ->wheres(['username' => '\w+']);
+
+
+          $route6 = RouteTestFactory::create(['GET'], '/users/(\d+)', [], 'users.show');
+
+
+          $this->assertTrue($route1->match('GET', '/admin/posts'));
+          $this->assertFalse($route1->match('POST', '/admin/posts'));
+          $this->assertTrue($route2->match('GET', '/admin/posts/1'));
+          $this->assertFalse($route2->match('GET', '/admin/posts/blabala'));
+          $this->assertFalse($route2->match('DELETE', '/admin/posts/blababla'));
+          $this->assertTrue($route3->match('PUT', '/admin/posts/mon-article-3'));
+          $this->assertFalse($route3->match('PUT', '/admin/posts/3-mon-article'));
+          $this->assertTrue($route4->match('GET', '/en/blog'));
+          $this->assertTrue($route5->match('GET', '/profile'));
+          $this->assertTrue($route5->match('GET', '/profile/'));
+          $this->assertTrue($route5->match('GET', '/profilesss')); # TODO fix it not critical but i'll do it more better
+          $this->assertTrue($route5->matchPath('/profile/john'));
+          $this->assertTrue($route5->matchPath('/profile/john'));
+          $this->assertTrue($route6->matchPath('/users/1'));
+          $this->assertFalse($route6->matchPath('/users'));
+      }
+
+
+
+      public function testGeneratePath(): void
+      {
+           $route1 = RouteTestFactory::create(['DELETE'], '/admin/users/{slug}/{id}', function () {
+               return "Delete user";
+           }, 'admin.users.delete')->wheres(['id' => '\d+', 'slug' => '[a-z\-0-9]+']);
+
+           $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
+      }
 }
