@@ -47,7 +47,8 @@ class RouteTest extends TestCase
           $route5 = Route::create(['GET'], '/admin-posts', $func, 'admin.posts');
           $route6 = Route::create(['GET'], '/admin/posts', $func, 'admin.posts');
           $route7 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')->where('id', '\d+');
-          $route8 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
+          $route8 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
+                          ->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
           $route9 = Route::create(['GET'], '/{_locale}/blog', $func, 'blog.home')->wheres(['_locale' => '\w+',]);
           $route10 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')->wheres(['username' => '\w+']);
 
@@ -82,7 +83,8 @@ class RouteTest extends TestCase
           $func = function () {};
           $route1 = Route::create(['GET'], '/admin/posts', $func, 'admin.posts');
           $route2 = Route::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')->where('id', '\d+');
-          $route3 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
+          $route3 = Route::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
+                           ->wheres(['slug' => '[a-z\-0-9]+', 'id' => '\d+']);
           $route4 = Route::create(['GET'], '/{_locale}/blog', $func, 'blog.home')->wheres(['_locale' => '\w+',]);
           $route5 = Route::create(['GET'], '/profile/{username?}', $func, 'profile')->wheres(['username' => '\w+']);
           $route6 = Route::create(['GET'], '/users/(\d+)', $func, 'users.show');
@@ -110,10 +112,7 @@ class RouteTest extends TestCase
 
       public function testAction(): void
       {
-          $func = function () {
-              return "Hello world";
-          };
-
+          $func = function () {return "Hello world";};
           $route1 = Route::create(['GET'], '/', [HomeController::class], 'contact');
           $route2 = Route::create(['GET'], '/test', [MethodTestController::class, 'testFirstMethod'], 'method.test');
           $route3 = Route::create(['GET'], '/foo', $func, 'foo');
@@ -130,26 +129,17 @@ class RouteTest extends TestCase
 
       public function testGeneratePath(): void
       {
-           $route1 = Route::create(['DELETE'], '/admin/users/{slug}/{id}', function () {
-               return "Delete user";
-           }, 'admin.users.delete')->wheres(['id' => '\d+', 'slug' => '[a-z\-0-9]+']);
-
-           $route2 = Route::create(['GET'], '/profile/{name}/{isOptional?}', function () {
-              return "My Profile";
-           }, 'admin.users.delete')->wheres(['name' => '\w+', 'isOptional' => '\d+']);
-
-
-           $route3 = Route::create(['GET'], '/profile/{name}/{country?}', function () {
-              return "My Profile";
-           }, 'admin.users.delete')->wheres(['name' => '\w+', 'country' => '\w+']);
-
+           $func1 = function () {return "Delete user";};
+           $route1 = Route::create(['DELETE'], '/admin/users/{slug}/{id}', $func1, 'admin.users.delete')
+                           ->wheres(['id' => '\d+', 'slug' => '[a-z\-0-9]+']);
+           $route2 = Route::create(['GET'], '/profile/{name}/{isOptional?}', [\stdClass::class, '__invoke'], 'admin.users.delete')
+                           ->wheres(['name' => '\w+', 'isOptional' => '\d+']);
+           $route3 = Route::create(['GET'], '/profile/{name}/{country?}', [\stdClass::class, '__invoke'], 'admin.users.delete')
+                           ->wheres(['name' => '\w+', 'country' => '\w+']);
 
            $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
-
-
            $this->assertSame('/profile/brown/3', $route2->generatePath(['name' => 'brown', 'isOptional' => 3]));
            $this->assertSame('/profile/brown/', $route2->generatePath(['name' => 'brown', 'isOptional' => null]));
-
            # $this->assertSame('/profile/alex/', $route3->generatePath(['name' => 'alex']));
       }
 }
