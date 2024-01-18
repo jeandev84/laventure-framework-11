@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Collector;
 
+use Closure;
+use Laventure\Component\Routing\Route\Resource\Contract\ResourceInterface;
+use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Route\RouteInterface;
 
 /**
@@ -18,22 +21,8 @@ use Laventure\Component\Routing\Route\RouteInterface;
 interface RouteCollectorInterface
 {
     /**
-     * Map routes with more methods
-     *
-     * Example:
-     *      $this->map(
-     *             'GET|POST',
-     *             '/contact-us',
-     *              [App\Controller\ContactController::class, 'index'],
-     *             'contact.us'
-     *            );
-     *
-     *     $this->map(
-     *       'GET|POST',
-     *       '/contact-us',
-     *       function () { return "Hello Friends"; },
-     *       'contact.us'
-     *       );
+     *  Collect route called by each kind methods
+     *  Example : $this->map('GET|POST|PUT|DELETE', '/any', [], 'any');
      *
      * @param $methods
      * @param string $path
@@ -47,6 +36,8 @@ interface RouteCollectorInterface
 
 
     /**
+     * Collect route called by method GET
+     *
      * @param string $path
      * @param mixed $action
      * @param string $name
@@ -59,6 +50,8 @@ interface RouteCollectorInterface
 
 
     /**
+     * Collect route called by method POST
+     *
      * @param string $path
      * @param mixed $action
      * @param string $name
@@ -72,6 +65,8 @@ interface RouteCollectorInterface
 
 
     /**
+     * Collect route called by method PUT
+     *
      * @param string $path
      * @param mixed $action
      * @param string $name
@@ -85,6 +80,8 @@ interface RouteCollectorInterface
 
 
     /**
+     * Collect route called by method PATH
+     *
      * @param string $path
      * @param mixed $action
      * @param string $name
@@ -97,6 +94,8 @@ interface RouteCollectorInterface
 
 
     /**
+     * Collect route called by method DELETE
+     *
      * @param string $path
      * @param mixed $action
      * @param string $name
@@ -110,9 +109,200 @@ interface RouteCollectorInterface
 
 
     /**
+     * Collect web resources
+     *
+     * @param string $name
+     *
+     * @param string $controller
+     *
+     * @return $this
+    */
+    public function resource(string $name, string $controller): static;
+
+
+
+
+
+
+    /**
+     * Collect web resources
+     *
+     * @param array $resources
+     *
+     * @return $this
+    */
+    public function resources(array $resources): static;
+
+
+
+
+
+    /**
+     * Collect api resource
+     *
+     * @param string $name
+     *
+     * @param string $controller
+     *
+     * @return $this
+    */
+    public function apiResource(string $name, string $controller): static;
+
+
+
+
+
+
+    /**
+     * Collect api resources
+     *
+     * @param array $resources
+     *
+     * @return $this
+    */
+    public function apiResources(array $resources): static;
+
+
+
+
+
+
+
+
+    /**
+     * Map routes group
+     *
+     * @param array $attributes
+     *
+     * @param Closure $routes
+     *
+     * @return mixed
+    */
+    public function group(array $attributes, Closure $routes): mixed;
+
+
+
+
+
+
+    /**
+     * @param string $controller
+     *
+     * @param Route $route
+     *
+     * @return RouteInterface
+    */
+    public function controller(string $controller, RouteInterface $route): RouteInterface;
+
+
+
+
+
+
+    /**
+     * Collect routes
+     *
+     * @param RouteInterface $route
+     *
+     * @return RouteInterface
+    */
+    public function addRoute(RouteInterface $route): RouteInterface;
+
+
+
+
+
+
+
+    /**
+     * Collect resources
+     *
+     * @return $this
+    */
+    public function addResource(ResourceInterface $resource): static;
+
+
+
+
+
+    /**
+     *  Determine if given name exist in web resources
+     *
+     * @param string $name
+     *
+     * @return bool
+    */
+    public function hasResource(string $name): bool;
+
+
+
+
+
+
+
+    /**
+     * Returns web resource
+     *
+     * @param string $name
+     *
+     * @return ResourceInterface|null
+    */
+    public function getResource(string $name): ?ResourceInterface;
+
+
+
+
+
+
+    /**
+     * Determine if given name exist in api resources
+     *
+     * @param string $name
+     *
+     * @return bool
+    */
+    public function hasApiResource(string $name): bool;
+
+
+
+
+
+    /**
+     * @param string $name
+     *
+     * @return ResourceInterface|null
+    */
+    public function getApiResource(string $name): ?ResourceInterface;
+
+
+
+
+
+
+    /**
      * Returns routes
      *
      * @return RouteInterface[]
     */
     public function getRoutes(): array;
+
+
+
+
+
+
+
+    /**
+     * @return ResourceInterface[]
+    */
+    public function getResources(): array;
+
+
+
+
+
+    /**
+     * @return array
+    */
+    public function getRoutesByController(): array;
 }

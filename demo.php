@@ -5,11 +5,10 @@ use Laventure\Component\Routing\Router\Router;
 
 require 'vendor/autoload.php';
 
-
+/*
 $config = new RouterConfiguration("App\\Http\\Controllers");
 $router = new Router($config);
 
-/*
 $router->get('/admin', function () {
     return "Dashboard";
 }, 'admin');
@@ -38,7 +37,6 @@ $router->put('/admin/users/{id}', function () {
     return "Edit user";
 }, 'admin.users.update')
 ->where('id', '\d+');
-*/
 
 $router->delete('/admin/users/{slug}/{id}', function () {
     return "Delete user";
@@ -53,3 +51,4 @@ echo PHP_EOL;
 
 
 dump($router->match('DELETE', '/admin/users/salut-les-amis/3'));
+*/

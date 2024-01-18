@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Router;
 
+use Closure;
 use Laventure\Component\Routing\Configuration\RouterConfigurationInterface;
+use Laventure\Component\Routing\Methods\Enums\HttpMethod;
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
 use Laventure\Component\Routing\Route\Factory\RouteFactoryInterface;
 use Laventure\Component\Routing\Route\Group\RouteGroupInterface;
 use Laventure\Component\Routing\Route\Resolver\RouteResolverInterface;
+use Laventure\Component\Routing\Route\Resource\Contract\ResourceInterface;
+use Laventure\Component\Routing\Route\Resource\Enums\ResourceType;
+use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Route\RouteInterface;
 
 /**
@@ -65,9 +70,16 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
-     * @var Resource[]
+     * @var ResourceInterface[]
     */
     public array $resources = [];
+
+
+
+    /**
+     * @var array<string, RouteInterface>
+    */
+    protected array $controllers = [];
 
 
 
@@ -76,6 +88,9 @@ class Router implements RouterInterface, RouteCollectorInterface
      * @var array
     */
     private array $routeMiddlewares = [];
+
+
+
 
 
 
@@ -223,7 +238,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function get(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map('GET', $path, $action, $name);
+        return $this->map(HttpMethod::GET, $path, $action, $name);
     }
 
 
@@ -234,7 +249,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function post(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map('POST', $path, $action, $name);
+        return $this->map(HttpMethod::POST, $path, $action, $name);
     }
 
 
@@ -244,7 +259,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function put(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map('PUT', $path, $action, $name);
+        return $this->map(HttpMethod::PUT, $path, $action, $name);
     }
 
 
@@ -255,7 +270,7 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function patch(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map('PATCH', $path, $action, $name);
+        return $this->map(HttpMethod::PATCH, $path, $action, $name);
     }
 
 
@@ -266,8 +281,61 @@ class Router implements RouterInterface, RouteCollectorInterface
     */
     public function delete(string $path, mixed $action, string $name = ''): RouteInterface
     {
-        return $this->map('DELETE', $path, $action, $name);
+        return $this->map(HttpMethod::DELETE, $path, $action, $name);
     }
+
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function resource(string $name, string $controller): static
+    {
+
+    }
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function resources(array $resources): static
+    {
+
+    }
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function apiResource(string $name, string $controller): static
+    {
+
+    }
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function apiResources(array $resources): static
+    {
+
+    }
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function group(array $attributes, Closure $routes): mixed
+    {
+
+    }
+
 
 
 
@@ -289,6 +357,32 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
 
+
+    /**
+     * @inheritDoc
+     */
+    public function controller(string $controller, RouteInterface $route): RouteInterface
+    {
+        $this->controllers[$controller][] = $route;
+
+        return $route;
+    }
+
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function addResource(ResourceInterface $resource): static
+    {
+
+    }
+
+
+
+
     /**
      * @inheritDoc
     */
@@ -304,6 +398,9 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
 
+
+
+
     /**
      * @param $methods
      * @param string $path
@@ -311,22 +408,17 @@ class Router implements RouterInterface, RouteCollectorInterface
      * @param string $name
      * @return RouteInterface
      */
-    public function makeRoute(
-        $methods,
-        string $path,
-        mixed $action,
-        string $name = ''
-    ): RouteInterface {
-
+    public function makeRoute($methods, string $path, mixed $action, string $name = ''): RouteInterface
+    {
         $methods     = $this->resolveMethods($methods);
         $path        = $this->resolvePath($path);
         $action      = $this->resolveAction($action);
         $name        = $this->resolveName($name);
         $middlewares = $this->resolveMiddlewares($this->routeMiddlewares);
 
-        return $this->routeFactory->createRoute($methods, $path, $action, $name)
-                                  ->wheres($this->patterns)
-                                  ->middlewares($middlewares);
+        $route = $this->routeFactory->createRoute($methods, $path, $action, $name);
+
+        return $route->wheres($this->patterns)->middlewares($middlewares);
     }
 
 
@@ -334,14 +426,14 @@ class Router implements RouterInterface, RouteCollectorInterface
 
 
     /**
-     * @param RouteInterface $route
-     *
-     * @return RouteInterface
-     */
+     * @inheritdoc
+    */
     public function addRoute(RouteInterface $route): RouteInterface
     {
         return $this->collection->addRoute($route);
     }
+
+
 
 
 
@@ -398,6 +490,59 @@ class Router implements RouterInterface, RouteCollectorInterface
         return $this->config;
     }
 
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function hasResource(string $name): bool
+    {
+        return isset($this->resources[ResourceType::WEB][$name]);
+    }
+
+
+
+    /**
+     * @inheritDoc
+   */
+    public function getResource(string $name): ?ResourceInterface
+    {
+        return $this->resources[ResourceType::WEB][$name] ?? null;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function hasApiResource(string $name): bool
+    {
+        return isset($this->resources[ResourceType::API][$name]);
+    }
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getApiResource(string $name): ?ResourceInterface
+    {
+        return $this->resources[ResourceType::API][$name] ?? null;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getResources(): array
+    {
+        return $this->resources;
+    }
 
 
 
