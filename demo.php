@@ -52,3 +52,10 @@ echo PHP_EOL;
 
 dump($router->match('DELETE', '/admin/users/salut-les-amis/3'));
 */
+
+$route = new \Laventure\Component\Routing\Route\Route(['GET'], '/profile/{username?}', [], 'bar');
+$route->wheres(['username' => '\w+']);
+
+dump($route);
+dump($route->matchPath('/profile/'));
+

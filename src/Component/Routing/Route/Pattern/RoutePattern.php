@@ -71,7 +71,7 @@ class RoutePattern
     {
         return [
             "#{{$this->name}}#"   => "(?P<$this->name>$this->regex)",
-            "#{{$this->name}}.?#" => "?(?P<$this->name>$this->regex)?"
+            "#{{$this->name}.?}#" => "?(?P<$this->name>$this->regex)?"
         ];
     }
 

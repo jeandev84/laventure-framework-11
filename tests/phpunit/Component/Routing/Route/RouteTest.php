@@ -26,7 +26,9 @@ class RouteTest extends TestCase
               return "Привет! друзья";
           }, 'home');
 
-          $route2 = new Route(['GET', 'POST'], '/contact', [], 'contact');
+          $route2 = new Route(['GET', 'POST'], '/contact', function () {
+              return "Contact";
+          }, 'contact');
 
 
           $this->assertTrue($route1->matchMethod('GET'));
@@ -38,19 +40,27 @@ class RouteTest extends TestCase
 
       public function testMatchPath(): void
       {
-          $route1 = RouteTestFactory::create(['GET'], '/', [], 'home');
-          $route2 = RouteTestFactory::create(['GET'], '/about', [], 'about');
-          $route3 = RouteTestFactory::create(['GET'], '/foo', [], 'foo');
-          $route4 = RouteTestFactory::create(['GET'], 'foo', [], 'foo');
-          $route5 = RouteTestFactory::create(['GET'], '/admin-posts', [], 'admin.posts');
-          $route6 = RouteTestFactory::create(['GET'], '/admin/posts', [], 'admin.posts');
-          $route7 = RouteTestFactory::create(['GET'], '/admin/posts/{id}', [], 'admin.posts')
+          $func = function () {};
+          $route1 = RouteTestFactory::create(['GET'], '/', $func, 'home');
+          $route2 = RouteTestFactory::create(['GET'], '/about', $func, 'about');
+          $route3 = RouteTestFactory::create(['GET'], '/foo', $func, 'foo');
+          $route4 = RouteTestFactory::create(['GET'], 'foo', $func, 'foo');
+          $route5 = RouteTestFactory::create(['GET'], '/admin-posts', $func, 'admin.posts');
+          $route6 = RouteTestFactory::create(['GET'], '/admin/posts', $func, 'admin.posts');
+          $route7 = RouteTestFactory::create(['GET'], '/admin/posts/{id}', $func, 'admin.posts')
                                       ->where('id', '\d+');
-          $route8 = RouteTestFactory::create(['PUT'], '/admin/posts/{slug}-{id}', [], 'admin.posts')
+          $route8 = RouteTestFactory::create(['PUT'], '/admin/posts/{slug}-{id}', $func, 'admin.posts')
                                       ->wheres([
                                           'slug' => '[a-z\-0-9]+',
                                           'id' => '\d+'
                                       ]);
+
+          $route9 = RouteTestFactory::create(['GET'], '/{_locale}/blog', [], 'blog.home')
+              ->wheres(['_locale' => '\w+',]);
+
+
+          $route10 = RouteTestFactory::create(['GET'], '/profile/{username?}', [], 'bar')
+                                      ->wheres(['username' => '\w+']);
 
 
           $this->assertTrue($route1->matchPath('/'));
@@ -64,6 +74,13 @@ class RouteTest extends TestCase
           $this->assertTrue($route8->matchPath('/admin/posts/mon-slug-1'));
           $this->assertTrue($route8->matchPath('/admin/posts/un-autre-example-2-mon-slug-1'));
           $this->assertTrue($route8->matchPath('/admin/posts/33-un-autre-example-2-mon-slug-5'));
+          $this->assertFalse($route8->matchPath('/admin/posts/3-salut-les-amis'));
+          $this->assertTrue($route9->matchPath('/en/blog'));
+          $this->assertTrue($route9->matchPath('/ru/blog'));
+          $this->assertTrue($route9->matchPath('/ru_RU/blog'));
+          $this->assertTrue($route10->matchPath('/profile'));
+          $this->assertTrue($route10->matchPath('/profile/'));
+          $this->assertTrue($route10->matchPath('/profile/john'));
       }
 
 
