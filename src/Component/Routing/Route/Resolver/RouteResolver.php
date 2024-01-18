@@ -67,11 +67,7 @@ class RouteResolver implements RouteResolverInterface
     public function resolvePath(string $path): string
     {
         if ($prefix = $this->group->getPath()) {
-            $path = sprintf(
-                '%s/%s',
-                trim($prefix, '/'),
-                ltrim($path, '/')
-            );
+            $path = sprintf('%s/%s', trim($prefix, '/'), ltrim($path, '/'));
         }
 
         return $path;
@@ -87,9 +83,7 @@ class RouteResolver implements RouteResolverInterface
         if ($this->actionFromString($action)) {
 
             if (!$this->namespace) {
-                throw new RuntimeException(
-                    "Could not resolve action ($action) because namespace is not specified"
-                );
+                throw new RuntimeException("Could not resolve action ($action) because namespace is not specified");
             }
 
             $action     = explode('@', $action, 2);
