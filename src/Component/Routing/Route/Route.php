@@ -151,6 +151,16 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+    /**
+     * @inheritDoc
+    */
+    public function getController(): ?string
+    {
+        return $this->getOption('controller');
+    }
+
+
+
 
 
     /**
@@ -169,6 +179,16 @@ class Route implements RouteInterface, \ArrayAccess
     public function getMethods(): array
     {
         return $this->methods;
+    }
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function getMethodsAsString(): string
+    {
+        return join('|', $this->methods);
     }
 
 
@@ -249,6 +269,8 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+
+
     /**
      * @param array $methods
      * @return $this
@@ -285,10 +307,16 @@ class Route implements RouteInterface, \ArrayAccess
     */
     public function action(mixed $action): static
     {
+        if (is_array($action)) {
+            $action = $this->resolveActionFromArray($action);
+        }
+
         $this->action = $action;
 
         return $this;
     }
+
+
 
 
 
@@ -403,6 +431,11 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+
+
+
+
+
     /**
      * @inheritdoc
     */
@@ -436,6 +469,37 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+
+
+    /**
+     * @inheritDoc
+    */
+    public function callable(): bool
+    {
+        return is_callable($this->action);
+    }
+
+
+
+
+
+
+    /**
+     * @inheritdoc
+    */
+    public function call(): mixed
+    {
+        if (!$this->callable()) {
+            return false;
+        }
+
+        return call_user_func_array($this->action, $this->params);
+    }
+
+
+
+
+
     /**
      * @inheritDoc
     */
@@ -452,6 +516,9 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+
+
+
     /**
      * @inheritDoc
      */
@@ -459,6 +526,8 @@ class Route implements RouteInterface, \ArrayAccess
     {
         return property_exists($this, $offset);
     }
+
+
 
 
 
@@ -506,10 +575,12 @@ class Route implements RouteInterface, \ArrayAccess
      * @param string $path
      * @return string
     */
-    private function normalizePath(string $path): string
+    protected function normalizePath(string $path): string
     {
         return sprintf('/%s', trim($path, '/'));
     }
+
+
 
 
 
@@ -518,7 +589,7 @@ class Route implements RouteInterface, \ArrayAccess
      *
      * @return string
     */
-    private function normalizeRequestPath(string $path): string
+    protected function normalizeRequestPath(string $path): string
     {
         return parse_url($path, PHP_URL_PATH);
     }
@@ -531,10 +602,36 @@ class Route implements RouteInterface, \ArrayAccess
      *
      * @return array
     */
-    private function filterParams(array $matches): array
+    protected function filterParams(array $matches): array
     {
         return array_filter($matches, function ($key) {
             return !is_numeric($key);
         }, ARRAY_FILTER_USE_KEY);
+    }
+
+
+
+
+    /**
+     * @param array $callback
+     *
+     * @return mixed
+    */
+    private function resolveActionFromArray(array $callback): mixed
+    {
+        return $callback;
+
+        /*
+        $count = count($callback);
+
+        dd($count);
+
+        $controller = $callback[0];
+        $action     = (count($callback) === 1) ? '__invoke' : $callback[1];
+
+        $this->options(compact('controller', 'action'));
+
+        return join('::', $callback);
+        */
     }
 }

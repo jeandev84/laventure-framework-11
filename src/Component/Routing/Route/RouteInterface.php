@@ -74,6 +74,18 @@ interface RouteInterface extends RouteMatcherInterface
 
 
     /**
+     * Returns methods as string
+     *
+     * @return string
+    */
+    public function getMethodsAsString(): string;
+
+
+
+
+
+
+    /**
      * Returns route patterns
      *
      * @return array
@@ -185,6 +197,7 @@ interface RouteInterface extends RouteMatcherInterface
 
 
 
+
     /**
      * Determine if the given name exist in options
      *
@@ -224,4 +237,40 @@ interface RouteInterface extends RouteMatcherInterface
      * @return string
     */
     public function generatePath(array $params = []): string;
+
+
+
+
+
+    /**
+     * Returns controller action if exist
+     *
+     * @return string|null
+    */
+    public function getController(): ?string;
+
+
+
+
+
+
+
+    /**
+     * Determine if the given action is callable
+     *
+     * @return bool
+    */
+    public function callable(): bool;
+
+
+
+
+
+
+    /**
+     * Return call route action
+     *
+     * @return mixed
+    */
+    public function call(): mixed;
 }

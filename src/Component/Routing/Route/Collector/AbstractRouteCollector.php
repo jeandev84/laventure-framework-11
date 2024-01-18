@@ -339,10 +339,6 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
 
 
 
-
-
-
-
     /**
      * @inheritdoc
     */
@@ -393,21 +389,6 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
         }
 
         return $this;
-    }
-
-
-
-
-
-
-    /**
-     * @inheritDoc
-     */
-    public function controller(string $controller, RouteInterface $route): RouteInterface
-    {
-        $this->controllers[$controller][] = $route;
-
-        return $route;
     }
 
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace PHPUnitTest\Component\Routing\Factory;
 
 use Laventure\Component\Routing\Route\Route;
+use Laventure\Component\Routing\Route\RouteInterface;
 
 /**
  * RouteTestFactory
@@ -13,19 +14,19 @@ use Laventure\Component\Routing\Route\Route;
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
  * @package  PHPUnitTest\Component\Routing\Factory
-*/
+ */
 class RouteTestFactory
 {
 
-     /**
-      * @param $methods
-      * @param $path
-      * @param $action
-      * @param $name
-      * @return Route
-     */
-     public static function create($methods, $path, $action, $name): Route
-     {
-         return new Route($methods, $path, $action, $name);
-     }
+        /**
+         * @param $methods
+         * @param string $path
+         * @param mixed $action
+         * @param string $name
+         * @return RouteInterface
+        */
+         public static function create($methods, string $path, mixed $action, string $name = ''): RouteInterface
+         {
+             return new Route($methods, $path, $action, $name);
+         }
 }

@@ -37,12 +37,11 @@ class ApiResource extends Resource
     */
     public function map(RouteCollectorInterface $collector): RouteCollectorInterface
     {
-        $decorator = new ResourceCollectorDecorator($collector, $this->controller);
-        $decorator->map('GET|HEAD', $this->path(), $this->action('index'), $this->name('index'));
-        $decorator->get($this->path('/{id}'), $this->action('show'), $this->name('show'));
-        $decorator->post($this->path(), $this->action('store'), $this->name('store'));
-        $decorator->map('PUT|PATCH', $this->path('/{id}'), $this->action('update'), $this->name('update'));
-        $decorator->delete($this->path('/{id}'), $this->action('destroy'), $this->name('destroy'));
+        $collector->map('GET|HEAD', $this->path(), $this->action('index'), $this->name('index'));
+        $collector->get($this->path('/{id}'), $this->action('show'), $this->name('show'));
+        $collector->post($this->path(), $this->action('store'), $this->name('store'));
+        $collector->map('PUT|PATCH', $this->path('/{id}'), $this->action('update'), $this->name('update'));
+        $collector->delete($this->path('/{id}'), $this->action('destroy'), $this->name('destroy'));
         return $collector;
     }
 }

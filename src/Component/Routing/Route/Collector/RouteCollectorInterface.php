@@ -190,20 +190,6 @@ interface RouteCollectorInterface
 
 
     /**
-     * @param string $controller
-     *
-     * @param Route $route
-     *
-     * @return RouteInterface
-    */
-    public function controller(string $controller, RouteInterface $route): RouteInterface;
-
-
-
-
-
-
-    /**
      * Collect routes
      *
      * @param RouteInterface $route
@@ -303,14 +289,6 @@ interface RouteCollectorInterface
 
 
 
-
-
-    /**
-     * @param string $name controller class name
-     *
-     * @return RouteInterface[]
-    */
-    public function getControllerRoutes(string $name): array;
 
 
 

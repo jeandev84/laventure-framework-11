@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Collection;
 
+use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Route\RouteInterface;
 
 /**
@@ -32,13 +33,29 @@ class RouteCollection implements RouteCollectionInterface
 
 
     /**
+     * @var array
+    */
+    protected array $methods = [];
+
+
+
+
+    /**
+     * @var array
+    */
+    protected array $controllers = [];
+
+
+
+
+    /**
      * @inheritDoc
     */
     public function addRoute(RouteInterface $route): RouteInterface
     {
-        if ($name = $route->getName()) {
-            $this->namedRoutes[$name] = $route;
-        }
+        $this->addByMethod($route);
+        $this->addByController($route);
+        $this->addByName($route);
 
         return $this->routes[] = $route;
     }
@@ -83,11 +100,106 @@ class RouteCollection implements RouteCollectionInterface
 
 
 
+
+
     /**
      * @inheritDoc
     */
     public function hasNamedRoute(string $name): bool
     {
         return isset($this->namedRoutes[$name]);
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function getMethods(): array
+    {
+        return $this->methods;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function getRoutesMethod(string $method): array
+    {
+        return $this->methods[$method] ?? [];
+    }
+
+
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function getControllers(): array
+    {
+        return $this->controllers;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function getRoutesController(string $controller): array
+    {
+        return $this->controllers[$controller] ?? [];
+    }
+
+
+
+
+
+
+    /**
+     * @param Route $route
+     *
+     * @return void
+     */
+    private function addByMethod(RouteInterface $route): void
+    {
+        $this->methods[$route->getMethodsAsString()][] = $route;
+    }
+
+
+
+
+
+    /**
+     * @param RouteInterface $route
+     *
+     * @return void
+    */
+    private function addByController(RouteInterface $route): void
+    {
+        if ($controller = $route->getController()) {
+            $this->controllers[$controller][] = $route;
+        }
+    }
+
+
+
+
+
+    /**
+     * @param RouteInterface $route
+     *
+     * @return void
+    */
+    private function addByName(RouteInterface $route): void
+    {
+        if($name = $route->getName()) {
+            $this->namedRoutes[$name] = $route;
+        }
     }
 }

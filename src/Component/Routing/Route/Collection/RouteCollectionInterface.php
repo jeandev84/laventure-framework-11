@@ -27,10 +27,64 @@ interface RouteCollectionInterface
 
 
 
+
     /**
+     * Returns all routes
+     *
      * @return RouteInterface[]
     */
     public function getRoutes(): array;
+
+
+
+
+
+    /**
+     * Returns routes by given method
+     *
+     * @return RouteInterface[]
+    */
+    public function getRoutesMethod(string $method): array;
+
+
+
+
+
+
+    /**
+     * Returns route by methods
+     *
+     * @return array
+    */
+    public function getMethods(): array;
+
+
+
+
+
+
+    /**
+     * Returns routes by controllers
+     *
+     * @return RouteInterface[]
+    */
+    public function getControllers(): array;
+
+
+
+
+
+
+    /**
+     * @param string $controller
+     *
+     * @return RouteInterface[]
+    */
+    public function getRoutesController(string $controller): array;
+
+
+
+
 
 
 
@@ -38,6 +92,7 @@ interface RouteCollectionInterface
      * @return RouteInterface[]
     */
     public function getNamedRoutes(): array;
+
 
 
 
