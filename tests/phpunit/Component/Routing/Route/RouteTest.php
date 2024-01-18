@@ -147,14 +147,14 @@ class RouteTest extends TestCase
                return "Delete user";
            }, 'admin.users.delete')->wheres(['id' => '\d+', 'slug' => '[a-z\-0-9]+']);
 
-          $route2 = Route::create(['GET'], '/profile/{name}/{isOptional?}', function () {
+           $route2 = Route::create(['GET'], '/profile/{name}/{isOptional?}', function () {
               return "My Profile";
-          }, 'admin.users.delete')->wheres(['name' => '\w+', 'isOptional' => '\d+']);
+           }, 'admin.users.delete')->wheres(['name' => '\w+', 'isOptional' => '\d+']);
 
 
-          $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
+           $this->assertSame('/admin/users/salut-les-amis/3', $route1->generatePath(['id' => 3, 'slug' => 'salut-les-amis']));
 
-           # TODO fix bug when
+
            $this->assertSame('/profile/brown/3', $route2->generatePath(['name' => 'brown', 'isOptional' => 3]));
            $this->assertSame('/profile/brown/', $route2->generatePath(['name' => 'brown', 'isOptional' => null]));
       }
