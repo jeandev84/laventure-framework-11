@@ -19,6 +19,15 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 abstract class Resource implements ResourceInterface
 {
+
+
+    /**
+     * @var string
+    */
+    private string $type;
+
+
+
     /**
      * @var string
     */
@@ -32,16 +41,15 @@ abstract class Resource implements ResourceInterface
     protected string $controller;
 
 
-
-
-
     /**
+     * @param string $type
      * @param string $name
      *
      * @param string $controller
     */
-    public function __construct(string $name, string $controller)
+    public function __construct(string $type, string $name, string $controller)
     {
+        $this->type       = $type;
         $this->name       = strtolower($name);
         $this->controller = $controller;
     }
@@ -112,5 +120,16 @@ abstract class Resource implements ResourceInterface
     public function getController(): string
     {
         return $this->controller;
+    }
+
+
+
+
+    /**
+     * @inheritdoc
+    */
+    public function getType(): string
+    {
+        return $this->type;
     }
 }

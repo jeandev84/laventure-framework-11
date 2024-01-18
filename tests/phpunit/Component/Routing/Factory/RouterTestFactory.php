@@ -21,7 +21,6 @@ class RouterTestFactory
 
      public static function create(): Router
      {
-         $config = new RouterConfiguration(self::NAMESPACE);
-         return  new Router($config);
+         return  new Router(self::NAMESPACE);
      }
 }

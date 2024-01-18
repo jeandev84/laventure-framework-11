@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing\Route\Collector;
 
 use Closure;
+use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Resource\Contract\ResourceInterface;
 use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Route\RouteInterface;
@@ -300,9 +301,21 @@ interface RouteCollectorInterface
 
 
 
+    /**
+     * Returns route collection
+     *
+     * @return RouteCollectionInterface
+    */
+    public function getCollection(): RouteCollectionInterface;
+
+
+
+
 
     /**
-     * @return array
+     * @param string $name controller class name
+     *
+     * @return RouteInterface[]
     */
-    public function getRoutesByController(): array;
+    public function getControllerRoutes(string $name): array;
 }

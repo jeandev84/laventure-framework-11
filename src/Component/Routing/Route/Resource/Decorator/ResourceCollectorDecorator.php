@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Resource\Decorator;
 
-use Laventure\Component\Routing\Methods\Enums\HttpMethod;
 use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
+use Laventure\Component\Routing\Route\Methods\Enums\HttpMethod;
 use Laventure\Component\Routing\Route\RouteInterface;
 
 /**
@@ -16,7 +16,7 @@ use Laventure\Component\Routing\Route\RouteInterface;
  *
  * @package  Laventure\Component\Routing\Route\Resource\Decorator
  */
-class RouteResourceDecorator
+class ResourceCollectorDecorator
 {
 
 

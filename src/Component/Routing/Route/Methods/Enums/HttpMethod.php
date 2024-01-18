@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Laventure\Component\Routing\Methods\Enums;
+namespace Laventure\Component\Routing\Route\Methods\Enums;
 
 /**
  * HttpMethod
@@ -10,7 +10,7 @@ namespace Laventure\Component\Routing\Methods\Enums;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Routing\Attributes\Enums
+ * @package  Laventure\Component\Routing\Route\Methods\Enums
 */
 enum HttpMethod: string
 {

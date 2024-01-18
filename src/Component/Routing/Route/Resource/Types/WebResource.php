@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing\Route\Resource\Types;
 
 use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
-use Laventure\Component\Routing\Route\Resource\Decorator\RouteResourceDecorator;
+use Laventure\Component\Routing\Route\Resource\Decorator\ResourceCollectorDecorator;
 use Laventure\Component\Routing\Route\Resource\Enums\ResourceType;
 use Laventure\Component\Routing\Route\Resource\Resource;
 
@@ -20,12 +20,14 @@ use Laventure\Component\Routing\Route\Resource\Resource;
 */
 class WebResource extends Resource
 {
+
     /**
-     * @inheritDoc
+     * @param string $name
+     * @param string $controller
     */
-    public function getType(): string
+    public function __construct(string $name, string $controller)
     {
-        return ResourceType::WEB;
+        parent::__construct(ResourceType::WEB, $name, $controller);
     }
 
 
@@ -36,7 +38,7 @@ class WebResource extends Resource
     */
     public function map(RouteCollectorInterface $collector): RouteCollectorInterface
     {
-        $decorator = new RouteResourceDecorator($collector, $this->controller);
+        $decorator = new ResourceCollectorDecorator($collector, $this->controller);
         $decorator->get($this->path(), $this->action('index'), $this->name('index'));
         $decorator->get($this->path('/{id}'), $this->action('show'), $this->name('show'));
         $decorator->get($this->path(), $this->action('create'), $this->name('create'));

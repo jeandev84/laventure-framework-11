@@ -19,24 +19,6 @@ use Laventure\Component\Routing\Route\RouteInterface;
 */
 interface RouterInterface
 {
-    /**
-     * Returns route collection
-     *
-     * @return RouteCollectionInterface
-    */
-    public function getCollection(): RouteCollectionInterface;
-
-
-
-    /**
-     * Returns router configuration
-     *
-     * @return RouterConfigurationInterface
-    */
-    public function getConfiguration(): RouterConfigurationInterface;
-
-
-
 
     /**
      * Determine if the current request match route

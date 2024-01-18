@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing\Route\Resource\Types;
 
 use Laventure\Component\Routing\Route\Collector\RouteCollectorInterface;
-use Laventure\Component\Routing\Route\Resource\Decorator\RouteResourceDecorator;
+use Laventure\Component\Routing\Route\Resource\Decorator\ResourceCollectorDecorator;
 use Laventure\Component\Routing\Route\Resource\Enums\ResourceType;
 use Laventure\Component\Routing\Route\Resource\Resource;
 
@@ -21,12 +21,14 @@ class ApiResource extends Resource
 {
 
     /**
-     * @inheritDoc
+     * @param string $name
+     * @param string $controller
     */
-    public function getType(): string
+    public function __construct(string $name, string $controller)
     {
-        return ResourceType::API;
+        parent::__construct(ResourceType::API, $name, $controller);
     }
+
 
 
 
@@ -35,7 +37,7 @@ class ApiResource extends Resource
     */
     public function map(RouteCollectorInterface $collector): RouteCollectorInterface
     {
-        $decorator = new RouteResourceDecorator($collector, $this->controller);
+        $decorator = new ResourceCollectorDecorator($collector, $this->controller);
         $decorator->map('GET|HEAD', $this->path(), $this->action('index'), $this->name('index'));
         $decorator->get($this->path('/{id}'), $this->action('show'), $this->name('show'));
         $decorator->post($this->path(), $this->action('store'), $this->name('store'));
