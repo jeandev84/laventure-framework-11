@@ -1,8 +1,8 @@
-<?php
+### Routing 
 
-require 'vendor/autoload.php';
 
-/*
+1. Mapping routes 
+```php 
 $router = new Router("App\\Http\\Controllers");
 
 $router->get('/admin', function () {
@@ -40,19 +40,16 @@ $router->delete('/admin/users/{slug}/{id}', function () {
 ->where('id', '\d+')
 ->where('slug', '[a-z\-0-9]+');
 
+$router->get('/profile/{username?}', [], 'profile')
+       ->wheres(['username' => '\w+'])
+
 
 dump($router->getRoutes());
-echo $router->generate('admin.users.delete', ['id' => 3, 'slug' => 'salut-les-amis']);
-echo PHP_EOL;
-
-
 dump($router->match('DELETE', '/admin/users/salut-les-amis/3'));
+echo $router->generate('admin.users.delete', ['id' => 3, 'slug' => 'salut-les-amis']);
 
-$route = new \Laventure\Component\Routing\Route\Route(['GET'], '/profile/{username?}', [], 'bar');
-$route->wheres(['username' => '\w+']);
-
-dump($route);
 dump($route->matchPath('/profile/'));
-*/
-
-
+dump($router->match('GET', '/profile/brown'));
+echo $router->generate('profile', ['username' => 'john']);
+echo $router->generate('profile', ['username' => null]);
+```

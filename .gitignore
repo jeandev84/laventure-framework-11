@@ -2,7 +2,9 @@
 composer.lock
 vendor
 tools
+demo.php
+fixer.php
 .php-cs-fixer.cache
 .phpunit.result.cache
-demo.php
+
 

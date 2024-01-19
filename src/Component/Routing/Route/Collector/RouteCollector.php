@@ -18,5 +18,4 @@ use ReflectionException;
 */
 class RouteCollector extends AbstractRouteCollector
 {
-
 }

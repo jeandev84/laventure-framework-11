@@ -428,17 +428,17 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
                 /* $attributes = $method->getAttributes(); returns all stuff attributes */
                 // filter attributes and get only Route
                 $attributes = $method->getAttributes(
-                Route::class,
-                \ReflectionAttribute::IS_INSTANCEOF
+                    Route::class,
+                    \ReflectionAttribute::IS_INSTANCEOF
                 );
                 foreach ($attributes as $attribute) {
-                     /*
-                     dd($attribute->getArguments());
-                     $route = $attribute->newInstance(); // Route
-                     $this->map($route->methods->value, $route->path, [$controller, $method->getName()]);
-                     */
-                     $arguments = $attribute->getArguments();
-                     $this->map($arguments['methods'] ?? ['ANY'], $arguments['path'], [$controller, $method->getName()]);
+                    /*
+                    dd($attribute->getArguments());
+                    $route = $attribute->newInstance(); // Route
+                    $this->map($route->methods->value, $route->path, [$controller, $method->getName()]);
+                    */
+                    $arguments = $attribute->getArguments();
+                    $this->map($arguments['methods'] ?? ['ANY'], $arguments['path'], [$controller, $method->getName()]);
                 }
             }
         }
