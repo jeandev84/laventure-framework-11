@@ -438,7 +438,7 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
                      $this->map($route->methods->value, $route->path, [$controller, $method->getName()]);
                      */
                      $arguments = $attribute->getArguments();
-                     $this->map($arguments['methods'], $arguments['path'], [$controller, $method->getName()]);
+                     $this->map($arguments['methods'] ?? ['ANY'], $arguments['path'], [$controller, $method->getName()]);
                 }
             }
         }

@@ -93,7 +93,7 @@ class RouterTest extends TestCase
 
             $func1 = function () { return "Get Book from storage";};
             $router->get('/admin/books/{slug}-{id}', $func1, 'books.show')
-                   ->slug('slug')->id()->middlewares([AuthenticatedMiddleware::class]);
+                   ->whereSlug('slug')->whereId()->middlewares([AuthenticatedMiddleware::class]);
 
             $actual1 = $router->match('GET', '/admin/books/my-new-book-1?page=3&sort=users.id&direction=asc');
             $actual2 = $router->match('GET', '/admin/books/my-new-book-1');
@@ -144,10 +144,10 @@ class RouterTest extends TestCase
 
         $router->group($attributes, function (RouteCollector $collector) {
             $collector->get('/users', [UserController::class, 'index'], 'users.list');
-            $collector->get('/users/{id}', [UserController::class, 'show'], 'users.show')->id();
+            $collector->get('/users/{id}', [UserController::class, 'show'], 'users.show')->whereId();
             $collector->post('/users/store', [UserController::class, 'store']);
-            $collector->put('/users/update/{id}', [UserController::class, 'update'])->id();
-            $collector->delete('/users/destroy/{id}', [UserController::class, 'destroy'])->id();
+            $collector->put('/users/update/{id}', [UserController::class, 'update'])->whereId();
+            $collector->delete('/users/destroy/{id}', [UserController::class, 'destroy'])->whereId();
         });
 
         $func = function () { return "Welcome"; };
@@ -159,14 +159,14 @@ class RouterTest extends TestCase
                              ->middlewares([IsAdminMiddleware::class]);
         $expected[] = $router->get('/admin/users/{id}', [UserController::class, 'show'], 'admin.users.show')
                               ->middlewares([IsAdminMiddleware::class])
-                              ->id();
+                              ->whereId();
         $expected[] = $router->post('/admin/users/store', [UserController::class, 'store'], 'admin.users.store');
         $expected[] = $router->put('/admin/users/update/{id}', [UserController::class, 'update'], 'admin.users.update')
                              ->middlewares([IsAdminMiddleware::class])
-                             ->id();
+                             ->whereId();
         $expected[] = $router->delete('/admin/users/destroy/{id}', [UserController::class, 'destroy'], 'admin.users.destroy')
                              ->middlewares([IsAdminMiddleware::class])
-                             ->id();
+                             ->whereId();
         $expected[] = $welcome;
 
         $this->assertSame(count($expected), count($actual));

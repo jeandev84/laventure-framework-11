@@ -378,21 +378,20 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @return $this
-     */
-    public function id(): static
+     * @inheritdoc
+    */
+    public function whereId(): static
     {
-        return $this->number('id');
+        return $this->whereNumber('id');
     }
 
 
 
 
     /**
-     * @param string $name
-     * @return $this
-     */
-    public function number(string $name): static
+     * @inheritdoc
+    */
+    public function whereNumber(string $name): static
     {
         return $this->where($name, '\d+');
     }
@@ -403,10 +402,9 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @param string $name
-     * @return $this
+     * @inheritdoc
     */
-    public function text(string $name): static
+    public function whereText(string $name): static
     {
         return $this->where($name, '\w+');
     }
@@ -417,10 +415,9 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @param string $name
-     * @return $this
-     */
-    public function alphaNumeric(string $name): static
+     * @inheritdoc
+    */
+    public function whereAlphaNumeric(string $name): static
     {
         return $this->where($name, '[^a-z_\-0-9]');
     }
@@ -430,11 +427,9 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @param string $name
-     *
-     * @return $this
+     * @inheritdoc
     */
-    public function slug(string $name): static
+    public function whereSlug(string $name): static
     {
         return $this->where($name, '[a-z\-0-9]+');
     }
@@ -445,15 +440,24 @@ class Route implements RouteInterface, \ArrayAccess
 
 
     /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function anything(string $name): static
+     * @inheritdoc
+    */
+    public function whereAnything(string $name): static
     {
         return $this->where($name, '.*');
     }
 
+
+
+
+
+    /**
+     * @inheritdoc
+    */
+    public function whereIn(string $name, array $values): static
+    {
+         return $this;
+    }
 
 
 

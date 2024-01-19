@@ -143,18 +143,6 @@ interface RouteInterface extends RouteMatcherInterface
 
 
 
-    /**
-     * Route middleware
-     *
-     * @param string $middleware
-     *
-     * @return $this
-    */
-    public function middleware(string $middleware): static;
-
-
-
-
 
     /**
      * route patterns
@@ -174,7 +162,7 @@ interface RouteInterface extends RouteMatcherInterface
      *
      * @return $this
     */
-    public function id(): static;
+    public function whereId(): static;
 
 
 
@@ -186,7 +174,7 @@ interface RouteInterface extends RouteMatcherInterface
      * @param string $name
      * @return $this
     */
-    public function number(string $name): static;
+    public function whereNumber(string $name): static;
 
 
 
@@ -199,7 +187,7 @@ interface RouteInterface extends RouteMatcherInterface
      * @param string $name
      * @return $this
     */
-    public function text(string $name): static;
+    public function whereText(string $name): static;
 
 
 
@@ -213,7 +201,7 @@ interface RouteInterface extends RouteMatcherInterface
      * @param string $name
      * @return $this
     */
-    public function alphaNumeric(string $name): static;
+    public function whereAlphaNumeric(string $name): static;
 
 
 
@@ -227,7 +215,7 @@ interface RouteInterface extends RouteMatcherInterface
      *
      * @return $this
     */
-    public function slug(string $name): static;
+    public function whereSlug(string $name): static;
 
 
 
@@ -241,7 +229,34 @@ interface RouteInterface extends RouteMatcherInterface
      *
      * @return $this
     */
-    public function anything(string $name): static;
+    public function whereAnything(string $name): static;
+
+
+
+
+    /**
+     * Requirements where param in given values
+     *
+     * @param string $name
+     *
+     * @param array $values
+     *
+     * @return $this
+    */
+    public function whereIn(string $name, array $values): static;
+
+
+
+
+
+    /**
+     * Route middleware
+     *
+     * @param string $middleware
+     *
+     * @return $this
+    */
+    public function middleware(string $middleware): static;
 
 
 
