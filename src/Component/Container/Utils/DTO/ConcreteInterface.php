@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Container\DTO;
+namespace Laventure\Component\Container\Utils\DTO;
 
 /**
- * BoundConcreteInterface
+ * ConcreteInterface
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -13,7 +13,7 @@ namespace Laventure\Component\Container\DTO;
  *
  * @package  Laventure\Component\Container\DTO
  */
-interface BoundConcreteInterface
+interface ConcreteInterface
 {
     /**
      * @return string

@@ -4,10 +4,21 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Container;
 
-use Laventure\Component\Container\DTO\BoundBoundConcrete;
-use Laventure\Component\Container\DTO\BoundConcreteInterface;
-use Laventure\Component\Container\Utils\Reflection\Reflection;
+use Laventure\Component\Container\Exception\ContainerException;
+use Laventure\Component\Container\Resolver\DependencyResolver;
+use Laventure\Component\Container\Resolver\DependencyResolverInterface;
+use Laventure\Component\Container\Utils\DTO\BoundConcrete;
+use Laventure\Component\Container\Utils\DTO\ConcreteInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunctionAbstract;
+use ReflectionNamedType;
+use ReflectionParameter;
+use ReflectionUnionType;
+use Throwable;
 
 /**
  * Container
@@ -27,7 +38,7 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
     /**
-     * @var BoundConcreteInterface[]
+     * @var ConcreteInterface[]
     */
     protected array $bindings = [];
 
@@ -90,11 +101,11 @@ class Container implements ContainerInterface, \ArrayAccess
     /**
      * @param string $id
      * @param mixed $concrete
-     * @return BoundConcreteInterface
+     * @return ConcreteInterface
     */
-    public function bind(string $id, mixed $concrete): BoundConcreteInterface
+    public function bind(string $id, mixed $concrete): ConcreteInterface
     {
-        return $this->bindings[$id] = new BoundBoundConcrete($id, $concrete);
+        return $this->bindings[$id] = new BoundConcrete($id, $concrete);
     }
 
 
@@ -130,14 +141,19 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
+
     /**
      * @param string $id
      * @return mixed
     */
     public function factory(string $id): mixed
     {
-        return $this->make($id);
+        return (function () use ($id) {
+            return $this->make($id);
+        });
     }
+
+
 
 
 
@@ -148,28 +164,26 @@ class Container implements ContainerInterface, \ArrayAccess
     */
     public function share(string $id, mixed $value): mixed
     {
-         if (!isset($this->shared[$id])) {
-             $this->shared[$id] = $value;
-         }
+        if (!isset($this->shared[$id])) {
+            $this->shared[$id] = $value;
+        }
 
-         return $this->shared[$id];
+        return $this->shared[$id];
     }
-
-
 
 
     /**
      * @inheritDoc
-    */
+     * @throws ReflectionException
+     */
     public function get(string $id)
     {
-        $id = $this->getAlias($id);
+        $id = $this->alias($id);
 
         if ($this->has($id)) {
 
-            $concrete = $this->concrete($id);
+            $concrete = $this->getConcrete($id);
             $value    = $concrete->value();
-
             if ($concrete->shared()) {
                 return $this->share($id, $value);
             }
@@ -183,38 +197,69 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
+
     /**
      * @param string $id
      * @param array $with
      * @return mixed
+     * @throws ContainerException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
     */
     public function resolve(string $id, array $with = []): mixed
     {
-         if ($this->resolved($id)) {
-             return $this->resolved[$id];
-         }
+        if ($this->resolved($id)) {
+            return $this->resolved[$id];
+        }
 
-         if ($this->hasInstance($id)) {
-             $instance = $this->instances[$id];
-         } else {
-             $instance = $this->make($id, $with);
-         }
+        if ($this->hasInstance($id)) {
+            $instance = $this->instances[$id];
+        } else {
+            $instance = $this->make($id, $with);
+        }
 
-         return $this->resolved[$id] = $instance;
+        return $this->resolved[$id] = $instance;
     }
 
 
 
+
+
     /**
      * @param string $id
      * @param array $with
      * @return mixed
-    */
+     * @throws ContainerException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
     public function make(string $id, array $with = []): mixed
     {
-        $reflection = new Reflection($id);
+        // 1. Inspect the class that we are trying to get from the container
+        $reflection = new ReflectionClass($id);
 
-        dd($reflection);
+        if (!$reflection->isInstantiable()) {
+            throw new ContainerException('class "'. $id . '" is not instantiable');
+        }
+
+        // 2. Inspect the constructor of the class
+        $constructor = $reflection->getConstructor();
+
+        if (!$constructor) {
+            return $reflection->newInstance();
+        }
+
+
+        // 3. Inspect the constructor parameters (dependencies)
+        if (!$constructor->getParameters()) {
+            return $reflection->newInstance();
+        }
+
+        $dependencies = $this->resolveDependencies($constructor, $with);
+
+        return $reflection->newInstanceArgs($dependencies);
     }
 
 
@@ -287,7 +332,7 @@ class Container implements ContainerInterface, \ArrayAccess
      * @param string $id
      * @return string
     */
-    public function getAlias(string $id): string
+    public function alias(string $id): string
     {
         return $this->aliases[$id] ?? $id;
     }
@@ -297,14 +342,23 @@ class Container implements ContainerInterface, \ArrayAccess
 
     /**
      * @param string $id
-     * @return BoundConcreteInterface|null
+     * @return ConcreteInterface|null
     */
-    public function concrete(string $id): ?BoundConcreteInterface
+    public function getConcrete(string $id): ?ConcreteInterface
     {
         return $this->bindings[$id] ?? null;
     }
 
 
+
+
+    /**
+     * @return DependencyResolverInterface
+    */
+    public function getResolver(): DependencyResolverInterface
+    {
+        return new DependencyResolver($this);
+    }
 
 
 
@@ -321,7 +375,7 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
     /**
-     * @return BoundConcreteInterface[]
+     * @return ConcreteInterface[]
     */
     public function getBindings(): array
     {
@@ -377,6 +431,66 @@ class Container implements ContainerInterface, \ArrayAccess
     */
     public function offsetUnset(mixed $offset): void
     {
+        unset($this->bindings[$offset]);
+    }
 
+
+
+    /**
+     * @param ReflectionFunctionAbstract $func
+     *
+     * @param array $with
+     *
+     * @return array
+     * @throws ContainerException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+    */
+    private function resolveDependencies(ReflectionFunctionAbstract $func, array $with = []): array
+    {
+        return $this->getResolver()->resolveDependencies($func, $with);
+    }
+
+
+
+
+    /**
+     * @param ReflectionParameter $parameter
+     *
+     * @param array $with
+     *
+     * @return mixed
+     *
+     * @throws ContainerException
+     * @throws ContainerExceptionInterface
+     * @throws ReflectionException
+     */
+    private function resolveDependency(ReflectionParameter $parameter, array $with = []): mixed
+    {
+        $name = $parameter->getName();
+        $type = $parameter->getType();
+
+        if (array_key_exists($name, $with)) {
+            return $with[$name];
+        }
+
+        if ($parameter->isOptional()) {
+            return $parameter->getDefaultValue();
+        }
+
+        if (!$type) {
+            throw new ContainerException('Failed to resolve parameter "'. $name . '" is missing a type hint.');
+        }
+
+        if ($type instanceof ReflectionUnionType) {
+            throw new ContainerException('Failed to resolve parameter because of union type for param "'. $name . '"');
+        }
+
+        if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
+            return $this->get($type->getName());
+        }
+
+        throw new ContainerException('Failed to resolve because invalid param "'. $name . '"');
     }
 }
