@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Laventure\Component\Container;
 
 use Laventure\Component\Container\Exception\ContainerException;
+use Laventure\Component\Container\Facade\Facade;
+use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;
+use Laventure\Component\Container\Provider\ServiceProvider;
 use Laventure\Component\Container\Resolver\Dependency;
 use Laventure\Component\Container\Resolver\DependencyInterface;
 use Laventure\Component\Container\Utils\DTO\Bound;
@@ -18,7 +21,7 @@ use ReflectionFunctionAbstract;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
-use Throwable;
+
 
 /**
  * Container
@@ -71,29 +74,26 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
-
     /**
-     * @param ContainerInterface $instance
-     * @return static
+     * @var ServiceProvider[]
     */
-    public static function setInstance(ContainerInterface $instance): ContainerInterface
-    {
-        return static::$instance = $instance;
-    }
+    protected array $providers = [];
+
 
 
 
     /**
-     * @return Container
-    */
-    public static function getInstance(): static
-    {
-        if (!static::$instance) {
-            static::$instance = new self();
-        }
+     * @var array
+     */
+    protected array $provides = [];
 
-        return static::$instance;
-    }
+
+
+
+    /**
+     * @var Facade[]
+    */
+    protected array $facades = [];
 
 
 
@@ -107,6 +107,24 @@ class Container implements ContainerInterface, \ArrayAccess
     {
         return $this->bindings[$id] = new Bound($id, $concrete);
     }
+
+
+
+
+    /**
+     * @param array $bindings
+     *
+     * @return $this
+    */
+    public function bindings(array $bindings): static
+    {
+        foreach ($bindings as $id => $value) {
+            $this->bind($id, $value);
+        }
+
+        return $this;
+    }
+
 
 
 
@@ -126,6 +144,26 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
+
+
+    /**
+     * @param array $bindings
+     * @return $this
+    */
+    public function singletons(array $bindings): static
+    {
+        foreach ($bindings as $id => $value) {
+            $this->singleton($id, $value);
+        }
+
+        return $this;
+    }
+
+
+
+
+
+
     /**
      * @param string $id
      * @param mixed $value
@@ -137,6 +175,26 @@ class Container implements ContainerInterface, \ArrayAccess
 
         return $this;
     }
+
+
+
+
+
+
+    /**
+     * @param array $instances
+     * @return $this
+    */
+    public function instances(array $instances): static
+    {
+        foreach ($instances as $id => $value) {
+            $this->instance($id, $value);
+        }
+
+        return $this;
+    }
+
+
 
 
 
@@ -241,14 +299,19 @@ class Container implements ContainerInterface, \ArrayAccess
      */
     public function make(string $id, array $with = []): mixed
     {
-        // 1. Inspect the class that we are trying to get from the container
+        // 1. Inspect if class exist
+        if (!class_exists($id)) {
+            throw new ContainerException("Could not make instance of ($id).");
+        }
+
+        // 2. Inspect the class that we are trying to get from the container
         $reflection = new ReflectionClass($id);
 
         if (!$reflection->isInstantiable()) {
-            throw new ContainerException('class "'. $id . '" is not instantiable');
+            throw new ContainerException("Class ($id) is not instantiable.");
         }
 
-        // 2. Inspect the constructor of the class
+        // 3. Inspect the constructor of the class
         $constructor = $reflection->getConstructor();
 
         if (!$constructor) {
@@ -256,7 +319,7 @@ class Container implements ContainerInterface, \ArrayAccess
         }
 
 
-        // 3. Inspect the constructor parameters (dependencies)
+        // 4. Inspect the constructor parameters (dependencies)
         if (!$constructor->getParameters()) {
             return $reflection->newInstance();
         }
@@ -265,6 +328,7 @@ class Container implements ContainerInterface, \ArrayAccess
 
         return $reflection->newInstanceArgs($dependencies);
     }
+
 
 
 
@@ -291,6 +355,8 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
+
+
     /**
      * @inheritDoc
     */
@@ -310,6 +376,152 @@ class Container implements ContainerInterface, \ArrayAccess
     public function hasInstance(string $id): bool
     {
         return isset($this->instances[$id]);
+    }
+
+
+
+
+
+    /**
+     * @param string $provider
+     *
+     * @return bool
+     */
+    public function hasProvider(string $provider): bool
+    {
+        return isset($this->providers[$provider]);
+    }
+
+
+
+
+
+    /**
+     * @param string $provider
+     * @return $this
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+    */
+    public function addProvider(string $provider): static
+    {
+        if (!$this->hasProvider($provider)) {
+            $service = $this->makeProvider($provider);
+            $this->addProvides($provider, $service->getProvides());
+            $service->setContainer($this);
+            $this->bootProvider($service);
+            $service->register();
+            $this->providers[$provider] = $service;
+        }
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * @param string $provider
+     * @return ServiceProvider
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+    */
+    public function makeProvider(string $provider): ServiceProvider
+    {
+         return $this->get($provider);
+    }
+
+
+
+
+
+
+    /**
+     * @param array $providers
+     *
+     * @return $this
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function addProviders(array $providers): static
+    {
+        foreach ($providers as $provider) {
+            $this->addProvider($provider);
+        }
+
+        return $this;
+    }
+
+
+
+
+
+    /**
+     * @param string $facade
+     * @return bool
+     */
+    public function hasFacade(string $facade): bool
+    {
+        return isset($this->facades[$facade]);
+    }
+
+
+
+
+    /**
+     * @param string $facade
+     * @return $this
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+    */
+    public function addFacade(string $facade): static
+    {
+        if (!$this->hasFacade($facade)) {
+            $this->facades[$facade] = $this->makeFacade($facade);
+        }
+
+        return $this;
+    }
+
+
+
+
+
+
+    /**
+     * @param string $facade
+     * @return Facade
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+    */
+    public function makeFacade(string $facade): Facade
+    {
+        return $this->get($facade);
+    }
+
+
+
+
+    /**
+     * @param array $facades
+     *
+     * @return $this
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+    */
+    public function addFacades(array $facades): static
+    {
+        foreach ($facades as $facade) {
+            $this->addFacade($facade);
+        }
+
+        return $this;
     }
 
 
@@ -397,6 +609,82 @@ class Container implements ContainerInterface, \ArrayAccess
     }
 
 
+    /**
+     * @return array
+     */
+    public function getFacades(): array
+    {
+        return $this->facades;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getProviders(): array
+    {
+        return $this->providers;
+    }
+
+
+
+    /**
+     * @return array
+    */
+    public function getProvides(): array
+    {
+        return $this->provides;
+    }
+
+
+    /**
+     * @return array
+    */
+    public function getResolved(): array
+    {
+        return $this->resolved;
+    }
+
+
+    /**
+     * @return array
+    */
+    public function getShared(): array
+    {
+        return $this->shared;
+    }
+
+
+
+
+    /**
+     * @param ContainerInterface $instance
+     * @return static
+     */
+    public static function setInstance(ContainerInterface $instance): ContainerInterface
+    {
+        return static::$instance = $instance;
+    }
+
+
+
+
+
+    /**
+     * @return Container
+     */
+    public static function getInstance(): static
+    {
+        if (!static::$instance) {
+            static::$instance = new self();
+        }
+
+        return static::$instance;
+    }
+
+
+
+
 
 
     /**
@@ -440,6 +728,44 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
+
+    /**
+     * @param $name
+     * @return array|bool|mixed|object|string|null
+     */
+    public function __get($name)
+    {
+        return $this[$name];
+    }
+
+
+
+
+    /**
+     * @param $name
+     * @param $value
+    */
+    public function __set($name, $value)
+    {
+        $this[$name] = $value;
+    }
+
+
+
+    public function clear(): void
+    {
+        $this->bindings  = [];
+        $this->instances = [];
+        $this->aliases   = [];
+        $this->resolved  = [];
+        $this->provides  = [];
+        $this->providers = [];
+        $this->facades   = [];
+    }
+
+
+
+
     /**
      * @param ReflectionFunctionAbstract $func
      *
@@ -460,41 +786,35 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
     /**
-     * @param ReflectionParameter $parameter
+     * @param string $service
      *
-     * @param array $with
+     * @param array $provides
      *
-     * @return mixed
-     *
-     * @throws ContainerException
-     * @throws ContainerExceptionInterface
-     * @throws ReflectionException
+     * @return void
      */
-    private function resolveDependency(ReflectionParameter $parameter, array $with = []): mixed
+    private function addProvides(string $service, array $provides): void
     {
-        $name = $parameter->getName();
-        $type = $parameter->getType();
-
-        if (array_key_exists($name, $with)) {
-            return $with[$name];
+        foreach ($provides as $id => $aliases) {
+            $this->aliases($id, $aliases);
         }
 
-        if ($parameter->isOptional()) {
-            return $parameter->getDefaultValue();
-        }
+        $this->provides[$service] = $provides;
+    }
 
-        if (!$type) {
-            throw new ContainerException('Failed to resolve parameter "'. $name . '" is missing a type hint.');
-        }
 
-        if ($type instanceof ReflectionUnionType) {
-            throw new ContainerException('Failed to resolve parameter because of union type for param "'. $name . '"');
-        }
 
-        if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
-            return $this->get($type->getName());
-        }
 
-        throw new ContainerException('Failed to resolve because invalid param "'. $name . '"');
+
+
+    /**
+     * @param ServiceProvider $provider
+     *
+     * @return void
+    */
+    protected function bootProvider(ServiceProvider $provider): void
+    {
+        if($provider instanceof BootableServiceProvider) {
+            $provider->boot();
+        }
     }
 }

@@ -46,6 +46,7 @@ class ContainerTest extends TestCase
        {
 
            $container = Container::getInstance();
+           $container->clear();
            $baseUrl   = 'http://localhost:8000';
 
            $container->bind('baseUrl', $baseUrl);
@@ -63,11 +64,11 @@ class ContainerTest extends TestCase
        public function testMake(): void
        {
            $container = Container::getInstance();
+           $container->clear();
 
            $baseUrl = 'http://localhost:8000';
            $this->assertInstanceOf(FooService::class, $container->make(FooService::class));
            $this->assertInstanceOf(BarService::class, $container->make(BarService::class, compact('baseUrl')));
-
 
            $container->bind('baseUrl', $baseUrl);
            $this->assertInstanceOf(BarService::class, $container->make(BarService::class));
