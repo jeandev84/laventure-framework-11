@@ -15,7 +15,9 @@ use Attribute;
  *
  * @package  Laventure\Component\Routing\Route\Attributes
 */
-#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
+#[Attribute(
+    Attribute::TARGET_METHOD | Attribute::TARGET_CLASS
+)]
 class Route
 {
     public function __construct(

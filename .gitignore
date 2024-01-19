@@ -1,6 +1,7 @@
 .idea
 composer.lock
 vendor
+public
 tools
 demo.php
 fixer.php

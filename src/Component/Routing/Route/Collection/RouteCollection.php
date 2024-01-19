@@ -62,7 +62,7 @@ class RouteCollection implements RouteCollectionInterface
             $this->addNamedRoute($name, $route);
         }
 
-        return $this->routes[] = $route;
+        return $this->routes[$route->getPath()] = $route;
     }
 
 
@@ -168,7 +168,7 @@ class RouteCollection implements RouteCollectionInterface
     */
     public function addController(string $controller, RouteInterface $route): RouteInterface
     {
-        $this->controllers[$controller][] = $route;
+        $this->controllers[$controller][$route->getPath()] = $route;
 
         return $route;
     }
@@ -181,7 +181,7 @@ class RouteCollection implements RouteCollectionInterface
     */
     public function addMethods(string $methods, RouteInterface $route): RouteInterface
     {
-        $this->methods[$methods][] = $route;
+        $this->methods[$methods][$route->getPath()] = $route;
 
         return $route;
     }
