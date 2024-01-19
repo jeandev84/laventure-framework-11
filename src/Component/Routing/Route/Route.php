@@ -377,6 +377,86 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+    /**
+     * @return $this
+     */
+    public function id(): static
+    {
+        return $this->number('id');
+    }
+
+
+
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function number(string $name): static
+    {
+        return $this->where($name, '\d+');
+    }
+
+
+
+
+
+
+    /**
+     * @param string $name
+     * @return $this
+    */
+    public function text(string $name): static
+    {
+        return $this->where($name, '\w+');
+    }
+
+
+
+
+
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function alphaNumeric(string $name): static
+    {
+        return $this->where($name, '[^a-z_\-0-9]');
+    }
+
+
+
+
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+    */
+    public function slug(string $name): static
+    {
+        return $this->where($name, '[a-z\-0-9]+');
+    }
+
+
+
+
+
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function anything(string $name): static
+    {
+        return $this->where($name, '.*');
+    }
+
+
+
+
 
     /**
      * @inheritdoc

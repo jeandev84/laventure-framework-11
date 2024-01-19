@@ -41,7 +41,7 @@ class UserController
 
 
 
-    public function delete($id): string
+    public function destroy($id): string
     {
         return __METHOD__;
     }

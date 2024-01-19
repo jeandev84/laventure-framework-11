@@ -169,6 +169,85 @@ interface RouteInterface extends RouteMatcherInterface
 
 
 
+    /**
+     * Requirement id
+     *
+     * @return $this
+    */
+    public function id(): static;
+
+
+
+
+
+    /**
+     * Requirement number
+     *
+     * @param string $name
+     * @return $this
+    */
+    public function number(string $name): static;
+
+
+
+
+
+
+    /**
+     * Requirement text
+     *
+     * @param string $name
+     * @return $this
+    */
+    public function text(string $name): static;
+
+
+
+
+
+
+
+    /**
+     * Requirement alphanumeric
+     *
+     * @param string $name
+     * @return $this
+    */
+    public function alphaNumeric(string $name): static;
+
+
+
+
+
+
+    /**
+     * Requirement sug
+     *
+     * @param string $name
+     *
+     * @return $this
+    */
+    public function slug(string $name): static;
+
+
+
+
+
+
+    /**
+     * Requirements any things
+     *
+     * @param string $name
+     *
+     * @return $this
+    */
+    public function anything(string $name): static;
+
+
+
+
+
+
 
     /**
      * route middlewares

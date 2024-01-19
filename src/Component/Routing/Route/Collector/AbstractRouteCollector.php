@@ -397,30 +397,6 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
 
 
 
-    /**
-     * @return RouteFactoryInterface
-     */
-    public function getRouteFactory(): RouteFactoryInterface
-    {
-        return $this->routeFactory;
-    }
-
-
-
-
-
-
-
-    /**
-     * @return RouteResolverFactoryInterface
-    */
-    public function getRouteResolverFactory(): RouteResolverFactoryInterface
-    {
-        return $this->routeResolverFactory;
-    }
-
-
-
 
 
 
@@ -443,7 +419,7 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
     {
         $type = $resource->getType();
         $name = $resource->getName();
-
+        $this->patterns(['id' => '\d+', $name => '\d+']);
         $resource->map($this);
         $this->resources[$type][$name] = $resource;
 
@@ -503,6 +479,34 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
 
 
     /**
+     * @return RouteFactoryInterface
+     */
+    public function getRouteFactory(): RouteFactoryInterface
+    {
+        return $this->routeFactory;
+    }
+
+
+
+
+
+
+
+    /**
+     * @return RouteResolverFactoryInterface
+     */
+    public function getRouteResolverFactory(): RouteResolverFactoryInterface
+    {
+        return $this->routeResolverFactory;
+    }
+
+
+
+
+
+
+
+    /**
      * @inheritDoc
      */
     public function getRoutes(): array
@@ -522,15 +526,6 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
     }
 
 
-
-
-    /**
-     * @inheritDoc
-     */
-    public function getControllerRoutes(string $name): array
-    {
-        return $this->controllers[$name] ?? [];
-    }
 
 
 
