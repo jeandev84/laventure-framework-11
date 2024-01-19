@@ -165,25 +165,15 @@ class RouterTest extends TestCase
         });
 
         $func = function () { return "Welcome"; };
-        $welcome = $router->get('/welcome', $func, 'welcome');
+        $router->get('/welcome', $func, 'welcome');
 
-        $actual = $router->getRoutes();
 
-        $expected[] = $router->get('/admin/users', [UserController::class, 'index'], 'admin.users.list')
-                             ->middlewares([IsAdminMiddleware::class]);
-        $expected[] = $router->get('/admin/users/{id}', [UserController::class, 'show'], 'admin.users.show')
-                              ->middlewares([IsAdminMiddleware::class])
-                              ->whereId();
-        $expected[] = $router->post('/admin/users/store', [UserController::class, 'store'], 'admin.users.store');
-        $expected[] = $router->put('/admin/users/update/{id}', [UserController::class, 'update'], 'admin.users.update')
-                             ->middlewares([IsAdminMiddleware::class])
-                             ->whereId();
-        $expected[] = $router->delete('/admin/users/destroy/{id}', [UserController::class, 'destroy'], 'admin.users.destroy')
-                             ->middlewares([IsAdminMiddleware::class])
-                             ->whereId();
-        $expected[] = $welcome;
-
-        $this->assertSame(count($expected), count($actual));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('GET', '/admin/users'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('GET', '/admin/users/1'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('POST', '/admin/users/store'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('PUT', '/admin/users/update/5'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('DELETE', '/admin/users/destroy/6'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('GET', '/welcome'));
     }
 
 
