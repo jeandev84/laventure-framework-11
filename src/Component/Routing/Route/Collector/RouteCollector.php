@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Collector;
 
+use Laventure\Component\Routing\Route\RouteInterface;
+use ReflectionException;
+
 /**
  * RouteCollector
  *
@@ -15,4 +18,5 @@ namespace Laventure\Component\Routing\Route\Collector;
 */
 class RouteCollector extends AbstractRouteCollector
 {
+
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Routing\Route\Collector;
 
 use Closure;
+use Laventure\Component\Routing\Route\Attributes\Route;
 use Laventure\Component\Routing\Route\Collection\RouteCollection;
 use Laventure\Component\Routing\Route\Collection\RouteCollectionInterface;
 use Laventure\Component\Routing\Route\Factory\RouteFactory;
@@ -23,6 +24,8 @@ use Laventure\Component\Routing\Route\Resource\Enums\ResourceType;
 use Laventure\Component\Routing\Route\Resource\Factory\ResourceFactory;
 use Laventure\Component\Routing\Route\Resource\Factory\ResourceFactoryInterface;
 use Laventure\Component\Routing\Route\RouteInterface;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * AbstractRouteCollector
@@ -406,6 +409,36 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
     public function addRoute(RouteInterface $route): RouteInterface
     {
         return $this->collection->addRoute($route);
+    }
+
+
+
+
+
+    /**
+     * @inheritdoc
+     * @throws ReflectionException
+    */
+    public function addRoutesFromAttributes(array $controllers): static
+    {
+        foreach ($controllers as $controller) {
+            $reflection = new ReflectionClass($controller);
+            foreach ($reflection->getMethods() as $method) {
+                // get all attributes associated to the method
+                /* $attributes = $method->getAttributes(); returns all stuff attributes */
+                // filter attributes and get only Route
+                $attributes = $method->getAttributes(
+                Route::class,
+                \ReflectionAttribute::IS_INSTANCEOF
+                );
+                foreach ($attributes as $attribute) {
+                    $route = $attribute->newInstance(); // RouteInterface
+                    $this->map($route->method->value, $route->path, [$controller, $method->getName()]);
+                }
+            }
+        }
+
+        return $this;
     }
 
 

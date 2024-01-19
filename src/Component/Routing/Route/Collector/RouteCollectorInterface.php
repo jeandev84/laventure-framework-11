@@ -203,6 +203,19 @@ interface RouteCollectorInterface
 
 
 
+    /**
+     * Add route from controller attributes
+     *
+     * @param array $controllers
+     *
+     * @return $this
+    */
+    public function addRoutesFromAttributes(array $controllers): static;
+
+
+
+
+
 
     /**
      * Collect resources
