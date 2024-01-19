@@ -19,18 +19,18 @@ class BarService
 
     protected FooService $fooService;
     protected MailerService $mailerService;
-    protected string $siteUrl;
+    protected string $baseUrl;
 
 
     public function __construct(
         FooService $fooService,
         MailerService $mailerService,
-        string $siteUrl
+        string $baseUrl
     )
     {
         $this->fooService = $fooService;
         $this->mailerService = $mailerService;
-        $this->siteUrl       = $siteUrl;
+        $this->baseUrl       = $baseUrl;
     }
 
 

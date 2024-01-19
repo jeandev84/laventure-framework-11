@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Container\Utils\DTO;
 
 /**
- * BoundConcrete
+ * Bound
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -13,7 +13,7 @@ namespace Laventure\Component\Container\Utils\DTO;
  *
  * @package  Laventure\Component\Container\Utils\DTO
 */
-class BoundConcrete implements ConcreteInterface
+class Bound implements BoundInterface
 {
     /**
      * @var string

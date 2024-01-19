@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Laventure\Component\Container;
 
 use Laventure\Component\Container\Exception\ContainerException;
-use Laventure\Component\Container\Resolver\DependencyResolver;
-use Laventure\Component\Container\Resolver\DependencyResolverInterface;
-use Laventure\Component\Container\Utils\DTO\BoundConcrete;
-use Laventure\Component\Container\Utils\DTO\ConcreteInterface;
+use Laventure\Component\Container\Resolver\Dependency;
+use Laventure\Component\Container\Resolver\DependencyInterface;
+use Laventure\Component\Container\Utils\DTO\Bound;
+use Laventure\Component\Container\Utils\DTO\BoundInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -38,7 +38,7 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
     /**
-     * @var ConcreteInterface[]
+     * @var BoundInterface[]
     */
     protected array $bindings = [];
 
@@ -101,11 +101,11 @@ class Container implements ContainerInterface, \ArrayAccess
     /**
      * @param string $id
      * @param mixed $concrete
-     * @return ConcreteInterface
+     * @return BoundInterface
     */
-    public function bind(string $id, mixed $concrete): ConcreteInterface
+    public function bind(string $id, mixed $concrete): BoundInterface
     {
-        return $this->bindings[$id] = new BoundConcrete($id, $concrete);
+        return $this->bindings[$id] = new Bound($id, $concrete);
     }
 
 
@@ -170,6 +170,10 @@ class Container implements ContainerInterface, \ArrayAccess
 
         return $this->shared[$id];
     }
+
+
+
+
 
 
     /**
@@ -342,9 +346,9 @@ class Container implements ContainerInterface, \ArrayAccess
 
     /**
      * @param string $id
-     * @return ConcreteInterface|null
+     * @return BoundInterface|null
     */
-    public function getConcrete(string $id): ?ConcreteInterface
+    public function getConcrete(string $id): ?BoundInterface
     {
         return $this->bindings[$id] ?? null;
     }
@@ -353,11 +357,11 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
     /**
-     * @return DependencyResolverInterface
+     * @return DependencyInterface
     */
-    public function getResolver(): DependencyResolverInterface
+    public function getResolver(): DependencyInterface
     {
-        return new DependencyResolver($this);
+        return new Dependency($this);
     }
 
 
@@ -375,7 +379,7 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
     /**
-     * @return ConcreteInterface[]
+     * @return BoundInterface[]
     */
     public function getBindings(): array
     {

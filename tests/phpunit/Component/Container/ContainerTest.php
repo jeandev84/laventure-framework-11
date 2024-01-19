@@ -64,7 +64,13 @@ class ContainerTest extends TestCase
        {
            $container = Container::getInstance();
 
+           $baseUrl = 'http://localhost:8000';
            $this->assertInstanceOf(FooService::class, $container->make(FooService::class));
+           $this->assertInstanceOf(BarService::class, $container->make(BarService::class, compact('baseUrl')));
+
+
+           $container->bind('baseUrl', $baseUrl);
+           $this->assertInstanceOf(BarService::class, $container->make(BarService::class));
        }
 
 

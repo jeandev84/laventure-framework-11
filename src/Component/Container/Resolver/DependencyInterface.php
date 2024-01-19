@@ -13,7 +13,7 @@ use ReflectionFunctionAbstract;
 use ReflectionParameter;
 
 /**
- * DependencyResolverInterface
+ * DependencyInterface
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -21,7 +21,7 @@ use ReflectionParameter;
  *
  * @package  Laventure\Component\Container\Resolver
 */
-interface DependencyResolverInterface
+interface DependencyInterface
 {
     /**
      * @return ContainerInterface

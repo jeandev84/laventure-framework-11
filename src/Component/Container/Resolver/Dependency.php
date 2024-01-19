@@ -15,7 +15,7 @@ use ReflectionParameter;
 use ReflectionUnionType;
 
 /**
- * DependencyResolver
+ * Dependency
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -23,7 +23,7 @@ use ReflectionUnionType;
  *
  * @package  Laventure\Component\Container\Resolver
  */
-class DependencyResolver implements DependencyResolverInterface
+class Dependency implements DependencyInterface
 {
     /**
      * @var ContainerInterface
@@ -85,6 +85,7 @@ class DependencyResolver implements DependencyResolverInterface
             return $with[$name];
         }
 
+
         if ($parameter->isOptional()) {
             return $parameter->getDefaultValue();
         }
@@ -99,6 +100,10 @@ class DependencyResolver implements DependencyResolverInterface
 
         if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
             return $this->container->get($type->getName());
+        }
+
+        if ($value = $this->container->get($name)) {
+            return $value;
         }
 
         throw new ContainerException('Failed to resolve because invalid param "'. $name . '"');
