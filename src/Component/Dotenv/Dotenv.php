@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Dotenv;
@@ -120,15 +121,15 @@ class Dotenv implements DotenvInterface
      */
     public function put(string $env): bool
     {
-            preg_match('#^(?=[A-Z])(.*)=(.*)$#', $env, $matches);
+        preg_match('#^(?=[A-Z])(.*)=(.*)$#', $env, $matches);
 
-            if (!empty($matches)) {
-                putenv($env);
-                [$key, $value] = $this->envAsArray($matches[0]);
-                $_SERVER[$key] = $_ENV[$key] = $value;
-                return true;
-            }
-            return false;
+        if (!empty($matches)) {
+            putenv($env);
+            [$key, $value] = $this->envAsArray($matches[0]);
+            $_SERVER[$key] = $_ENV[$key] = $value;
+            return true;
+        }
+        return false;
     }
 
 
