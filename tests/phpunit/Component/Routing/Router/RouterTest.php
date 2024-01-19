@@ -77,16 +77,26 @@ class RouterTest extends TestCase
 
     public function testRegisterControllers(): void
     {
-        /*
-        $router = RouterTestFactory::create();
+        $router     = RouterTestFactory::create();
+        $collection = $router->getCollection();
+
+        $router->patterns(['id' => '\d+']);
+
         $router->registerControllers([
             OrderController::class
         ]);
 
-        $this->assertSame(5, count($router->getRoutes()));
-        */
+        #dd($router->getRoutes());
+        $controllerRoutes = $collection->getControllerRoutes(OrderController::class);
+        $this->assertNotEmpty($controllerRoutes);
+        $this->assertSame($router->getRoutes(), array_values($controllerRoutes));
 
-        $this->assertTrue(true);
+        $this->assertInstanceOf(RouteInterface::class, $router->match('GET', '/api/orders'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('GET', '/api/orders/show/1'));
+        $this->assertFalse($router->match('GET', '/api/orders/show/azeaze'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('POST', '/api/orders/store'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('PUT', '/api/orders/update/5'));
+        $this->assertInstanceOf(RouteInterface::class, $router->match('DELETE', '/api/orders/destroy/6'));
     }
 
 

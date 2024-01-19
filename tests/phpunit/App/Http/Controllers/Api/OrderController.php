@@ -19,7 +19,7 @@ class OrderController
 {
 
 
-    #[Route(path: '/', methods: ['GET', 'POST'], name: 'list')]
+    #[Route(path: '/', methods: ['GET'], name: 'list')]
     public function index(): string
     {
         return __METHOD__;

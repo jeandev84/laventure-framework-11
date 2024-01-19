@@ -58,7 +58,7 @@ class RouteCollector extends AbstractRouteCollector
                     $namePrefix.$name
                 )
                 ->wheres($wheres);
-                $this->collection->addController($controller, $route);
+                $this->collection->addRouteByController($controller, $route);
             }
         }
 

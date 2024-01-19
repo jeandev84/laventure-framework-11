@@ -34,7 +34,7 @@ interface RouteCollectionInterface
      *
      * @return mixed
     */
-    public function addController(string $controller, RouteInterface $route): RouteInterface;
+    public function addRouteByController(string $controller, RouteInterface $route): RouteInterface;
 
 
 
@@ -47,7 +47,7 @@ interface RouteCollectionInterface
      *
      * @return mixed
     */
-    public function addMethods(string $methods, RouteInterface $route): RouteInterface;
+    public function addRouteByMethods(string $methods, RouteInterface $route): RouteInterface;
 
 
 
@@ -58,6 +58,16 @@ interface RouteCollectionInterface
      * @return RouteInterface
     */
     public function addNamedRoute(string $name, RouteInterface $route): RouteInterface;
+
+
+
+
+    /**
+     * @param string $path
+     * @param RouteInterface $route
+     * @return RouteInterface
+    */
+    public function addRouteByPath(string $path, RouteInterface $route): RouteInterface;
 
 
 
@@ -119,6 +129,13 @@ interface RouteCollectionInterface
 
 
 
+
+    /**
+     * @param string $path
+     *
+     * @return RouteInterface|null
+    */
+    public function getRouteByPath(string $path): ?RouteInterface;
 
 
 

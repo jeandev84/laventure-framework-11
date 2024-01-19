@@ -18,6 +18,9 @@ use Laventure\Component\Routing\Router\RouterInterface;
 interface RouterFactoryInterface
 {
     /**
+     * Returns instance of router
+     * Make a new router
+     *
      * @return RouterInterface
     */
     public function createRouter(): RouterInterface;
