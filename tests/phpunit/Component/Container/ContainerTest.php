@@ -30,6 +30,8 @@ class ContainerTest extends TestCase
            $this->assertInstanceOf(ContainerInterface::class, $container1);
            $this->assertInstanceOf(ContainerInterface::class, $container2);
            $this->assertSame($container1, $container2);
+           $this->assertNotSame($instance1, $container1);
+           $this->assertNotSame($instance2, $container2);
            $this->assertNotSame($instance1, $instance2);
            $this->assertNotInstanceOf(ContainerInterface::class, $fake);
        }
