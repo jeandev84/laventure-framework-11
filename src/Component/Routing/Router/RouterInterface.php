@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Routing;
+namespace Laventure\Component\Routing\Router;
 
 use Laventure\Component\Routing\Route\RouteInterface;
 
@@ -13,7 +13,7 @@ use Laventure\Component\Routing\Route\RouteInterface;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Routing
+ * @package Laventure\Component\Routing\Router
 */
 interface RouterInterface
 {
