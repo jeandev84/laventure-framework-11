@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnitTest\App\Factory\RouterTestFactory;
 use PHPUnitTest\App\Http\Controllers\Admin\BookController;
 use PHPUnitTest\App\Http\Controllers\Admin\UserController;
+use PHPUnitTest\App\Http\Controllers\Api\OrderController;
 use PHPUnitTest\App\Http\Controllers\SiteController;
 use PHPUnitTest\App\Http\Middlewares\AuthenticatedMiddleware;
 use PHPUnitTest\App\Http\Middlewares\IsAdminMiddleware;
@@ -69,6 +70,19 @@ class RouterTest extends TestCase
                            ->middlewares([IsAdminMiddleware::class]);
 
         $this->assertSame($routes, $router->getRoutes());
+    }
+
+
+
+
+    public function testMapRoutesFromAttributes(): void
+    {
+        $router = RouterTestFactory::create();
+        $router->addRoutesFromAttributes([
+            OrderController::class
+        ]);
+
+        $this->assertSame(5, count($router->getRoutes()));
     }
 
 

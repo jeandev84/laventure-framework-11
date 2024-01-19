@@ -20,6 +20,6 @@ class Get extends Route
 {
     public function __construct(string $path, string $name = '')
     {
-        parent::__construct($path, HttpMethod::GET, $name);
+        parent::__construct($path, [HttpMethod::GET], $name);
     }
 }

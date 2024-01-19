@@ -20,6 +20,6 @@ class Post extends Route
 {
     public function __construct(string $path, string $name = '')
     {
-        parent::__construct($path, HttpMethod::POST, $name);
+        parent::__construct($path, [HttpMethod::POST], $name);
     }
 }

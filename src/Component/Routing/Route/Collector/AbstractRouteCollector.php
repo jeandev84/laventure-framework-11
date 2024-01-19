@@ -432,8 +432,13 @@ abstract class AbstractRouteCollector implements RouteCollectorInterface
                 \ReflectionAttribute::IS_INSTANCEOF
                 );
                 foreach ($attributes as $attribute) {
-                    $route = $attribute->newInstance(); // RouteInterface
-                    $this->map($route->method->value, $route->path, [$controller, $method->getName()]);
+                     /*
+                     dd($attribute->getArguments());
+                     $route = $attribute->newInstance(); // Route
+                     $this->map($route->methods->value, $route->path, [$controller, $method->getName()]);
+                     */
+                     $arguments = $attribute->getArguments();
+                     $this->map($arguments['methods'], $arguments['path'], [$controller, $method->getName()]);
                 }
             }
         }

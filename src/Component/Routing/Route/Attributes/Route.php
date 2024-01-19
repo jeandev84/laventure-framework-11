@@ -19,7 +19,7 @@ class Route
 {
     public function __construct(
         public string $path,
-        public string $methods,
+        public array $methods,
         public string $name = ''
     ) {
     }

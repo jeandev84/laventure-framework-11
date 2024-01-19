@@ -18,6 +18,6 @@ class Patch extends Route
 {
     public function __construct(string $path, string $name = '')
     {
-        parent::__construct($path, HttpMethod::PATCH, $name);
+        parent::__construct($path, [HttpMethod::PATCH], $name);
     }
 }
