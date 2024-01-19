@@ -26,14 +26,14 @@ class RouteCollector extends AbstractRouteCollector
     {
         $reflection = new \ReflectionClass($controller);
         $routeAttributes = $reflection->getAttributes(Route::class);
-        $prefix = '';
-        $name   = '';
+        $prefix     = '';
+        $namePrefix = '';
 
         if (!empty($routeAttributes)) {
              /** @var Route $route */
-             $route      = $routeAttributes[0]->newInstance();
-             $prefix     = $route->getPath();
-             $name       = $route->getName();
+             $route       = $routeAttributes[0]->newInstance();
+             $prefix      = $route->getPath();
+             $namePrefix  = $route->getName();
         }
 
         foreach ($reflection->getMethods() as $method) {
@@ -46,20 +46,25 @@ class RouteCollector extends AbstractRouteCollector
 
             foreach ($attributes as $attribute) {
                 /** @var Route $route */
-                $route   = $attribute->newInstance();
+                $route    = $attribute->newInstance();
                 $methods  = $route->getMethods();
                 $path     = $route->getPath();
-                $name     .= $route->getName();
+                $name     = $route->getName();
                 $wheres   = $route->getRequirements();
-                $route = $this->map($methods, $prefix. $path, [$controller, $methodName], $name)
-                              ->wheres($wheres);
+                $route = $this->map(
+                    $methods,
+               $prefix. $path,
+                    [$controller, $methodName],
+              $namePrefix.$name
+                )
+                ->wheres($wheres);
                 $this->collection->addController($controller, $route);
             }
         }
 
         /*
-        #dd($this->collection->getControllers());
-        dd($this->getRoutes());
+        dump($this->collection->getControllers());
+        dump($this->getRoutes());
         */
     }
 }
