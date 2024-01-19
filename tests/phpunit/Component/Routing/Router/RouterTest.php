@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace PHPUnitTest\Component\Routing\Router;
 
 
+use Laventure\Component\Routing\Route\Collector\RouteCollector;
 use Laventure\Component\Routing\Route\Resource\Contract\ResourceInterface;
 use Laventure\Component\Routing\Route\Resource\Types\ApiResource;
 use Laventure\Component\Routing\Route\Resource\Types\WebResource;
@@ -115,6 +116,47 @@ class RouterTest extends TestCase
 
 
 
+
+    public function testGroup(): void
+    {
+        $router = RouterTestFactory::create();
+
+        $attributes = [
+            'path' => '/admin/',
+            'namespace' => '\\Admin\\',
+            'name' => 'admin.',
+            'middlewares' => [IsAdminMiddleware::class]
+        ];
+
+        $router->group($attributes, function (RouteCollector $collector) {
+            $collector->get('/users', [UserController::class, 'index'], 'users.list');
+            $collector->get('/users/{id}', [UserController::class, 'show'], 'users.show')->id();
+            $collector->post('/users/store', [UserController::class, 'store']);
+            $collector->put('/users/update/{id}', [UserController::class, 'update'])->id();
+            $collector->delete('/users/destroy/{id}', [UserController::class, 'destroy'])->id();
+        });
+
+        $func = function () { return "Welcome"; };
+        $welcome = $router->get('/welcome', $func, 'welcome');
+
+        $actual = $router->getRoutes();
+
+        $expected[] = $router->get('/admin/users', [UserController::class, 'index'], 'admin.users.list')
+                             ->middlewares([IsAdminMiddleware::class]);
+        $expected[] = $router->get('/admin/users/{id}', [UserController::class, 'show'], 'admin.users.show')
+                              ->middlewares([IsAdminMiddleware::class])
+                              ->id();
+        $expected[] = $router->post('/admin/users/store', [UserController::class, 'store'], 'admin.users.store');
+        $expected[] = $router->put('/admin/users/update/{id}', [UserController::class, 'update'], 'admin.users.update')
+                             ->middlewares([IsAdminMiddleware::class])
+                             ->id();
+        $expected[] = $router->delete('/admin/users/destroy/{id}', [UserController::class, 'destroy'], 'admin.users.destroy')
+                             ->middlewares([IsAdminMiddleware::class])
+                             ->id();
+        $expected[] = $welcome;
+
+        $this->assertSame(count($expected), count($actual));
+    }
 
 
 }

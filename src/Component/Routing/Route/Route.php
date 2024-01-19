@@ -688,6 +688,17 @@ class Route implements RouteInterface, \ArrayAccess
 
 
 
+    /**
+     * @return array
+    */
+    public function toArray(): array
+    {
+        return get_object_vars($this);
+    }
+
+
+
+
 
     /**
      * @param string $path
@@ -726,6 +737,8 @@ class Route implements RouteInterface, \ArrayAccess
             return !is_numeric($key);
         }, ARRAY_FILTER_USE_KEY);
     }
+
+
 
 
     /**
