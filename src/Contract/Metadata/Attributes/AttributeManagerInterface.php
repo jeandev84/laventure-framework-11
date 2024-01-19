@@ -17,8 +17,6 @@ use ReflectionClass;
 */
 interface AttributeManagerInterface
 {
-
-
     /**
      * @return string
     */

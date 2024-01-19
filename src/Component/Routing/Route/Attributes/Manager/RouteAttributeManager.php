@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Routing\Route\Attributes\Manager;
 
 /**
- * ControllerAttributeManager
+ * RouteAttributeManager
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -12,7 +13,6 @@ namespace Laventure\Component\Routing\Route\Attributes\Manager;
  *
  * @package  Laventure\Component\Routing\Route\Attributes\Manager
  */
-class ControllerAttributeManager
+class RouteAttributeManager
 {
-
 }

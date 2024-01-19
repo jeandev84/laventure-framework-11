@@ -30,10 +30,10 @@ class RouteCollector extends AbstractRouteCollector
         $namePrefix = '';
 
         if (!empty($routeAttributes)) {
-             /** @var Route $route */
-             $route       = $routeAttributes[0]->newInstance();
-             $prefix      = $route->getPath();
-             $namePrefix  = $route->getName();
+            /** @var Route $route */
+            $route       = $routeAttributes[0]->newInstance();
+            $prefix      = $route->getPath();
+            $namePrefix  = $route->getName();
         }
 
         foreach ($reflection->getMethods() as $method) {
@@ -53,9 +53,9 @@ class RouteCollector extends AbstractRouteCollector
                 $wheres   = $route->getRequirements();
                 $route = $this->map(
                     $methods,
-               $prefix. $path,
+                    $prefix. $path,
                     [$controller, $methodName],
-              $namePrefix.$name
+                    $namePrefix.$name
                 )
                 ->wheres($wheres);
                 $this->collection->addController($controller, $route);
