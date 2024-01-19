@@ -1,7 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Container\Utils\Reflection;
+
+use ReflectionClass;
+use ReflectionException;
+use Reflector;
 
 /**
  * Reflection
@@ -12,7 +17,37 @@ namespace Laventure\Component\Container\Utils\Reflection;
  *
  * @package  Laventure\Component\Container\Utils\Reflection
 */
-class Reflection
+class Reflection implements ReflectionInterface
 {
 
+    /**
+     * @var ReflectionClass
+    */
+    protected ReflectionClass $class;
+
+
+
+    /**
+     * @param $class
+     * @throws ReflectionException
+    */
+    public function __construct($class)
+    {
+        $class = new ReflectionClass($class);
+
+        if (!$class->isInstantiable()) {
+
+        }
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function getReflector(): Reflector
+    {
+        return $this->class;
+    }
 }

@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Container\Utils\Reflection;
-
 
 use Reflector;
 
@@ -20,5 +20,5 @@ interface ReflectionInterface
     /**
      * @return Reflector
     */
-    public function getReflection(): Reflector;
+    public function getReflector(): Reflector;
 }

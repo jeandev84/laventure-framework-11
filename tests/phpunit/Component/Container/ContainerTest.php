@@ -5,6 +5,10 @@ namespace PHPUnitTest\Component\Container;
 
 use Laventure\Component\Container\Container;
 use PHPUnit\Framework\TestCase;
+use PHPUnitTest\App\Service\BarService;
+use PHPUnitTest\App\Service\Config;
+use PHPUnitTest\App\Service\FooService;
+use PHPUnitTest\App\Service\MailerService;
 use PHPUnitTest\Component\Container\Utils\FakeContainer;
 use Psr\Container\ContainerInterface;
 
@@ -35,4 +39,33 @@ class ContainerTest extends TestCase
            $this->assertNotSame($instance1, $instance2);
            $this->assertNotInstanceOf(ContainerInterface::class, $fake);
        }
+
+
+
+       public function testBindings(): void
+       {
+
+           $container = Container::getInstance();
+           $baseUrl   = 'http://localhost:8000';
+
+           $container->bind('baseUrl', $baseUrl);
+           $container->bind(FooService::class, $foo = new FooService());
+           $container->bind(BarService::class, new BarService($foo, new MailerService(), $baseUrl));
+           $container->bind(Config::class, new Config(require __DIR__.'/config/app.php'));
+
+           $this->assertSame($baseUrl, $container->get('baseUrl'));
+           $this->assertInstanceOf(FooService::class, $container->get(FooService::class));
+           # $this->assertNull($container->get('blabla'));
+       }
+
+
+
+       public function testMake(): void
+       {
+           $container = Container::getInstance();
+
+           $this->assertInstanceOf(FooService::class, $container->make(FooService::class));
+       }
+
+
 }
