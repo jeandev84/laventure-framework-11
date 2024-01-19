@@ -8,11 +8,11 @@ use Laventure\Component\Routing\Route\Route;
 use Laventure\Component\Routing\Router\Router;
 use Laventure\Component\Routing\Router\RouterInterface;
 use PHPUnit\Framework\TestCase;
-use PHPUnitTest\App\Service\BarService;
-use PHPUnitTest\App\Service\Config;
-use PHPUnitTest\App\Service\Contract\ConfigServiceInterface;
-use PHPUnitTest\App\Service\FooService;
-use PHPUnitTest\App\Service\MailerService;
+use PHPUnitTest\App\Config\ConfigService;
+use PHPUnitTest\App\Config\ConfigServiceInterface;
+use PHPUnitTest\App\Services\BarService;
+use PHPUnitTest\App\Services\FooService;
+use PHPUnitTest\App\Services\MailerService;
 use PHPUnitTest\Component\Container\Utils\FakeContainer;
 use Psr\Container\ContainerInterface;
 
@@ -56,7 +56,7 @@ class ContainerTest extends TestCase
            $container->bind('baseUrl', $baseUrl);
            $container->bind(FooService::class, $foo = new FooService());
            $container->bind(BarService::class, new BarService($foo, new MailerService(), $baseUrl));
-           $container->bind(Config::class, new Config(require __DIR__.'/config/app.php'));
+           $container->bind(ConfigService::class, new ConfigService(require __DIR__.'/config/app.php'));
 
            $this->assertSame($baseUrl, $container->get('baseUrl'));
            $this->assertInstanceOf(FooService::class, $container->get(FooService::class));
@@ -105,16 +105,16 @@ class ContainerTest extends TestCase
             $container->bind('config', require __DIR__.'/config/app.php');
             $container->bind(FooService::class, FooService::class);
             $container->bind(ContainerInterface::class, Container::class);
-            $container->bind(Config::class, function (Container $app) {
-                return $app->make(Config::class, ['env' => $app->get('config')]);
+            $container->bind(ConfigService::class, function (Container $app) {
+                return $app->make(ConfigService::class, ['env' => $app->get('config')]);
             });
 
-            #dd($container->make(Config::class, ['env' => $container->get('config')]));
+            #dd($container->make(ConfigService::class, ['env' => $container->get('config')]));
 
             $this->assertInstanceOf(FooService::class, $container->get(FooService::class));
             $this->assertInstanceOf(Container::class, $container->get(ContainerInterface::class));
             $this->assertInstanceOf(ContainerInterface::class, $container->get(ContainerInterface::class));
-            $this->assertInstanceOf(Config::class, $container->get(Config::class));
+            $this->assertInstanceOf(ConfigService::class, $container->get(ConfigService::class));
         }
 
 
@@ -179,15 +179,15 @@ class ContainerTest extends TestCase
             $container->clear();
 
             $container->bind('env', require __DIR__.'/config/app.php');
-            $container->singleton(Config::class, Config::class);
-            $container->aliases(Config::class, [
+            $container->singleton(ConfigService::class, ConfigService::class);
+            $container->aliases(ConfigService::class, [
                 'config',
                 'app.config',
                 ConfigServiceInterface::class
             ]);
 
 
-            $config1 = $container->get(Config::class);
+            $config1 = $container->get(ConfigService::class);
             $config2 = $container->get('config');
             $config3 = $container->get('app.config');
             $config4 = $container->get(ConfigServiceInterface::class);
@@ -209,6 +209,28 @@ class ContainerTest extends TestCase
 
 
 
+
+        public function testProviders(): void
+        {
+            $container = Container::getInstance();
+            $container->clear();
+
+            $providers = [
+                \PHPUnitTest\App\Provider\ConfigurationServiceProvider::class,
+                \PHPUnitTest\App\Provider\FakeRouterServiceProvider::class,
+                \PHPUnitTest\App\Provider\FooServiceProvider::class
+            ];
+
+            $container->addProviders($providers);
+
+            foreach ($providers as $provider) {
+                $this->assertArrayHasKey($provider, $container->getProviders());
+            }
+
+            $this->assertInstanceOf(ConfigService::class, $container->get(ConfigService::class));
+            $this->assertInstanceOf(ConfigService::class, $container->get('config'));
+            $this->assertInstanceOf(ConfigService::class, $container->get(ConfigServiceInterface::class));
+        }
 
 
 }

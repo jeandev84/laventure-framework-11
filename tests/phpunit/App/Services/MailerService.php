@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PHPUnitTest\App\Service;
+namespace PHPUnitTest\App\Services;
 
 use PHPUnitTest\App\Entity\User;
 

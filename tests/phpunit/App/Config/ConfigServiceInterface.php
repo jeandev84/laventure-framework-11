@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PHPUnitTest\App\Service\Contract;
+namespace PHPUnitTest\App\Config;
 
 
 /**
@@ -11,7 +11,7 @@ namespace PHPUnitTest\App\Service\Contract;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  PHPUnitTest\App\Service\Contract
+ * @package  PHPUnitTest\App\ConfigService
  */
 interface ConfigServiceInterface
 {

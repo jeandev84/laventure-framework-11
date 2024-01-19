@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace PHPUnitTest\App\Providers;
+namespace PHPUnitTest\App\Provider;
 
-use Laventure\Component\Container\Container;
 use Laventure\Component\Container\Provider\ServiceProvider;
-use PHPUnitTest\App\Service\Config;
+use PHPUnitTest\App\Config\ConfigService;
+use PHPUnitTest\App\Config\ConfigServiceInterface;
 
 /**
  * ConfigurationServiceProvider
@@ -19,13 +19,21 @@ use PHPUnitTest\App\Service\Config;
 class ConfigurationServiceProvider extends ServiceProvider
 {
 
+    protected array $provides = [
+        ConfigService::class => [
+            'config',
+            ConfigServiceInterface::class
+        ]
+    ];
+
+
     /**
      * @inheritDoc
-    */
+     */
     public function register(): void
     {
-        $this->app->singleton(Config::class, function (Container $app) {
-
+        $this->app->singleton(ConfigService::class, function () {
+            return $this->app->make(ConfigService::class, ['env' => $_ENV]);
         });
     }
 }
