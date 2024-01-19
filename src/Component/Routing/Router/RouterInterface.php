@@ -52,7 +52,7 @@ interface RouterInterface
      *
      * @return bool
     */
-    public function hasRoute(string $name): bool;
+    public function has(string $name): bool;
 
 
 

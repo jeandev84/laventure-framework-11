@@ -40,7 +40,7 @@ class Router extends RouteCollector implements RouterInterface
     */
     public function generate(string $name, array $params = []): ?string
     {
-        if (!$this->hasRoute($name)) {
+        if (!$this->has($name)) {
             return null;
         }
 
@@ -51,9 +51,9 @@ class Router extends RouteCollector implements RouterInterface
 
 
     /**
-     * @inheritDoc
+     * @inheritdoc
     */
-    public function hasRoute(string $name): bool
+    public function has(string $name): bool
     {
         return $this->collection->hasNamedRoute($name);
     }
@@ -61,8 +61,9 @@ class Router extends RouteCollector implements RouterInterface
 
 
 
+
     /**
-     * @inheritDoc
+     * @inheritdoc
     */
     public function getRoute(string $name): ?RouteInterface
     {

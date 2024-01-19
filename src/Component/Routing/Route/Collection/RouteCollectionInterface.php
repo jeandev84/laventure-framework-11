@@ -27,6 +27,41 @@ interface RouteCollectionInterface
 
 
 
+    /**
+     * @param string $controller
+     *
+     * @param RouteInterface $route
+     *
+     * @return mixed
+    */
+    public function addController(string $controller, RouteInterface $route): RouteInterface;
+
+
+
+
+
+    /**
+     * @param string $methods
+     *
+     * @param RouteInterface $route
+     *
+     * @return mixed
+    */
+    public function addMethods(string $methods, RouteInterface $route): RouteInterface;
+
+
+
+
+    /**
+     * @param string $name
+     * @param RouteInterface $route
+     * @return RouteInterface
+    */
+    public function addNamedRoute(string $name, RouteInterface $route): RouteInterface;
+
+
+
+
 
     /**
      * Returns all routes
@@ -44,7 +79,7 @@ interface RouteCollectionInterface
      *
      * @return RouteInterface[]
     */
-    public function getRoutesMethod(string $method): array;
+    public function getMethodRoutes(string $method): array;
 
 
 
@@ -80,7 +115,7 @@ interface RouteCollectionInterface
      *
      * @return RouteInterface[]
     */
-    public function getRoutesController(string $controller): array;
+    public function getControllerRoutes(string $controller): array;
 
 
 
@@ -114,4 +149,22 @@ interface RouteCollectionInterface
      * @return bool
     */
     public function hasNamedRoute(string $name): bool;
+
+
+
+
+    /**
+     * @param string $controller
+     * @return bool
+    */
+    public function hasController(string $controller): bool;
+
+
+
+
+    /**
+     * @param string $methods
+     * @return bool
+    */
+    public function hasMethods(string $methods): bool;
 }

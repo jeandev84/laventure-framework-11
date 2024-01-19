@@ -78,7 +78,7 @@ class RouterTest extends TestCase
     public function testMapRoutesFromAttributes(): void
     {
         $router = RouterTestFactory::create();
-        $router->addRoutesFromAttributes([
+        $router->registerControllers([
             OrderController::class
         ]);
 

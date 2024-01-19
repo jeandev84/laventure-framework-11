@@ -204,14 +204,13 @@ interface RouteCollectorInterface
 
 
     /**
-     * Add route from controller attributes
+     * Add route from controller attributes for example
      *
      * @param array $controllers
      *
      * @return $this
     */
-    public function addRoutesFromAttributes(array $controllers): static;
-
+    public function registerControllers(array $controllers): static;
 
 
 
@@ -223,6 +222,7 @@ interface RouteCollectorInterface
      * @return $this
     */
     public function addResource(ResourceInterface $resource): static;
+
 
 
 

@@ -14,7 +14,7 @@ use Laventure\Component\Routing\Route\Attributes\Route;
  *
  * @package  PHPUnitTest\App\Http\Controllers\Api
  */
-//#[Route(path: '/api/orders',  name: 'api.orders.')]
+#[Route(path: '/api/orders',  name: 'api.orders.')]
 class OrderController
 {
 
