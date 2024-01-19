@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Container;
 
+use Closure;
 use Laventure\Component\Container\Exception\ContainerException;
 use Laventure\Component\Container\Facade\Facade;
 use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;
@@ -17,11 +18,12 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunction;
 use ReflectionFunctionAbstract;
+use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
-
 
 /**
  * Container
@@ -166,16 +168,15 @@ class Container implements ContainerInterface, \ArrayAccess
 
     /**
      * @param string $id
-     * @param mixed $value
+     * @param object $object
      * @return $this
     */
-    public function instance(string $id, mixed $value): static
+    public function instance(string $id, object $object): static
     {
-        $this->instances[$id] = $value;
+        $this->instances[$id] = $object;
 
         return $this;
     }
-
 
 
 
@@ -187,8 +188,8 @@ class Container implements ContainerInterface, \ArrayAccess
     */
     public function instances(array $instances): static
     {
-        foreach ($instances as $id => $value) {
-            $this->instance($id, $value);
+        foreach ($instances as $id => $object) {
+            $this->instance($id, $object);
         }
 
         return $this;
@@ -203,12 +204,14 @@ class Container implements ContainerInterface, \ArrayAccess
     /**
      * @param string $id
      * @return mixed
-    */
+     * @throws ContainerException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
     public function factory(string $id): mixed
     {
-        return (function () use ($id) {
-            return $this->make($id);
-        });
+        return $this->make($id);
     }
 
 
@@ -244,8 +247,9 @@ class Container implements ContainerInterface, \ArrayAccess
 
         if ($this->has($id)) {
 
-            $concrete = $this->getConcrete($id);
-            $value    = $concrete->value();
+            $concrete = $this->bindings[$id];
+            $value    = $this->resolveConcrete($concrete);
+
             if ($concrete->shared()) {
                 return $this->share($id, $value);
             }
@@ -301,7 +305,7 @@ class Container implements ContainerInterface, \ArrayAccess
     {
         // 1. Inspect if class exist
         if (!class_exists($id)) {
-            throw new ContainerException("Could not make instance of ($id).");
+            throw new ContainerException("Could not make instance of ($id) in method (". __METHOD__. ")");
         }
 
         // 2. Inspect the class that we are trying to get from the container
@@ -341,6 +345,9 @@ class Container implements ContainerInterface, \ArrayAccess
     {
         return isset($this->resolved[$id]);
     }
+
+
+
 
 
 
@@ -421,6 +428,57 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
+
+
+
+    /**
+     * @param Closure $func
+     *
+     * @param array $with
+     *
+     * @return mixed
+     * @throws ContainerException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function callAnonymous(Closure $func, array $with = []): mixed
+    {
+        $with = $this->resolveDependencies(new ReflectionFunction($func), $with);
+
+        return call_user_func_array($func, $with);
+    }
+
+
+
+
+
+
+
+    /**
+     * @throws ContainerException
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws ReflectionException
+    */
+    public function call(string $class, string $method, array $with = []): mixed
+    {
+        $object = $this->make($class);
+        $method = new ReflectionMethod($class, $method);
+
+        if ($object instanceof ContainerAwareInterface) {
+            $object->setContainer($this);
+        }
+
+        $with = $this->resolveDependencies($method, $with);
+
+        return call_user_func_array([$object, $method->name], $with);
+    }
+
+
+
+
+
     /**
      * @param string $provider
      * @return ServiceProvider
@@ -430,7 +488,7 @@ class Container implements ContainerInterface, \ArrayAccess
     */
     public function makeProvider(string $provider): ServiceProvider
     {
-         return $this->get($provider);
+        return $this->get($provider);
     }
 
 
@@ -785,6 +843,33 @@ class Container implements ContainerInterface, \ArrayAccess
 
 
 
+
+    /**
+     * @param BoundInterface $concrete
+     * @return mixed
+     * @throws ContainerException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    private function resolveConcrete(BoundInterface $concrete): mixed
+    {
+        $value = $concrete->value();
+
+        if ($concrete->resolvable()) {
+            return $this->resolve($value);
+        }
+
+        if ($concrete->callable()) {
+            $value = $this->callAnonymous($value);
+        }
+
+        return $value;
+    }
+
+
+
+
     /**
      * @param string $service
      *
@@ -811,7 +896,7 @@ class Container implements ContainerInterface, \ArrayAccess
      *
      * @return void
     */
-    protected function bootProvider(ServiceProvider $provider): void
+    private function bootProvider(ServiceProvider $provider): void
     {
         if($provider instanceof BootableServiceProvider) {
             $provider->boot();

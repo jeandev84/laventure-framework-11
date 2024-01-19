@@ -47,4 +47,22 @@ interface BoundInterface
      * @return bool
     */
     public function shared(): bool;
+
+
+
+
+
+    /**
+     * @return bool
+    */
+    public function callable(): bool;
+
+
+
+
+
+    /**
+     * @return bool
+    */
+    public function resolvable(): bool;
 }

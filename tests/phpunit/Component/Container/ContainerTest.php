@@ -4,9 +4,13 @@ declare(strict_types=1);
 namespace PHPUnitTest\Component\Container;
 
 use Laventure\Component\Container\Container;
+use Laventure\Component\Routing\Route\Route;
+use Laventure\Component\Routing\Router\Router;
+use Laventure\Component\Routing\Router\RouterInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnitTest\App\Service\BarService;
 use PHPUnitTest\App\Service\Config;
+use PHPUnitTest\App\Service\Contract\ConfigServiceInterface;
 use PHPUnitTest\App\Service\FooService;
 use PHPUnitTest\App\Service\MailerService;
 use PHPUnitTest\Component\Container\Utils\FakeContainer;
@@ -61,18 +65,150 @@ class ContainerTest extends TestCase
 
 
 
-       public function testMake(): void
-       {
-           $container = Container::getInstance();
-           $container->clear();
 
-           $baseUrl = 'http://localhost:8000';
-           $this->assertInstanceOf(FooService::class, $container->make(FooService::class));
-           $this->assertInstanceOf(BarService::class, $container->make(BarService::class, compact('baseUrl')));
+    public function testResolve()
+    {
+        $container = Container::getInstance();
+        $container->bind('name', 'jean');
+        $container->bind('namespace', "App\\Http\\Controllers");
+        $container->aliases(Container::class, ['app']);
+        $container->singleton(Container::class, $container);
+        $container->singleton(RouterInterface::class, Router::class);
+        $container->singleton(Router::class, Router::class);
+        $container->instance(Route::class, new Route(['GET'], '/', 'HomeConroller@index', 'home'));
+        $container->bind('foo', function (Container $c) {
+            return $c->get('name') . '-claude';
+        });
 
-           $container->bind('baseUrl', $baseUrl);
-           $this->assertInstanceOf(BarService::class, $container->make(BarService::class));
-       }
+        $this->assertSame('jean', $container->get('name'));
+        $this->assertSame('jean-claude', $container->get('foo'));
+        $this->assertInstanceOf(Container::class, $container->get(Container::class));
+        $this->assertInstanceOf(ContainerInterface::class, $container->get(Container::class));
+
+        $this->assertInstanceOf(Container::class, $container->get('app'));
+        $this->assertInstanceOf(ContainerInterface::class, $container->get('app'));
+
+        $this->assertInstanceOf(Router::class, $container->get(RouterInterface::class));
+        $this->assertInstanceOf(Router::class, $container->get(Router::class));
+    }
+
+
+
+
+
+        public function testConcrete(): void
+        {
+            $container = Container::getInstance();
+            $container->clear();
+
+            $container->instance(Container::class, $container);
+            $container->bind('config', require __DIR__.'/config/app.php');
+            $container->bind(FooService::class, FooService::class);
+            $container->bind(ContainerInterface::class, Container::class);
+            $container->bind(Config::class, function (Container $app) {
+                return $app->make(Config::class, ['env' => $app->get('config')]);
+            });
+
+            #dd($container->make(Config::class, ['env' => $container->get('config')]));
+
+            $this->assertInstanceOf(FooService::class, $container->get(FooService::class));
+            $this->assertInstanceOf(Container::class, $container->get(ContainerInterface::class));
+            $this->assertInstanceOf(ContainerInterface::class, $container->get(ContainerInterface::class));
+            $this->assertInstanceOf(Config::class, $container->get(Config::class));
+        }
+
+
+
+          public function testMake(): void
+          {
+             $container = Container::getInstance();
+             $container->clear();
+
+             $baseUrl = 'http://localhost:8000';
+             $this->assertInstanceOf(FooService::class, $container->make(FooService::class));
+             $this->assertInstanceOf(BarService::class, $container->make(BarService::class, compact('baseUrl')));
+
+             $container->bind('baseUrl', $baseUrl);
+             $this->assertInstanceOf(BarService::class, $container->make(BarService::class));
+
+             $instance1 = $container->make(FooService::class);
+             $instance2 = $container->make(FooService::class);
+
+             $this->assertNotSame($instance1, $instance2);
+         }
+
+
+
+
+         public function testFactory(): void
+         {
+            $container = Container::getInstance();
+            $container->clear();
+
+            $baseUrl = 'http://localhost:8000';
+            $container->bind('baseUrl', $baseUrl);
+            $this->assertInstanceOf(FooService::class, $container->factory(FooService::class));
+            $this->assertInstanceOf(BarService::class, $container->factory(BarService::class));
+            $this->assertInstanceOf(BarService::class, $container->factory(BarService::class));
+        }
+
+
+
+
+
+        public function testGet(): void
+        {
+            $container = Container::getInstance();
+            $container->clear();
+
+            $baseUrl = 'http://localhost:8000';
+            $container->bind('baseUrl', $baseUrl);
+            $this->assertInstanceOf(FooService::class, $container->get(FooService::class));
+            $this->assertInstanceOf(BarService::class, $container->get(BarService::class));
+            $this->assertInstanceOf(BarService::class, $container->get(BarService::class));
+        }
+
+
+
+
+
+
+        public function testSingleton(): void
+        {
+            $container = Container::getInstance();
+            $container->clear();
+
+            $container->bind('env', require __DIR__.'/config/app.php');
+            $container->singleton(Config::class, Config::class);
+            $container->aliases(Config::class, [
+                'config',
+                'app.config',
+                ConfigServiceInterface::class
+            ]);
+
+
+            $config1 = $container->get(Config::class);
+            $config2 = $container->get('config');
+            $config3 = $container->get('app.config');
+            $config4 = $container->get(ConfigServiceInterface::class);
+
+
+            $this->assertSame($config1, $config2);
+            $this->assertSame($config1, $config3);
+            $this->assertSame($config1, $config4);
+
+            $this->assertSame($config2, $config1);
+            $this->assertSame($config2, $config3);
+            $this->assertSame($config2, $config4);
+
+            $this->assertSame($config3, $config1);
+            $this->assertSame($config3, $config2);
+            $this->assertSame($config3, $config4);
+        }
+
+
+
+
 
 
 }

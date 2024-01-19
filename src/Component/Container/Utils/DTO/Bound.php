@@ -90,4 +90,25 @@ class Bound implements BoundInterface
     {
         return $this->shared;
     }
+
+
+
+    /**
+     * @return bool
+    */
+    public function callable(): bool
+    {
+        return is_callable($this->value);
+    }
+
+
+
+
+    /**
+     * @return bool
+    */
+    public function resolvable(): bool
+    {
+        return (is_string($this->value) && class_exists($this->value));
+    }
 }
