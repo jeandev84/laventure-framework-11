@@ -1,7 +1,5 @@
 <?php
 
-use Laventure\Component\Routing\Router\Router;
-
 require 'vendor/autoload.php';
 
 /*

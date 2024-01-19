@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Routing\Router\Factory;
+namespace Laventure\Component\Routing\Factory;
 
-use Laventure\Component\Routing\Route\Collection\RouteCollection;
-use Laventure\Component\Routing\Router\RouterInterface;
+use Laventure\Component\Routing\RouterInterface;
 
 /**
  * RouterFactoryInterface
@@ -14,7 +13,7 @@ use Laventure\Component\Routing\Router\RouterInterface;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Routing\Router\Factory
+ * @package  Laventure\Component\Routing\Factory
  */
 interface RouterFactoryInterface
 {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace PHPUnitTest\App\Factory;
 
-use Laventure\Component\Routing\Router\Router;
+use Laventure\Component\Routing\Router;
 
 /**
  * RouterTestFactory
