@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Kernel;
@@ -19,19 +20,19 @@ use Throwable;
  */
 abstract class HttpKernel implements HttpKernelInterface
 {
-     /**
-      * priority middlewares
-      *
-      * @var string[]
-     */
-     protected array $middlewarePriority = [];
+    /**
+     * priority middlewares
+     *
+     * @var string[]
+    */
+    protected array $middlewarePriority = [];
 
 
 
-     /**
-      * priority route middlewares
-      *
-      * @var string[]
-     */
-     protected array $routeMiddlewares = [];
+    /**
+     * priority route middlewares
+     *
+     * @var string[]
+    */
+    protected array $routeMiddlewares = [];
 }

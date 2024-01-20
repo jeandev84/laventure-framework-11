@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Foundation\Http\Response;
@@ -14,5 +15,4 @@ namespace Laventure\Foundation\Http\Response;
  */
 class Response
 {
-
 }

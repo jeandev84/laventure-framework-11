@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Foundation\Templating\Renderer\Adapters;
 
 use Laventure\Component\Templating\Renderer\RendererInterface;
-
 
 /**
  * TwigRendererAdapter
@@ -17,9 +17,6 @@ use Laventure\Component\Templating\Renderer\RendererInterface;
  */
 class TwigRendererAdapter implements RendererInterface
 {
-
-
-
     /**
      * @inheritdoc
      */

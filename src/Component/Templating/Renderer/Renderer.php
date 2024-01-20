@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Renderer;
@@ -16,8 +17,6 @@ use Laventure\Component\Templating\Template\Engine\TemplateEngineInterface;
 */
 class Renderer implements RendererInterface
 {
-
-
     /**
      * @var TemplateEngineInterface
     */
@@ -71,7 +70,7 @@ class Renderer implements RendererInterface
     */
     public function resourcePath(string $path): static
     {
-        $this->engine->resource($path);
+        $this->engine->resourcePath($path);
 
         return $this;
     }
@@ -132,9 +131,9 @@ class Renderer implements RendererInterface
     */
     public function addExtension(object $extension): static
     {
-         $this->extensions[] = $extension;
+        $this->extensions[] = $extension;
 
-         return $this;
+        return $this;
     }
 
 

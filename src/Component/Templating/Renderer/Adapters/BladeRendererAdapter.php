@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Renderer\Adapters;
@@ -16,14 +17,12 @@ use Laventure\Component\Templating\Renderer\RendererInterface;
  */
 class BladeRendererAdapter implements RendererInterface
 {
-
-
     /**
      * @inheritdoc
     */
     public function resourcePath(string $path): static
     {
-         return $this;
+        return $this;
     }
 
 

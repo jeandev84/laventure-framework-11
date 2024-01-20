@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Filter;
@@ -14,5 +15,4 @@ namespace Laventure\Component\Templating\Template\Filter;
 */
 class TemplateFilter
 {
-
 }

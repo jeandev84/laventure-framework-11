@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Kernel\Contract;
-
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,10 +18,10 @@ use Psr\Http\Message\ServerRequestInterface;
 */
 interface TerminableInterface
 {
-      /**
-       * @param $request
-       * @param $response
-       * @return void
-      */
-      public function terminate($request, $response): void;
+    /**
+     * @param $request
+     * @param $response
+     * @return void
+    */
+    public function terminate($request, $response): void;
 }

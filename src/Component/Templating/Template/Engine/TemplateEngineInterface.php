@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Engine;
 
-
-use Laventure\Component\Templating\Template\Cache\TemplateCacheInterface;
+use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
+use Laventure\Component\Templating\Template\Engine\Loader\TemplateLoaderInterface;
 use Laventure\Component\Templating\Template\TemplateInterface;
 
 /**
@@ -20,45 +21,39 @@ interface TemplateEngineInterface
 {
 
 
-       /**
-        * Set resource path
-        *
-        * @param string $path
-        * @return mixed
-       */
-       public function resource(string $path): mixed;
+    /**
+     * @param TemplateLoaderInterface $loader
+     * @return $this
+    */
+    public function setLoader(TemplateLoaderInterface $loader): static;
 
 
 
 
 
-       /**
-        * Returns resource base path
-        *
-        * @return string
-       */
-       public function getResource(): string;
+    /**
+     * @return TemplateLoaderInterface
+    */
+    public function getLoader(): TemplateLoaderInterface;
 
 
 
 
-
-       /**
-        * Cache compiled template or not
-        *
-        * @return TemplateCacheInterface
-       */
-       public function getCache(): TemplateCacheInterface;
+    /**
+     * @param CompilerInterface[] $compilers
+     * @return $this
+    */
+    public function addCompilers(array $compilers): static;
 
 
 
 
 
 
-       /**
-        * @param TemplateInterface $template
-        *
-        * @return string
-       */
-       public function compile(TemplateInterface $template): string;
+    /**
+     * @param TemplateInterface $template
+     *
+     * @return string
+    */
+    public function compile(TemplateInterface $template): string;
 }

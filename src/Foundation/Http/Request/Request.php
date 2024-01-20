@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Foundation\Http\Request;
@@ -14,5 +15,4 @@ namespace Laventure\Foundation\Http\Request;
 */
 class Request
 {
-
 }
