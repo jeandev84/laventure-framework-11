@@ -309,7 +309,7 @@ class Uri implements UriInterface
     */
     public function __toString(): string
     {
-        return UrlEncoder::decode($this->buildUrl());
+        return UrlEncoder::decode($this->build());
     }
 
 
@@ -338,7 +338,7 @@ class Uri implements UriInterface
     /**
      * @return string
     */
-    private function buildUrl(): string
+    private function build(): string
     {
         $url   = [];
         $url[] = ($this->scheme ? "$this->scheme://{$this->getAuthority()}" : '');
