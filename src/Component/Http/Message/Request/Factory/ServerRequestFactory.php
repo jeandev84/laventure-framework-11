@@ -26,4 +26,15 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     {
         return new ServerRequest($method, $uri, $serverParams);
     }
+
+
+
+
+    /**
+     * @return ServerRequestInterface
+    */
+    public static function createFromGlobals(): ServerRequestInterface
+    {
+        return ServerRequest::fromGlobals();
+    }
 }
