@@ -111,6 +111,20 @@ class TemplateEngine implements TemplateEngineInterface
 
 
 
+
+    /**
+     * @inheritDoc
+    */
+    public function getTemplateFactory(): TemplateFactoryInterface
+    {
+        return $this->templateFactory;
+    }
+
+
+
+
+
+
     /**
      * @return CompilerInterface[]
      */
@@ -126,7 +140,7 @@ class TemplateEngine implements TemplateEngineInterface
      * @param CompilerInterface $compiler
      *
      * @return $this
-     */
+    */
     public function addCompiler(CompilerInterface $compiler): static
     {
         $this->compilers[] = $compiler;
@@ -140,7 +154,7 @@ class TemplateEngine implements TemplateEngineInterface
 
     /**
      * @inheritdoc
-     */
+    */
     public function addCompilers(array $compilers): static
     {
         foreach ($compilers as $compiler) {
@@ -156,7 +170,7 @@ class TemplateEngine implements TemplateEngineInterface
 
     /**
      * @inheritDoc
-     */
+    */
     public function compile(TemplateInterface $template): string
     {
         $content = $this->includePaths($template);
@@ -182,7 +196,7 @@ class TemplateEngine implements TemplateEngineInterface
      * @param TemplateInterface $template
      *
      * @return string
-     */
+    */
     private function getContent(TemplateInterface $template): string
     {
         return $this->loadContent($this->loadPath($template->getPath()));
@@ -197,7 +211,7 @@ class TemplateEngine implements TemplateEngineInterface
      * @param string $path
      * @return string
      */
-    public function loadContent(string $path): string
+    private function loadContent(string $path): string
     {
         return $this->loader->loadContent($path);
     }
@@ -208,8 +222,8 @@ class TemplateEngine implements TemplateEngineInterface
     /**
      * @param string $path
      * @return string
-     */
-    public function loadPath(string $path): string
+    */
+    private function loadPath(string $path): string
     {
         return $this->loader->loadPath($path);
     }
@@ -224,7 +238,7 @@ class TemplateEngine implements TemplateEngineInterface
      *
      * @return string
     */
-    public function includePaths(TemplateInterface $template): string
+    private function includePaths(TemplateInterface $template): string
     {
         $pattern = '/{% ?(extends|include) ?\'?(.*?)\'? ?%}/i';
         $content = $this->getContent($template);

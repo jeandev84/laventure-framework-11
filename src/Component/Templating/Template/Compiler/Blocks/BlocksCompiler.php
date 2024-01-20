@@ -43,8 +43,31 @@ class BlocksCompiler implements CompilerInterface
             $content = str_replace($value[0], '', $content);
         }
 
+        return $this->compileYields($content);
+    }
+
+
+
+
+
+
+    /**
+     * @param string $content
+     *
+     * @return string
+    */
+    public function compileYields(string $content): string
+    {
+        foreach ($this->blocks as $name => $value) {
+            $content = preg_replace("/{% yield ?$name ?%}/", $value, $content);
+        }
+
         return $content;
     }
+
+
+
+
 
 
     /**

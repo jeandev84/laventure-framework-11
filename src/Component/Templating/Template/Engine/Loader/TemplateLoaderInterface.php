@@ -33,6 +33,15 @@ interface TemplateLoaderInterface
 
 
 
+
+    /**
+     * @param string $path
+     * @return $this
+    */
+    public function setResourcePath(string $path): static;
+
+
+
     /**
      * @return string
     */

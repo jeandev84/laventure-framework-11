@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Renderer;
 
+use Laventure\Component\Templating\Template\Engine\Loader\TemplateLoader;
+use Laventure\Component\Templating\Template\Engine\Loader\TemplateLoaderInterface;
 use Laventure\Component\Templating\Template\Engine\TemplateEngineInterface;
+use Laventure\Component\Templating\Template\Factory\TemplateFactoryInterface;
+use Laventure\Component\Templating\Template\TemplateInterface;
 
 /**
  * Renderer
@@ -21,7 +25,6 @@ class Renderer implements RendererInterface
      * @var TemplateEngineInterface
     */
     protected TemplateEngineInterface $engine;
-
 
 
 
@@ -50,6 +53,7 @@ class Renderer implements RendererInterface
 
 
 
+
     /**
      * @param TemplateEngineInterface $engine
     */
@@ -70,7 +74,10 @@ class Renderer implements RendererInterface
     */
     public function resourcePath(string $path): static
     {
-        $this->engine->resourcePath($path);
+        $loader = $this->engine->getLoader();
+        $loader->setResourcePath($path);
+
+        $this->engine->setLoader($loader);
 
         return $this;
     }
@@ -142,11 +149,27 @@ class Renderer implements RendererInterface
     /**
      * @inheritDoc
     */
-    public function render(string $template, array $data): string
+    public function render(string $path, array $data = []): string
     {
-        return '';
+        return $this->engine->compile($this->createTemplate($path, $data));
     }
 
+
+
+
+    /**
+     * @param string $template
+     *
+     * @param array $data
+     *
+     * @return TemplateInterface
+    */
+    public function createTemplate(string $template, array $data = []): TemplateInterface
+    {
+        $templateFactory = $this->engine->getTemplateFactory();
+
+        return $templateFactory->createTemplate($template, array_merge($this->data, $data));
+    }
 
 
 
@@ -176,9 +199,21 @@ class Renderer implements RendererInterface
 
     /**
      * @inheritDoc
-     */
+    */
     public function getPaths(): array
     {
         return [];
+    }
+
+
+
+
+
+    /**
+     * @return TemplateEngineInterface
+    */
+    public function getEngine(): TemplateEngineInterface
+    {
+        return $this->engine;
     }
 }

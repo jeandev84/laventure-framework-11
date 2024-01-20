@@ -28,7 +28,7 @@ class TemplateLoader implements TemplateLoaderInterface
     */
     public function __construct(string $resourcePath)
     {
-        $this->resourcePath = $resourcePath;
+        $this->setResourcePath($resourcePath);
     }
 
 
@@ -66,5 +66,15 @@ class TemplateLoader implements TemplateLoaderInterface
     public function getResourcePath(): string
     {
         return $this->resourcePath;
+    }
+
+    /**
+     * @inheritDoc
+    */
+    public function setResourcePath(string $path): static
+    {
+        $this->resourcePath = $path;
+
+        return $this;
     }
 }

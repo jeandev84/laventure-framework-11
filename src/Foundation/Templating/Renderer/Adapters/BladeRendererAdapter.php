@@ -64,7 +64,7 @@ class BladeRendererAdapter implements RendererInterface
     /**
      * @inheritDoc
      */
-    public function render(string $template, array $data): string
+    public function render(string $path, array $data = []): string
     {
         return '';
     }
