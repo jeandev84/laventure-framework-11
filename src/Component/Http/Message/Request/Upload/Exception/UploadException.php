@@ -14,6 +14,8 @@ use Exception;
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
  * @package  Laventure\Component\Http\Message\Request\Upload\Exception
+ *
+ * @see https://www.php.net/manual/en/features.file-upload.errors.php
 */
 class UploadException extends Exception
 {

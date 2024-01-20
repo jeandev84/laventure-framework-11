@@ -22,6 +22,8 @@ use Laventure\Contract\Storage\StorageInterface;
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
  * @package  Laventure\Component\Http\Storage\Session
+ *
+ * @see https://www.php.net/manual/en/ref.session.php
 */
 interface SessionInterface extends StorageInterface, SavePathInterface
 {

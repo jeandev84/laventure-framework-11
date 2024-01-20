@@ -7,13 +7,7 @@ namespace Laventure\Component\Http\Storage\Cookie;
 use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
 
 /**
- * Cookie
- *
- * @author Jean-Claude <jeanyao@ymail.com>
- *
- * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
- *
- * @package  Laventure\Component\Http\Cookie
+ * @inheritdoc
 */
 class Cookie implements CookieInterface
 {
