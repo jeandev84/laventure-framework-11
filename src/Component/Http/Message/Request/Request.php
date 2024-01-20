@@ -58,7 +58,7 @@ class Request extends Message implements RequestInterface
 
         $this->method = strtoupper($method);
         $this->uri    = $uri;
-        $this->target = (string)$uri;
+        $this->target = strval($uri);
     }
 
 
