@@ -246,6 +246,9 @@ class ServerRequest extends Request implements ServerRequestInterface
 
 
 
+    /**
+     * @return static
+    */
     public static function fromGlobals(): static
     {
         $server  = new ServerParams($_SERVER);

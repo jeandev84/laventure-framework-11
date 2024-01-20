@@ -109,7 +109,7 @@ class Uri implements UriInterface
     public function __construct(string $uri = '')
     {
         if ($uri !== '') {
-            $this->parse(new UrlInfo($uri));
+            $this->parse($uri);
         }
     }
 
@@ -313,15 +313,13 @@ class Uri implements UriInterface
     }
 
 
-
-
-
     /**
-     * @param UrlInfo $info
+     * @param string $uri
      * @return void
     */
-    private function parse(UrlInfo $info): void
+    private function parse(string $uri): void
     {
+        $info = new UrlInfo($uri);
         $this->withScheme($info->getScheme())
              ->withUserInfo($info->getUsername(), $info->getPassword())
              ->withHost($info->getHost())
