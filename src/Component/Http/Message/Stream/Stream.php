@@ -75,7 +75,7 @@ class Stream implements StreamInterface
      * @param string $accessMode
      * @throws StreamException
     */
-    public function __construct($resource, string $accessMode = '')
+    public function __construct($resource, string $accessMode)
     {
         if (is_string($resource)) {
             $resource = fopen($resource, $accessMode);

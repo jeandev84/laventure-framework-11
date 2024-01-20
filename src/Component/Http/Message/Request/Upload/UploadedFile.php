@@ -26,7 +26,12 @@ class UploadedFile implements UploadedFileInterface
      * @var StreamInterface
     */
     protected $stream;
-
+    protected int $error;
+    protected ?string $clientFilename;
+    protected ?string $clientMediaType;
+    protected ?int $size;
+    protected ?string $fullPath;
+    protected ?string $tempName;
 
 
     /**
@@ -36,15 +41,23 @@ class UploadedFile implements UploadedFileInterface
      * @param int|null $size
      * @param string|null $fullPath
      * @param string|null $tempName
+     * @throws StreamException
     */
     public function __construct(
-        protected int $error,
-        protected ?string $clientFilename,
-        protected ?string $clientMediaType,
-        protected ?int $size,
-        protected ?string $fullPath,
-        protected ?string $tempName
+        int $error,
+        ?string $clientFilename,
+        ?string $clientMediaType,
+        ?int $size,
+        ?string $fullPath,
+        ?string $tempName
     ) {
+        $this->error           = $error;
+        $this->clientFilename  = $clientFilename;
+        $this->clientMediaType = $clientMediaType;
+        $this->size            = $size;
+        $this->fullPath        = $fullPath;
+        $this->tempName        = $tempName;
+        $this->stream          = new Stream($tempName, 'r+');
     }
 
 
@@ -68,14 +81,10 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * @inheritDoc
-     * @throws StreamException
+     * @return StreamInterface
     */
     public function getStream(): StreamInterface
     {
-        if (! $this->stream) {
-            $this->stream = new Stream($this->fullPath);
-        }
-
         return $this->stream;
     }
 

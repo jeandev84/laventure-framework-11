@@ -51,6 +51,6 @@ class StreamFactory implements StreamFactoryInterface
      */
     public function createStreamFromResource($resource): StreamInterface
     {
-        return new Stream($resource);
+        return new Stream($resource, 'r+w+');
     }
 }
