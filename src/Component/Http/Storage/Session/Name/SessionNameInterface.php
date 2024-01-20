@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Name;
-
 
 use Stringable;
 
@@ -17,22 +17,21 @@ use Stringable;
 */
 interface SessionNameInterface extends Stringable
 {
-
-     /**
-      * Set session name
-      *
-      * @param string $name
-      * @return void
-     */
-     public function set(string $name): void;
-
+    /**
+     * Set session name
+     *
+     * @param string $name
+     * @return void
+    */
+    public function set(string $name): void;
 
 
 
-     /**
-      * Returns session name
-      *
-      * @return string
-     */
-     public function get(): string;
+
+    /**
+     * Returns session name
+     *
+     * @return string
+    */
+    public function get(): string;
 }

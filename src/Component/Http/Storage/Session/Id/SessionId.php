@@ -20,7 +20,7 @@ class SessionId implements SessionIdInterface
     */
     public function set(string $id): string
     {
-         return session_id($id);
+        return session_id($id);
     }
 
 

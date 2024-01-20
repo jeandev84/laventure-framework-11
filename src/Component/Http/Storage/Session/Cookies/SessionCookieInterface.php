@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Cookies;
-
 
 use Laventure\Component\Http\Storage\Session\Cookies\DTO\SessionCookieParams;
 
@@ -17,30 +17,29 @@ use Laventure\Component\Http\Storage\Session\Cookies\DTO\SessionCookieParams;
  */
 interface SessionCookieInterface
 {
-
-     /**
-      * @param SessionCookieParams $dto
-      *
-      * @return mixed
-     */
-     public function setParams(SessionCookieParams $dto): mixed;
-
-
-
-
-     /**
-      * @param array $options
-      *
-      * @return mixed
-     */
-     public function setParamsFromArray(array $options): mixed;
+    /**
+     * @param SessionCookieParams $dto
+     *
+     * @return mixed
+    */
+    public function setParams(SessionCookieParams $dto): mixed;
 
 
 
 
+    /**
+     * @param array $options
+     *
+     * @return mixed
+    */
+    public function setParamsFromArray(array $options): mixed;
 
-     /**
-      * @return mixed
-     */
-     public function getParams(): mixed;
+
+
+
+
+    /**
+     * @return mixed
+    */
+    public function getParams(): mixed;
 }

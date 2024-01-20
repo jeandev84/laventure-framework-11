@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Contract\Storage;
-
 
 /**
  * SavePathInterface
@@ -15,7 +15,6 @@ namespace Laventure\Contract\Storage;
 */
 interface SavePathInterface
 {
-
     /**
      * save session in file
      *

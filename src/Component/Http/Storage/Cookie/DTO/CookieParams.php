@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Cookie\DTO;
@@ -14,8 +15,6 @@ namespace Laventure\Component\Http\Storage\Cookie\DTO;
 */
 class CookieParams implements CookieParamsInterface
 {
-
-
     /**
      * @var string
     */
@@ -31,7 +30,7 @@ class CookieParams implements CookieParamsInterface
     /**
      * @var int
     */
-    protected int $expires = 3600;
+    protected int $expires = 0;
 
 
 
@@ -176,7 +175,7 @@ class CookieParams implements CookieParamsInterface
      */
     public function getName(): string
     {
-        // TODO: Implement getName() method.
+        return $this->name;
     }
 
 
@@ -188,46 +187,63 @@ class CookieParams implements CookieParamsInterface
      */
     public function getValue(): string
     {
-        // TODO: Implement getValue() method.
+        return $this->value;
     }
+
+
+
 
     /**
      * @inheritDoc
-     */
+    */
     public function getExpires(): int
     {
-        // TODO: Implement getExpires() method.
+        return $this->expires;
     }
+
+
+
 
     /**
      * @inheritDoc
-     */
+    */
     public function getPath(): string
     {
-        // TODO: Implement getPath() method.
+        return $this->path;
     }
+
+
+
+
 
     /**
      * @inheritDoc
-     */
+    */
     public function getDomain(): string
     {
-        // TODO: Implement getDomain() method.
+        return $this->domain;
     }
+
+
+
 
     /**
      * @inheritDoc
-     */
+    */
     public function getSecure(): bool
     {
-        // TODO: Implement getSecure() method.
+        return $this->secure;
     }
+
+
+
+
 
     /**
      * @inheritDoc
-     */
+    */
     public function getHttpOnly(): bool
     {
-        // TODO: Implement getHttpOnly() method.
+        return $this->httpOnly;
     }
 }

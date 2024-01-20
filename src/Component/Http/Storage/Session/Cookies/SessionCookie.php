@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Cookies;
@@ -16,7 +17,6 @@ use Laventure\Component\Http\Storage\Session\Cookies\DTO\SessionCookieParams;
  */
 class SessionCookie implements SessionCookieInterface
 {
-
     /**
      * @inheritDoc
     */

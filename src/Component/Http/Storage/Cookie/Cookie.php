@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Cookie;
@@ -16,8 +17,6 @@ use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
 */
 class Cookie implements CookieInterface
 {
-
-
     /**
      * @var CookieParamsInterface
     */
@@ -29,7 +28,7 @@ class Cookie implements CookieInterface
     */
     public function __construct(CookieParamsInterface $dto)
     {
-         setcookie(
+        setcookie(
             $dto->getName(),
             $dto->getValue(),
             $dto->getExpires(),

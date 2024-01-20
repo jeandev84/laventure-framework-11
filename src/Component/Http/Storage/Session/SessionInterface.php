@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session;
@@ -24,7 +25,6 @@ use Laventure\Contract\Storage\StorageInterface;
 */
 interface SessionInterface extends StorageInterface, SavePathInterface
 {
-
     /**
      * Returns the name of session
      *

@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Flash;
-
 
 use Laventure\Contract\Storage\StorageInterface;
 
@@ -17,8 +17,6 @@ use Laventure\Contract\Storage\StorageInterface;
 */
 interface SessionFlashInterface extends StorageInterface
 {
-
-
     /**
      * Set flash key
      *

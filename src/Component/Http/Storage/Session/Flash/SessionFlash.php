@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Flash;
@@ -16,7 +17,6 @@ use Laventure\Component\Http\Storage\Session\SessionInterface;
 */
 class SessionFlash implements SessionFlashInterface
 {
-
     /**
      * @var string
     */
@@ -97,9 +97,11 @@ class SessionFlash implements SessionFlashInterface
     /**
      * @inheritDoc
     */
-    public function forget($id): void
+    public function forget($id): bool
     {
         unset($id);
+
+        return false;
     }
 
 
@@ -119,7 +121,50 @@ class SessionFlash implements SessionFlashInterface
     /**
      * @inheritDoc
     */
-    public function destroy(): void
+    public function destroy(): bool
+    {
+        return false;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function offsetExists(mixed $offset): bool
+    {
+        return false;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function offsetGet(mixed $offset): mixed
+    {
+        return false;
+    }
+
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+
+    }
+
+
+
+    /**
+     * @inheritDoc
+    */
+    public function offsetUnset(mixed $offset): void
     {
 
     }

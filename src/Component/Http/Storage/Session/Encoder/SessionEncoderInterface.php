@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Encoder;
-
 
 /**
  * SessionEncoderInterface
@@ -15,16 +15,15 @@ namespace Laventure\Component\Http\Storage\Session\Encoder;
 */
 interface SessionEncoderInterface
 {
+    /**
+     * @return mixed
+    */
+    public function encode(): mixed;
 
-     /**
-      * @return mixed
-     */
-     public function encode(): mixed;
 
-
-     /**
-      * @param string $data
-      * @return mixed
-     */
-     public function decode(string $data): mixed;
+    /**
+     * @param string $data
+     * @return mixed
+    */
+    public function decode(string $data): mixed;
 }

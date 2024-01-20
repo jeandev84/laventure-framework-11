@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Contract\Storage;
-
 
 use ArrayAccess;
 
@@ -17,8 +17,6 @@ use ArrayAccess;
 */
 interface StorageInterface extends ArrayAccess
 {
-
-
     /**
      * @param $id
      * @param $value
@@ -75,16 +73,4 @@ interface StorageInterface extends ArrayAccess
      * @return mixed
     */
     public function destroy(): mixed;
-
-
-
-
-
-
-    /**
-     * Save some data
-     *
-     * @return mixed
-    */
-    public function save(): mixed;
 }

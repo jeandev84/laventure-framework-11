@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Cookie\DTO;
-
 
 /**
  * CookieParamsInterface
@@ -15,48 +15,47 @@ namespace Laventure\Component\Http\Storage\Cookie\DTO;
 */
 interface CookieParamsInterface
 {
-
-     /**
-      * @return string
-     */
-     public function getName(): string;
-
-
-
-
-     /**
-      * @return string
-     */
-     public function getValue(): string;
+    /**
+     * @return string
+    */
+    public function getName(): string;
 
 
 
 
-
-     /**
-      * @return int
-     */
-     public function getExpires(): int;
+    /**
+     * @return string
+    */
+    public function getValue(): string;
 
 
 
 
 
-
-     /**
-      * @return string
-     */
-     public function getPath(): string;
+    /**
+     * @return int
+    */
+    public function getExpires(): int;
 
 
 
 
 
 
-     /**
-      * @return string
-     */
-     public function getDomain(): string;
+    /**
+     * @return string
+    */
+    public function getPath(): string;
+
+
+
+
+
+
+    /**
+     * @return string
+    */
+    public function getDomain(): string;
 
 
 
@@ -64,18 +63,18 @@ interface CookieParamsInterface
 
 
 
-     /**
-      * @return bool
-     */
-     public function getSecure(): bool;
+    /**
+     * @return bool
+    */
+    public function getSecure(): bool;
 
 
 
 
 
 
-     /**
-      * @return bool
-     */
-     public function getHttpOnly(): bool;
+    /**
+     * @return bool
+    */
+    public function getHttpOnly(): bool;
 }

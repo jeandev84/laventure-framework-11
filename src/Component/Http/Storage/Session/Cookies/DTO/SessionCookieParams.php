@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Cookies\DTO;
@@ -14,7 +15,6 @@ namespace Laventure\Component\Http\Storage\Session\Cookies\DTO;
 */
 class SessionCookieParams
 {
-
     /**
      * @param int $lifetimes
      * @param string|null $path
@@ -28,7 +28,6 @@ class SessionCookieParams
         public ?string $domain = null,
         public ?bool   $secure = null,
         public ?bool   $httponly = null
-    )
-    {
+    ) {
     }
 }

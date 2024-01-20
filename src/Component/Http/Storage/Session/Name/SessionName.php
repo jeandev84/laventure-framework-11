@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Name;
@@ -14,7 +15,6 @@ namespace Laventure\Component\Http\Storage\Session\Name;
 */
 class SessionName implements SessionNameInterface
 {
-
     /**
      * @inheritDoc
     */

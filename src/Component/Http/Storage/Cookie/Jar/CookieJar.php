@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Cookie\Jar;
 
 use Laventure\Component\Http\Storage\Cookie\Cookie;
+use Laventure\Component\Http\Storage\Cookie\CookieInterface;
 use Laventure\Component\Http\Storage\Cookie\DTO\CookieParams;
 use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
 
@@ -16,10 +18,8 @@ use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
  *
  * @package  Laventure\Component\Http\Storage\Cookie\Jar
 */
-class CookieJar extends  CookieParams implements CookieJarInterface
+class CookieJar extends CookieParams implements CookieJarInterface
 {
-
-
     /**
      * @var array
     */
@@ -44,7 +44,7 @@ class CookieJar extends  CookieParams implements CookieJarInterface
     */
     public function set($id, $value): static
     {
-       return $this->name($id)->value($value);
+        return $this->name($id)->value($value);
     }
 
 
@@ -66,7 +66,7 @@ class CookieJar extends  CookieParams implements CookieJarInterface
     */
     public function get($id, $default = null): mixed
     {
-         return $this->cookies[$id] ?? $default;
+        return $this->cookies[$id] ?? $default;
     }
 
 
@@ -78,13 +78,13 @@ class CookieJar extends  CookieParams implements CookieJarInterface
     */
     public function forget($id): bool
     {
-         $this->set($id, '')
-              ->expireAfter(time() - 3600)
-              ->save();
+        $this->set($id, '')
+             ->expireAfter(time() - 3600)
+             ->save();
 
-         unset($this->cookies[$id]);
+        unset($this->cookies[$id]);
 
-         return !$this->has($id);
+        return !$this->has($id);
     }
 
 
@@ -108,7 +108,7 @@ class CookieJar extends  CookieParams implements CookieJarInterface
     public function destroy(): bool
     {
         foreach (array_keys($this->cookies) as $id) {
-             $this->forget($id);
+            $this->forget($id);
         }
 
         return empty($this->cookies);
@@ -120,7 +120,7 @@ class CookieJar extends  CookieParams implements CookieJarInterface
     /**
      * @inheritdoc
     */
-    public function save(): Cookie
+    public function save(): CookieInterface
     {
         return new Cookie($this);
     }
@@ -165,6 +165,6 @@ class CookieJar extends  CookieParams implements CookieJarInterface
     */
     public function offsetUnset(mixed $offset): void
     {
-         $this->forget($offset);
+        $this->forget($offset);
     }
 }

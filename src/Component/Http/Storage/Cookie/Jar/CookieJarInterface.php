@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Cookie\Jar;
 
-
+use Laventure\Component\Http\Storage\Cookie\CookieInterface;
 use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
 use Laventure\Contract\Storage\StorageInterface;
 
@@ -18,5 +19,10 @@ use Laventure\Contract\Storage\StorageInterface;
 */
 interface CookieJarInterface extends StorageInterface, CookieParamsInterface
 {
-
+    /**
+     * Save cookie
+     *
+     * @return CookieInterface
+    */
+    public function save(): CookieInterface;
 }

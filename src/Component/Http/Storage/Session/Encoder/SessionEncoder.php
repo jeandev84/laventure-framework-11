@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Encoder;
@@ -14,7 +15,6 @@ namespace Laventure\Component\Http\Storage\Session\Encoder;
 */
 class SessionEncoder implements SessionEncoderInterface
 {
-
     /**
      * @inheritDoc
     */

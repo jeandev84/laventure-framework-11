@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Session\Module;
-
 
 /**
  * SessionModuleInterface
@@ -15,12 +15,11 @@ namespace Laventure\Component\Http\Storage\Session\Module;
 */
 interface SessionModuleInterface
 {
-
-       /**
-        * Returns session module name
-        *
-        * @param string|null $module
-        * @return string
-       */
-       public function name(string $module = null): string;
+    /**
+     * Returns session module name
+     *
+     * @param string|null $module
+     * @return string
+    */
+    public function name(string $module = null): string;
 }

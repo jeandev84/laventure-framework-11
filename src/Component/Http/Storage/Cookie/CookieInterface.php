@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Storage\Cookie;
-
 
 use Laventure\Component\Http\Storage\Cookie\DTO\CookieParams;
 use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
@@ -18,16 +18,16 @@ use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
 */
 interface CookieInterface
 {
-      /**
-       * @param CookieParams $dto
-      */
-      public function __construct(CookieParams $dto);
+    /**
+     * @param CookieParams $dto
+    */
+    public function __construct(CookieParams $dto);
 
 
 
 
-      /**
-       * @return CookieParamsInterface
-      */
-      public function getParams(): CookieParamsInterface;
+    /**
+     * @return CookieParamsInterface
+    */
+    public function getParams(): CookieParamsInterface;
 }
