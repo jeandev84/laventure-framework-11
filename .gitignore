@@ -3,7 +3,7 @@ composer.lock
 vendor
 public
 tools
-demo.php
+console.php
 fixer.php
 .php-cs-fixer.cache
 .phpunit.result.cache

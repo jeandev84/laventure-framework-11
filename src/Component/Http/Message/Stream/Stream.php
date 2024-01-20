@@ -48,34 +48,21 @@ class Stream implements StreamInterface
 
 
 
-
-    /**
-     * @var string|null
-     */
-    protected ?string $accessMode;
-
-
-
-    /**
-     * @var bool|null
-     */
-    protected ?bool $includePath = false;
-
-
-
     /**
      * @var resource|null
      */
     protected $context;
 
 
+
+
     /**
-     * @param $resource
+     * @param resource|string $resource
      *
      * @param string $accessMode
      * @throws StreamException
     */
-    public function __construct($resource, string $accessMode)
+    public function __construct(mixed $resource, string $accessMode = 'r')
     {
         if (is_string($resource)) {
             $resource = fopen($resource, $accessMode);
@@ -118,7 +105,7 @@ class Stream implements StreamInterface
      */
     public function getSize(): ?int
     {
-        return fstat($this->stream)['size'];
+        return fstat($this->stream)['size'] ?? null;
     }
 
 
