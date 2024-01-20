@@ -51,13 +51,17 @@ class UploadedFile implements UploadedFileInterface
         ?string $fullPath,
         ?string $tempName
     ) {
+
+        if ($tempName) {
+            $this->stream = new Stream($tempName, 'r+');
+        }
+
         $this->error           = $error;
         $this->clientFilename  = $clientFilename;
         $this->clientMediaType = $clientMediaType;
         $this->size            = $size;
         $this->fullPath        = $fullPath;
         $this->tempName        = $tempName;
-        $this->stream          = new Stream($tempName, 'r+');
     }
 
 
@@ -89,10 +93,9 @@ class UploadedFile implements UploadedFileInterface
     }
 
 
-
-
     /**
      * @inheritDoc
+     * @param string $targetPath
      * @throws UploadException
     */
     public function moveTo(string $targetPath): void
