@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Foundation\Templating\Renderer\Adapters;
-
 
 use Laventure\Component\Templating\Renderer\RendererInterface;
 
@@ -17,8 +17,6 @@ use Laventure\Component\Templating\Renderer\RendererInterface;
 */
 class SmartyRendererAdapter implements RendererInterface
 {
-
-
     /**
      * @inheritdoc
     */

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Foundation;
@@ -16,5 +17,4 @@ use Laventure\Component\Container\Container;
 */
 class Application extends Container
 {
-
 }

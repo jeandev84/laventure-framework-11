@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template;
-
 
 use Stringable;
 
@@ -17,7 +17,6 @@ use Stringable;
 */
 interface TemplateInterface extends Stringable
 {
-
     /**
      * Returns path of template
      *

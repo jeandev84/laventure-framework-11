@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Kernel\Contract;
-
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,11 +18,10 @@ use Psr\Http\Message\ServerRequestInterface;
 */
 interface HttpKernelInterface extends TerminableInterface
 {
-
-      /**
-       * @param $request
-       *
-       * @return mixed
-      */
-      public function handle($request): mixed;
+    /**
+     * @param $request
+     *
+     * @return mixed
+    */
+    public function handle($request): mixed;
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template;
@@ -10,7 +11,6 @@ use Laventure\Component\Templating\Template\Exception\NotFoundTemplateException;
 */
 class Template implements TemplateInterface
 {
-
     /**
      * @var string
     */

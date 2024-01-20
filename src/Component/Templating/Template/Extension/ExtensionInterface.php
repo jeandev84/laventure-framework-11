@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Extension;
-
 
 use Laventure\Component\Templating\Template\Filter\TemplateFilter;
 use Laventure\Component\Templating\Template\Function\TemplateFunction;
