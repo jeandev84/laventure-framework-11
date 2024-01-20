@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request\Body;
@@ -16,7 +17,6 @@ use Laventure\Component\Http\Message\Stream\Stream;
 */
 class RequestBody extends Stream
 {
-
     public function __construct()
     {
         parent::__construct('php://input', 'r+');

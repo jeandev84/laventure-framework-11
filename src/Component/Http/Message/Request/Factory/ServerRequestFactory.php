@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request\Factory;
@@ -18,12 +19,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
-
     /**
      * @inheritDoc
     */
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-         return new ServerRequest($method, $uri, $serverParams);
+        return new ServerRequest($method, $uri, $serverParams);
     }
 }

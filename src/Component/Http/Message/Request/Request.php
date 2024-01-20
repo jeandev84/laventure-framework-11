@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request;
@@ -20,7 +21,6 @@ use Psr\Http\Message\UriInterface;
 */
 class Request extends Message implements RequestInterface
 {
-
     /**
      * @var string
     */
@@ -56,6 +56,7 @@ class Request extends Message implements RequestInterface
             $uri = new Uri($uri);
         }
 
+        $this->method = strtoupper($method);
         $this->uri    = $uri;
         $this->target = (string)$uri;
     }
@@ -78,9 +79,9 @@ class Request extends Message implements RequestInterface
     */
     public function withRequestTarget(string $requestTarget): static
     {
-         $this->target = $requestTarget;
+        $this->target = $requestTarget;
 
-         return $this;
+        return $this;
     }
 
 
@@ -102,9 +103,9 @@ class Request extends Message implements RequestInterface
     */
     public function withMethod(string $method): static
     {
-         $this->method = $method;
+        $this->method = $method;
 
-         return $this;
+        return $this;
     }
 
 
@@ -126,8 +127,8 @@ class Request extends Message implements RequestInterface
     */
     public function withUri(UriInterface $uri, bool $preserveHost = false): static
     {
-         $this->uri = $uri;
+        $this->uri = $uri;
 
-         return $this;
+        return $this;
     }
 }

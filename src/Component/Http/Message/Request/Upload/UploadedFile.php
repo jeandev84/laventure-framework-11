@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request\Upload;
 
 use Laventure\Component\Http\Message\Request\Upload\DTO\File;
 use Laventure\Component\Http\Message\Request\Upload\Exception\UploadException;
+use Laventure\Component\Http\Message\Stream\Exception\StreamException;
 use Laventure\Component\Http\Message\Stream\Stream;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -20,12 +22,11 @@ use Psr\Http\Message\UploadedFileInterface;
 */
 class UploadedFile implements UploadedFileInterface
 {
-
-
     /**
      * @var StreamInterface
     */
     protected $stream;
+
 
 
     /**
@@ -43,8 +44,7 @@ class UploadedFile implements UploadedFileInterface
         protected ?int $size,
         protected ?string $fullPath,
         protected ?string $tempName
-    )
-    {
+    ) {
     }
 
 
@@ -68,11 +68,12 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * @inheritDoc
+     * @throws StreamException
     */
     public function getStream(): StreamInterface
     {
         if (! $this->stream) {
-            $this->stream = new Stream('');
+            $this->stream = new Stream($this->fullPath);
         }
 
         return $this->stream;

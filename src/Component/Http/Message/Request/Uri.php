@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request;
 
+use Laventure\Component\Http\Message\Request\Utils\UrlInfo;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -16,7 +18,6 @@ use Psr\Http\Message\UriInterface;
 */
 class Uri implements UriInterface
 {
-
     /**
      * Get scheme
      *
@@ -106,6 +107,9 @@ class Uri implements UriInterface
     */
     public function __construct(string $uri = '')
     {
+         if ($uri !== '') {
+             $this->parse(new UrlInfo($uri));
+         }
     }
 
 
@@ -127,7 +131,19 @@ class Uri implements UriInterface
     */
     public function getAuthority(): string
     {
-        return '';
+        $authority = '';
+
+        if ($this->username) {
+            $authority .= sprintf('%s@', $this->getUserInfo());
+        }
+
+        $authority .= $this->host;
+
+        if ($this->port) {
+            $authority .= sprintf(':%s', $this->port);
+        }
+
+        return $authority;
     }
 
 
@@ -138,7 +154,7 @@ class Uri implements UriInterface
     */
     public function getUserInfo(): string
     {
-        return '';
+        return "$this->username:$this->password";
     }
 
 
@@ -292,6 +308,43 @@ class Uri implements UriInterface
     */
     public function __toString(): string
     {
-        return '';
+         return urldecode($this->buildUrl());
+    }
+
+
+
+
+
+    /**
+     * @param UrlInfo $info
+     * @return void
+    */
+    private function parse(UrlInfo $info): void
+    {
+        $this->withScheme($info->getScheme())
+             ->withUserInfo($info->getUsername(), $info->getPassword())
+             ->withHost($info->getHost())
+             ->withPort($info->getPort())
+             ->withPath($info->getPath())
+             ->withQuery($info->getQuery())
+             ->withFragment($info->getFragment());
+    }
+
+
+
+
+
+    /**
+     * @return string
+    */
+    private function buildUrl(): string
+    {
+        $url   = [];
+        $url[] = ($this->scheme ? "$this->scheme://{$this->getAuthority()}" : '');
+        $url[] = $this->path;
+        $url[] = ($this->query ? "?$this->query" : '');
+        $url[] = ($this->fragment ? "#$this->fragment" : '');
+
+        return join(array_filter($url));
     }
 }

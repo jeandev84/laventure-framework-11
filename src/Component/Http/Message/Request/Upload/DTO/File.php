@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request\Upload\DTO;
@@ -14,7 +15,6 @@ namespace Laventure\Component\Http\Message\Request\Upload\DTO;
 */
 class File
 {
-
     /**
      * @param string|null $name
      * @param string|null $fullPath
@@ -30,7 +30,6 @@ class File
         public ?string $tempName,
         public ?int $error,
         public ?int $size
-    )
-    {
+    ) {
     }
 }

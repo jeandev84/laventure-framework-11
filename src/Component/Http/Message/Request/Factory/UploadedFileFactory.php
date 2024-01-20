@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request\Factory;
@@ -20,7 +21,6 @@ use Psr\Http\Message\UploadedFileInterface;
  */
 class UploadedFileFactory implements UploadedFileFactoryInterface
 {
-
     /**
      * @inheritDoc
     */
@@ -30,15 +30,14 @@ class UploadedFileFactory implements UploadedFileFactoryInterface
         int $error = \UPLOAD_ERR_OK,
         string $clientFilename = null,
         string $clientMediaType = null
-    ): UploadedFileInterface
-    {
+    ): UploadedFileInterface {
         $uploadedFile = new UploadedFile(
             $error,
             $clientFilename,
             $clientMediaType,
             $size,
-     null,
-   null
+            null,
+            null
         );
         $uploadedFile->withStream($stream);
         return $uploadedFile;
@@ -51,14 +50,14 @@ class UploadedFileFactory implements UploadedFileFactoryInterface
     */
     public static function createFromDto(File $file): UploadedFileInterface
     {
-         return new UploadedFile(
-             $file->error,
-             $file->name,
-             $file->type,
-             $file->size,
-             $file->fullPath,
-             $file->tempName
-         );
+        return new UploadedFile(
+            $file->error,
+            $file->name,
+            $file->type,
+            $file->size,
+            $file->fullPath,
+            $file->tempName
+        );
     }
 
 

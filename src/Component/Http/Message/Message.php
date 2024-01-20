@@ -1,13 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message;
 
-
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
-
-
 
 /**
  * Message

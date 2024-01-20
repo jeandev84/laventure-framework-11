@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request\Factory;
@@ -18,7 +19,6 @@ use Psr\Http\Message\RequestInterface;
 */
 class RequestFactory implements RequestFactoryInterface
 {
-
     /**
      * @inheritDoc
     */

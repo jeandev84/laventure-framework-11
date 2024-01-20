@@ -17,8 +17,6 @@ use Laventure\Component\Http\Message\Stream\Exception\StreamException;
  */
 class IsStream
 {
-
-
     /**
      * @var resource
     */

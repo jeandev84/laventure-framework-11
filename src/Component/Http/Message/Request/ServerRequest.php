@@ -1,8 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request;
 
+use Laventure\Component\Http\Message\Request\Utils\Normalizer\FileNormalizer;
+use Laventure\Component\Http\Message\Request\Utils\ServerParams;
+use Laventure\Component\Http\Utils\Params\Parameter;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
@@ -18,8 +22,6 @@ use Psr\Http\Message\UriInterface;
 */
 class ServerRequest extends Request implements ServerRequestInterface
 {
-
-
     /**
      * @var array
     */
@@ -73,8 +75,8 @@ class ServerRequest extends Request implements ServerRequestInterface
     */
     public function __construct(string $method, UriInterface|string $uri, array $server = [])
     {
-         parent::__construct($method, $uri);
-         $this->server = $server;
+        parent::__construct($method, $uri);
+        $this->server = $server;
     }
 
 
@@ -110,9 +112,9 @@ class ServerRequest extends Request implements ServerRequestInterface
     */
     public function withCookieParams(array $cookies): static
     {
-         $this->cookies = $cookies;
+        $this->cookies = $cookies;
 
-         return $this;
+        return $this;
     }
 
 
@@ -161,9 +163,9 @@ class ServerRequest extends Request implements ServerRequestInterface
     */
     public function withUploadedFiles(array $uploadedFiles): static
     {
-         $this->uploadedFiles = $uploadedFiles;
+        $this->uploadedFiles = $uploadedFiles;
 
-         return $this;
+        return $this;
     }
 
 
@@ -175,7 +177,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     */
     public function getParsedBody(): mixed
     {
-         return $this->parsedBody;
+        return $this->parsedBody;
     }
 
 
@@ -212,7 +214,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     */
     public function getAttribute(string $name, $default = null): mixed
     {
-          return $this->attributes[$name] ?? $default;
+        return $this->attributes[$name] ?? $default;
     }
 
 
@@ -237,9 +239,9 @@ class ServerRequest extends Request implements ServerRequestInterface
     */
     public function withoutAttribute(string $name): static
     {
-          unset($this->attributes[$name]);
+        unset($this->attributes[$name]);
 
-          return $this;
+        return $this;
     }
 
 
@@ -247,6 +249,19 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     public static function fromGlobals(): static
     {
-        //
+         $server  = new ServerParams($_SERVER);
+         $request = new self(
+             $server->getMethod(),
+             $server->createUriFromGlobals(),
+             $server->all()
+         );
+         $request->withQueryParams($_GET)
+                 ->withParsedBody($_POST)
+                 ->withHeaders(getallheaders())
+                 ->withCookieParams($_COOKIE)
+                 ->withUploadedFiles(FileNormalizer::normalize($_FILES))
+                 ->withProtocolVersion($server->getVersion());
+
+         return $request;
     }
 }
