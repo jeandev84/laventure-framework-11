@@ -255,7 +255,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         $request = new self($server->getMethod(), $server->getUri(), $server->all());
         $request->withQueryParams($_GET)
                 ->withParsedBody($_POST)
-                ->withHeaders(getallheaders())
+                ->withHeaders($server->getHeaders())
                 ->withCookieParams($_COOKIE)
                 ->withUploadedFiles(FileNormalizer::normalize($_FILES))
                 ->withProtocolVersion($server->getVersion());
