@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request\Utils\Normalizer;
 
 use Laventure\Component\Http\Message\Request\Factory\UploadedFileFactory;
 use Psr\Http\Message\UploadedFileInterface;
+
 use function gettype;
 
 /**
@@ -18,8 +20,6 @@ use function gettype;
 */
 class FileNormalizer
 {
-
-
     /**
      * @param array $files
      * @return array

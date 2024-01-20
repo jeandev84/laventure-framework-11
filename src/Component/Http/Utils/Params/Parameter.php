@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Utils\Params;
@@ -14,8 +15,6 @@ namespace Laventure\Component\Http\Utils\Params;
  */
 class Parameter implements ParameterInterface, \ArrayAccess
 {
-
-
     /**
      * @var array
     */
@@ -39,9 +38,9 @@ class Parameter implements ParameterInterface, \ArrayAccess
     */
     public function set($id, $value): static
     {
-       $this->params[$id] = $value;
+        $this->params[$id] = $value;
 
-       return $this;
+        return $this;
     }
 
 

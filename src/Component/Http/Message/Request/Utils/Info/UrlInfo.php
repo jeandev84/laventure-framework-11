@@ -1,7 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Message\Request\Utils;
+namespace Laventure\Component\Http\Message\Request\Utils\Info;
+
+use Laventure\Component\Http\Message\Request\Utils\Encoder\UrlEncoder;
 
 /**
  * UrlInfo
@@ -10,12 +13,10 @@ namespace Laventure\Component\Http\Message\Request\Utils;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Message\Request\Utils
+ * @package  Laventure\Component\Http\Message\Request\Utils\Info
 */
 class UrlInfo
 {
-
-
     /**
      * @var string
     */
@@ -29,7 +30,7 @@ class UrlInfo
     */
     public function __construct(string $targetPath)
     {
-        $this->targetPath = urldecode($targetPath);
+        $this->targetPath = UrlEncoder::decode($targetPath);
     }
 
 

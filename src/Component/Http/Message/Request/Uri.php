@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request;
 
-use Laventure\Component\Http\Message\Request\Utils\UrlInfo;
+use Laventure\Component\Http\Message\Request\Utils\Encoder\UrlEncoder;
+use Laventure\Component\Http\Message\Request\Utils\Info\UrlInfo;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -107,9 +108,9 @@ class Uri implements UriInterface
     */
     public function __construct(string $uri = '')
     {
-         if ($uri !== '') {
-             $this->parse(new UrlInfo($uri));
-         }
+        if ($uri !== '') {
+            $this->parse(new UrlInfo($uri));
+        }
     }
 
 
@@ -308,7 +309,7 @@ class Uri implements UriInterface
     */
     public function __toString(): string
     {
-         return urldecode($this->buildUrl());
+        return UrlEncoder::decode($this->buildUrl());
     }
 
 

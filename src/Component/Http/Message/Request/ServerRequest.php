@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Http\Message\Request;
 
 use Laventure\Component\Http\Message\Request\Utils\Normalizer\FileNormalizer;
-use Laventure\Component\Http\Message\Request\Utils\ServerParams;
-use Laventure\Component\Http\Utils\Params\Parameter;
+use Laventure\Component\Http\Message\Request\Utils\Params\ServerParams;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
@@ -249,19 +248,14 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     public static function fromGlobals(): static
     {
-         $server  = new ServerParams($_SERVER);
-         $request = new self(
-             $server->getMethod(),
-             $server->createUriFromGlobals(),
-             $server->all()
-         );
-         $request->withQueryParams($_GET)
-                 ->withParsedBody($_POST)
-                 ->withHeaders(getallheaders())
-                 ->withCookieParams($_COOKIE)
-                 ->withUploadedFiles(FileNormalizer::normalize($_FILES))
-                 ->withProtocolVersion($server->getVersion());
-
-         return $request;
+        $server  = new ServerParams($_SERVER);
+        $request = new self($server->getMethod(), $server->getUri(), $server->all());
+        $request->withQueryParams($_GET)
+                ->withParsedBody($_POST)
+                ->withHeaders(getallheaders())
+                ->withCookieParams($_COOKIE)
+                ->withUploadedFiles(FileNormalizer::normalize($_FILES))
+                ->withProtocolVersion($server->getVersion());
+        return $request;
     }
 }

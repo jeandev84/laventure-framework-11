@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Message\Request\Utils;
+namespace Laventure\Component\Http\Message\Request\Utils\Params;
 
 use Laventure\Component\Http\Message\Request\Uri;
 use Laventure\Component\Http\Utils\Params\Parameter;
@@ -13,11 +14,10 @@ use Laventure\Component\Http\Utils\Params\Parameter;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Utils\Params
+ * @package  Laventure\Component\Http\Message\Request\Utils\Params
 */
 class ServerParams extends Parameter
 {
-
     /**
      * @return string
     */
@@ -308,7 +308,9 @@ class ServerParams extends Parameter
      */
     public function getAuthority(): string
     {
-        if (!$user = $this->getUsername()) { return ''; }
+        if (!$user = $this->getUsername()) {
+            return '';
+        }
 
         return sprintf('%s:%s@', $user, $this->getPassword());
     }
@@ -382,7 +384,7 @@ class ServerParams extends Parameter
     /**
      * @return Uri
     */
-    public function createUriFromGlobals(): Uri
+    public function getUri(): Uri
     {
         return (new Uri())
                ->withScheme($this->getScheme())
@@ -412,6 +414,6 @@ class ServerParams extends Parameter
      */
     public function getUrl(): string
     {
-        return (string)$this->getUri();
+        return strval($this->getUri());
     }
 }
