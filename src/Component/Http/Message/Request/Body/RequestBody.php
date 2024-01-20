@@ -14,6 +14,8 @@ use Laventure\Component\Http\Message\Stream\Stream;
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
  * @package  Laventure\Component\Http\Message\Request\Body
+ *
+ * @see https://www.php.net/manual/en/wrappers.php.php
 */
 class RequestBody extends Stream
 {

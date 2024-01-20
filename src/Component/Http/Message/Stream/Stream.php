@@ -16,6 +16,9 @@ use Psr\Http\Message\StreamInterface;
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
  * @package  Laventure\Component\Http\Message\Stream
+ *
+ * @see https://www.php.net/manual/en/book.stream.php
+ * @see https://www.php.net/manual/en/wrappers.php.php
  */
 class Stream implements StreamInterface
 {
