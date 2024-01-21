@@ -30,15 +30,15 @@ class HttpClient implements HttpClientInterface
 
 
     /**
-     * @param RequestFactoryInterface|null $requestFactory
-     * @param HttpClientFactoryInterface|null $clientFactory
+     * @param RequestFactoryInterface $requestFactory
+     * @param HttpClientFactoryInterface $clientFactory
     */
     public function __construct(
-        RequestFactoryInterface $requestFactory = null,
-        HttpClientFactoryInterface $clientFactory = null
+        RequestFactoryInterface $requestFactory,
+        HttpClientFactoryInterface $clientFactory
     ) {
-        $this->requestFactory = $requestFactory ?: new RequestFactory();
-        $this->clientFactory = $clientFactory ?: new HttpClientFactory();
+        $this->requestFactory = $requestFactory;
+        $this->clientFactory = $clientFactory;
     }
 
 
@@ -49,8 +49,10 @@ class HttpClient implements HttpClientInterface
     */
     public static function create(): HttpClient
     {
-        return new self();
+        return new self(new RequestFactory(), new HttpClientFactory());
     }
+
+
 
 
     /**
