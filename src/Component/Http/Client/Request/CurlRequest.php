@@ -10,6 +10,7 @@ use Laventure\Component\Http\Client\Contract\HttpClientOptions;
 use Laventure\Component\Http\Client\Contract\RequestSenderInterface;
 use Laventure\Component\Http\Client\DTO\AuthBasic;
 use Laventure\Component\Http\Client\DTO\AuthToken;
+use Laventure\Component\Http\Client\Request\Exception\CurlException;
 use Laventure\Component\Http\Client\Response\CurlResponse;
 use Laventure\Component\Http\Client\Traits\HasOptionsTrait;
 use Laventure\Component\Http\Message\Request\ServerRequest;
@@ -124,6 +125,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     public function withOptions(array $options): static
     {
         $options = new Parameter($options);
+
         foreach ($options->all() as $key => $value) {
             if (!empty($value)) {
                 if (method_exists($this, $key)) {
@@ -415,6 +417,8 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
         $this->uri->withQuery(http_build_query($queries));
 
         $this->withRequestTarget(strval($this->uri));
+
+        $this->withQueryParams($queries);
 
         return $this;
     }
