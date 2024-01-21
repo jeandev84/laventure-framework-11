@@ -93,13 +93,12 @@ try {
 
 
 
-2. Request POST 
+2. Request POST
+
 ```php
 <?php
 
-use Laventure\Component\Http\Client\HttpClient;
-use Laventure\Component\Http\Client\Request\CurlRequest;
-use Laventure\Component\Http\Storage\Cookie\Cookie;
+use Laventure\Component\Http\Client\HttpClient;use Laventure\Component\Http\Client\HttpClient;use PHPUnitTest\App\Entity\User;
 
 require 'vendor/autoload.php';
 
@@ -128,9 +127,6 @@ try {
 
 <?php
 
-use Laventure\Component\Http\Message\Response\JsonResponse;
-use PHPUnitTest\App\Entity\User;
-
 require '../../vendor/autoload.php';
 
 $response = new \Laventure\Component\Http\Message\Response\Response(201);
@@ -153,11 +149,6 @@ echo "POSTED";
 
 
 <?php
-
-use Laventure\Component\Http\Client\HttpClient;
-use Laventure\Component\Http\Client\Request\CurlRequest;
-use Laventure\Component\Http\Message\Request\Utils\Params\QueryParams;
-use Laventure\Component\Http\Storage\Cookie\Cookie;
 
 require 'vendor/autoload.php';
 

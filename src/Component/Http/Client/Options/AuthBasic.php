@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Client\DTO;
+namespace Laventure\Component\Http\Client\Options;
 
 /**
  * AuthBasic

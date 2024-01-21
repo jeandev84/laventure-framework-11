@@ -8,8 +8,12 @@ use CurlHandle;
 use Laventure\Component\Http\Client\Contract\HasOptionInterface;
 use Laventure\Component\Http\Client\Contract\HttpClientOptions;
 use Laventure\Component\Http\Client\Contract\RequestSenderInterface;
-use Laventure\Component\Http\Client\DTO\AuthBasic;
-use Laventure\Component\Http\Client\DTO\AuthToken;
+use Laventure\Component\Http\Client\Options\AuthBasic;
+use Laventure\Component\Http\Client\Options\AuthToken;
+use Laventure\Component\Http\Client\Options\Body;
+use Laventure\Component\Http\Client\Options\Header;
+use Laventure\Component\Http\Client\Options\Json;
+use Laventure\Component\Http\Client\Options\QueryParams;
 use Laventure\Component\Http\Client\Request\Exception\CurlException;
 use Laventure\Component\Http\Client\Response\CurlResponse;
 use Laventure\Component\Http\Client\Traits\HasOptionsTrait;
@@ -60,17 +64,18 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
      * @var array
     */
     protected array $options = [
-        'query'              => [],           // type string[]
-        'body'               => null,         // type array|string
-        'json'               => null,         // type array|string
-        'headers'            => [],           // type string[]
-        'proxy'              => [],           // type string[]
-        'authBasic'          => null,         // type AuthBasic('YOUR_LOGIN', 'YOUR_PASSWORD')
-        'authToken'          => null,         // type AuthToken('YOUR_ACCESS_TOKEN')
-        'upload'             => null,         // type string
-        'download'           => null,         // type string
-        'files'              => [],           // type ClientFileInterface[]
-        'cookies'            => [],           // type ClientCookieInterface[]
+        'query'              => null,  // type QueryParams($queries)
+        'body'               => null,  // type Body($data)
+        'json'               => null,  // type Json($data)
+        'headers'            => null,  // type Header($headers)
+        'proxy'              => null,  // type Proxy()
+        'authBasic'          => null,  // type AuthBasic('YOUR_LOGIN', 'YOUR_PASSWORD')
+        'authToken'          => null,  // type AuthToken('YOUR_ACCESS_TOKEN'), oAuth(), AuthBearer
+        'upload'             => null,  // type Upload()
+        'download'           => null,  // type Download()
+        'files'              => null,  // type File[]
+        'cookies'            => null,  // type Cookie[]
+        'userAgent'          => null   // type UserAgent()
     ];
 
 
@@ -89,79 +94,6 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
         $this->withOptions(array_merge($this->options, $options));
     }
 
-
-
-
-
-    /**
-     * @param string $method
-     * @return $this
-     */
-    public function withMethod(string $method): static
-    {
-        switch ($method):
-            case 'POST':
-                $this->setOption(CURLOPT_POST, 1);
-                break;
-            case 'PUT':
-            case 'PATCH':
-            case 'DELETE':
-                $this->setOption(CURLOPT_CUSTOMREQUEST, $method);
-                break;
-        endswitch;
-
-        return parent::withMethod($method);
-    }
-
-
-
-
-
-    /**
-     * @param array $options
-     *
-     * @return $this
-     */
-    public function withOptions(array $options): static
-    {
-        $options = new Parameter($options);
-
-        foreach ($options->all() as $key => $value) {
-            if (!empty($value)) {
-                if (method_exists($this, $key)) {
-                    call_user_func_array([$this, $key], [$value]);
-                }
-            }
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * @inheritdoc
-     * @throws CurlException
-     */
-    public function send(): ResponseInterface
-    {
-        // terminate options setting
-        $this->flush();
-
-        // returns response body
-        $body = $this->responseBody();
-
-        // returns response status code
-        $statusCode = $this->responseStatusCode();
-
-        // returns response headers
-        $headers = $this->responseHeaders();
-
-        // close curl
-        $this->close();
-
-        // returns response
-        return $this->createResponse($body, $statusCode, $headers);
-    }
 
 
 
@@ -263,6 +195,88 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     {
         return curl_getinfo($this->ch, $key);
     }
+
+
+
+
+
+
+
+
+    /**
+     * @param string $method
+     * @return $this
+     */
+    public function withMethod(string $method): static
+    {
+        switch ($method):
+            case 'POST':
+                $this->setOption(CURLOPT_POST, 1);
+                break;
+            case 'PUT':
+            case 'PATCH':
+            case 'DELETE':
+                $this->setOption(CURLOPT_CUSTOMREQUEST, $method);
+                break;
+        endswitch;
+
+        return parent::withMethod($method);
+    }
+
+
+
+
+
+    /**
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function withOptions(array $options): static
+    {
+        $options = new Parameter($options);
+
+        foreach ($options->all() as $key => $value) {
+            if (!empty($value)) {
+                if (method_exists($this, $key)) {
+                    call_user_func_array([$this, $key], [$value]);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
+
+
+    /**
+     * @inheritdoc
+     * @throws CurlException
+     */
+    public function send(): ResponseInterface
+    {
+        // terminate options setting
+        $this->flush();
+
+        // returns response body
+        $body = $this->responseBody();
+
+        // returns response status code
+        $statusCode = $this->responseStatusCode();
+
+        // returns response headers
+        $headers = $this->responseHeaders();
+
+        // close curl
+        $this->close();
+
+        // returns response
+        return $this->createResponse($body, $statusCode, $headers);
+    }
+
 
 
 
@@ -409,16 +423,16 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
 
     /**
-     * @param array $queries
+     * @param QueryParams $queries
      * @return $this
-     */
-    private function query(array $queries): static
+    */
+    private function query(QueryParams $queries): static
     {
-        $this->uri->withQuery(http_build_query($queries));
+        $this->uri->withQuery($queries->toString());
 
         $this->withRequestTarget(strval($this->uri));
 
-        $this->withQueryParams($queries);
+        $this->withQueryParams($queries->all());
 
         return $this;
     }
@@ -441,6 +455,9 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
 
 
+
+
+
     /**
      * @param $name
      * @param $value
@@ -457,43 +474,55 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
 
     /**
-     * @param array $headers
+     * @param Header[] $headers
+     *
      * @return $this
     */
     private function headers(array $headers): static
     {
-        $this->withHeaders($headers);
+        foreach ($headers as $header) {
+            $this->header($header);
+        }
 
         return $this;
     }
 
 
 
-
     /**
-     * @param array|string $data
+     * @param Header $header
      * @return $this
-    */
-    private function body(array|string $data): static
+     */
+    private function header(Header $header): static
     {
-        return $this->withParsedBody($data);
+        $this->withHeader($header->name, $header->value);
+
+        return $this;
     }
 
 
 
-
     /**
-     * @param array|string $data
+     * @param Body $body
      * @return $this
     */
-    private function json(array|string $data): static
+    private function body(Body $body): static
     {
-        if (is_array($data)) {
-            $data = JsonEncoder::encode($data);
-        }
-
-        return $this->withParsedBody($data);
+        return $this->withParsedBody($body->data);
     }
+
+
+
+    /**
+     * @param Json $json
+     * @return $this
+    */
+    private function json(Json $json): static
+    {
+        return $this->withParsedBody($json->data);
+    }
+
+
 
 
 
@@ -511,11 +540,30 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
 
     /**
+     * here we can give instance of AuthToken like AuthBearer, oAuth ...
      * @param AuthToken $token
      * @return $this
     */
     private function authToken(AuthToken $token): static
     {
-        return $this->withHeader('Authorization', $token->getAccessToken());
+        return $this->withHeader('Authorization', $token->accessToken);
     }
+
+
+
+
+    /*
+      'query'              => [],           // type string[]
+        'body'               => null,         // type array|string
+        'json'               => null,         // type array|string
+        'headers'            => [],           // type string[]
+        'proxy'              => [],           // type string[]
+        'authBasic'          => null,         // type AuthBasic('YOUR_LOGIN', 'YOUR_PASSWORD')
+        'authToken'          => null,         // type AuthToken('YOUR_ACCESS_TOKEN'),
+        'oAuth               => null,         // type oAuth('YOUR_TOKEN')
+        'upload'             => null,         // type string
+        'download'           => null,         // type string
+        'files'              => [],           // type ClientFileInterface[]
+        'cookies'            => [],           // type ClientCookieInterface[]
+    */
 }

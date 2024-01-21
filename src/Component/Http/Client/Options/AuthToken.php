@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Client\DTO;
+namespace Laventure\Component\Http\Client\Options;
 
 /**
  * AuthToken
@@ -18,17 +18,7 @@ class AuthToken
     /**
      * @param string $accessToken
      */
-    public function __construct(private readonly string $accessToken)
+    public function __construct(public string $accessToken)
     {
-    }
-
-
-
-    /**
-     * @return string
-     */
-    public function getAccessToken(): string
-    {
-        return $this->accessToken;
     }
 }
