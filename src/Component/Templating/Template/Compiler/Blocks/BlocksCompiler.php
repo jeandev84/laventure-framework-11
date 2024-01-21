@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Compiler\Blocks;
@@ -16,7 +17,6 @@ use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
 */
 class BlocksCompiler implements CompilerInterface
 {
-
     /**
      * @var array
     */
@@ -34,7 +34,9 @@ class BlocksCompiler implements CompilerInterface
         preg_match_all($pattern, $content, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $value) {
-            if (! array_key_exists($value[1], $this->blocks)) { $this->blocks[$value[1]] = ''; }
+            if (! array_key_exists($value[1], $this->blocks)) {
+                $this->blocks[$value[1]] = '';
+            }
             if (str_contains($value[2], '@parent') === false) {
                 $this->blocks[$value[1]] = $value[2];
             } else {

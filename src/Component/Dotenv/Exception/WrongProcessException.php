@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Dotenv\Exception;
@@ -14,8 +15,8 @@ namespace Laventure\Component\Dotenv\Exception;
  */
 class WrongProcessException extends \RuntimeException
 {
-     public function __construct()
-     {
-         parent::__construct("Something went wrong during loading environments.");
-     }
+    public function __construct()
+    {
+        parent::__construct("Something went wrong during loading environments.");
+    }
 }

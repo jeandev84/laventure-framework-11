@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Compiler\Php;
@@ -16,7 +17,6 @@ use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
 */
 class PhpCompiler implements CompilerInterface
 {
-
     /**
      * @inheritDoc
     */
@@ -37,10 +37,10 @@ class PhpCompiler implements CompilerInterface
     */
     private function getCompilers(): array
     {
-         return [
-             new LoopCompiler(),
-             new IfCompiler(),
-             new SwitchCompiler()
-         ];
+        return [
+            new LoopCompiler(),
+            new IfCompiler(),
+            new SwitchCompiler()
+        ];
     }
 }

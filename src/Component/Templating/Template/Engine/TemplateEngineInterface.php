@@ -20,8 +20,6 @@ use Laventure\Component\Templating\Template\TemplateInterface;
  */
 interface TemplateEngineInterface
 {
-
-
     /**
      * @param TemplateLoaderInterface $loader
      * @return $this

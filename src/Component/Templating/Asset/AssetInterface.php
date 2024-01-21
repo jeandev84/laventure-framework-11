@@ -1,6 +1,6 @@
 <?php
-namespace Laventure\Component\Templating\Asset;
 
+namespace Laventure\Component\Templating\Asset;
 
 /**
  * @AssetInterface
@@ -13,8 +13,6 @@ namespace Laventure\Component\Templating\Asset;
  */
 interface AssetInterface
 {
-
-
     /**
      * @param string $path
      *

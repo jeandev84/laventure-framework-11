@@ -15,7 +15,6 @@ namespace Laventure\Component\Templating\Template\Loader;
  */
 class TemplateLoader implements TemplateLoaderInterface
 {
-
     /**
      * @var string
     */

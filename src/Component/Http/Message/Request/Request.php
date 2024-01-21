@@ -50,8 +50,6 @@ class Request extends Message implements RequestInterface
     */
     public function __construct(string $method, UriInterface|string $uri)
     {
-        parent::__construct('', []);
-
         if (!($uri instanceof UriInterface)) {
             $uri = new Uri($uri);
         }

@@ -1,6 +1,6 @@
 <?php
-namespace Laventure\Component\Templating\Asset;
 
+namespace Laventure\Component\Templating\Asset;
 
 use Laventure\Component\Templating\Asset\Exception\AssetException;
 
@@ -9,7 +9,6 @@ use Laventure\Component\Templating\Asset\Exception\AssetException;
  */
 class Asset implements AssetInterface
 {
-
     /**
      * @var string
      */

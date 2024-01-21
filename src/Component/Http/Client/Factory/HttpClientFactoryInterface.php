@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Factory;
-
 
 use Psr\Http\Client\ClientInterface;
 
@@ -17,11 +17,10 @@ use Psr\Http\Client\ClientInterface;
  */
 interface HttpClientFactoryInterface
 {
-
-      /**
-       * @param array $options
-       *
-       * @return ClientInterface
-      */
-      public function createClient(array $options = []): ClientInterface;
+    /**
+     * @param array $options
+     *
+     * @return ClientInterface
+    */
+    public function createClient(array $options = []): ClientInterface;
 }

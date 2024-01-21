@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Factory;
@@ -17,12 +18,11 @@ use Psr\Http\Client\ClientInterface;
  */
 class HttpClientFactory implements HttpClientFactoryInterface
 {
-
     /**
      * @inheritDoc
     */
     public function createClient(array $options = []): ClientInterface
     {
-         return new CurlClient($options);
+        return new CurlClient($options);
     }
 }

@@ -15,11 +15,11 @@ namespace Laventure\Component\Templating\Template\Compiler;
  */
 interface CompilerInterface
 {
-     /**
-      * Compile and return content
-      *
-      * @param string $content
-      * @return string
-     */
-     public function compile(string $content): string;
+    /**
+     * Compile and return content
+     *
+     * @param string $content
+     * @return string
+    */
+    public function compile(string $content): string;
 }

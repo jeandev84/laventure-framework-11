@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Dotenv\Exception;
+namespace Laventure\Component\Http\Client\Request;
 
 /**
- * DotenvException
+ * CurlException
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Dotenv\Exception
+ * @package  Laventure\Component\Http\Client\Request
  */
-class DotenvException extends \RuntimeException
+class CurlException extends \Exception
 {
 }

@@ -1,8 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Service;
 
+use Laventure\Component\Http\Client\DTO\HttpClientOptions;
+use Laventure\Component\Http\Client\Request\CurlException;
 use Laventure\Component\Http\Client\Request\CurlRequest;
 use Laventure\Component\Http\Message\Response\Response;
 use Psr\Http\Client\ClientInterface;
@@ -20,7 +23,6 @@ use Psr\Http\Message\ResponseInterface;
 */
 class CurlClient implements ClientInterface
 {
-
     /**
      * @var array
     */
@@ -36,14 +38,15 @@ class CurlClient implements ClientInterface
     }
 
 
+
     /**
      * @inheritDoc
+     * @throws CurlException
     */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
-         $curlRequest = new CurlRequest($request->getMethod(), $request->getUri());
-         $response = new Response(400);
-         $response->getBody()->write('Salut les amis');
-         return $response;
+        $curlRequest = new CurlRequest($request->getMethod(), $request->getUri());
+        $curlRequest->withOptions($this->options);
+        return $curlRequest->send();
     }
 }

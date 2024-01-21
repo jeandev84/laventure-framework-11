@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\DTO;
@@ -16,5 +17,4 @@ use Laventure\Component\Http\Utils\Params\Parameter;
 */
 class HttpClientOptions extends Parameter
 {
-
 }

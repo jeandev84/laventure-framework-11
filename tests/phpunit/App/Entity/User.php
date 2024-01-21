@@ -15,9 +15,9 @@ namespace PHPUnitTest\App\Entity;
 class User
 {
 
-      protected ?int $id = null;
-      protected ?string $email = null;
-      protected ?string $password = null;
+      public ?int $id = null;
+      public ?string $email = null;
+      public ?string $password = null;
 
 
       public function __construct(string $email = 'john@doe.com', string $password = '')

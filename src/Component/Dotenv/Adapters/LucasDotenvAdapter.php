@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Dotenv\Adapters;
@@ -16,7 +17,6 @@ use Laventure\Component\Dotenv\DotenvInterface;
  */
 class LucasDotenvAdapter implements DotenvInterface
 {
-
     /**
      * @inheritDoc
     */
@@ -32,7 +32,7 @@ class LucasDotenvAdapter implements DotenvInterface
     */
     public function export(string $file = '.env.local'): bool
     {
-         return true;
+        return true;
     }
 
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Config;
@@ -14,7 +15,6 @@ namespace Laventure\Component\Config;
 */
 class Config implements ConfigInterface
 {
-
     /**
      * @param array $config
     */

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client;
@@ -20,8 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 */
 class HttpClient implements HttpClientInterface
 {
-
-
     /**
      * @var RequestFactoryInterface
     */
@@ -36,8 +35,7 @@ class HttpClient implements HttpClientInterface
     public function __construct(
         RequestFactoryInterface $requestFactory = null,
         HttpClientFactoryInterface $clientFactory = null
-    )
-    {
+    ) {
         $this->requestFactory = $requestFactory ?: new RequestFactory();
         $this->clientFactory = $clientFactory ?: new HttpClientFactory();
     }
@@ -61,9 +59,9 @@ class HttpClient implements HttpClientInterface
     */
     public function request(string $method, string $url, array $options = []): ResponseInterface
     {
-          $request = $this->requestFactory->createRequest($method, $url);
-          $client  = $this->clientFactory->createClient($options);
-          return $client->sendRequest($request);
+        $request = $this->requestFactory->createRequest($method, $url);
+        $client  = $this->clientFactory->createClient($options);
+        return $client->sendRequest($request);
     }
 
 

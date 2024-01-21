@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Factory;
-
 
 use Laventure\Component\Templating\Template\TemplateInterface;
 
@@ -17,12 +17,10 @@ use Laventure\Component\Templating\Template\TemplateInterface;
  */
 interface TemplateFactoryInterface
 {
-
-
-      /**
-       * @param string $path
-       * @param array $parameters
-       * @return TemplateInterface
-      */
-      public function createTemplate(string $path, array $parameters = []): TemplateInterface;
+    /**
+     * @param string $path
+     * @param array $parameters
+     * @return TemplateInterface
+    */
+    public function createTemplate(string $path, array $parameters = []): TemplateInterface;
 }

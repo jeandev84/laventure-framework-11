@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Compiler\Echos;
@@ -16,7 +17,6 @@ use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
  */
 class EscapedEchoCompiler implements CompilerInterface
 {
-
     /**
      * @inheritDoc
     */

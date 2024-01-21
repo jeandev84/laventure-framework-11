@@ -39,19 +39,6 @@ class Message implements MessageInterface
     protected StreamInterface $body;
 
 
-    /**
-     * @param string $version
-     *
-     * @param array $headers
-    */
-    public function __construct(string $version, array $headers)
-    {
-        $this->withProtocolVersion($version)
-             ->withHeaders($headers);
-    }
-
-
-
 
 
     /**
@@ -231,7 +218,7 @@ class Message implements MessageInterface
      * @return static
      * @throws \InvalidArgumentException for invalid header names or values.
     */
-    public function withHeader(string $name, $value): static
+    public function withHeader($name, $value): static
     {
         $this->headers[$name] = (array)$value;
 

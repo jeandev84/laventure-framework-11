@@ -43,8 +43,8 @@ class Response extends Message implements ResponseInterface, Stringable
     */
     public function __construct(int $status = 200, array $headers = [], StreamInterface $body = null)
     {
-        parent::__construct('', ResponseHeaders::list($headers));
         $this->withBody($body ?: new ResponseBody())
+             ->withHeaders($headers)
              ->withStatus($status);
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Factory;
@@ -17,7 +18,6 @@ use Laventure\Component\Templating\Template\TemplateInterface;
  */
 class TemplateFactory implements TemplateFactoryInterface
 {
-
     /**
      * @inheritDoc
      */

@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Config;
-
 
 /**
  * ConfigurationInterface
@@ -15,7 +15,6 @@ namespace Laventure\Component\Config;
  */
 interface ConfigInterface
 {
-
     /**
      * @param string $name
      * @param mixed|null $default

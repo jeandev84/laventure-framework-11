@@ -65,7 +65,7 @@ class RouterTest extends TestCase
         $routes[] = $router->map('PUT|PATCH', '/admin/books/{id}', [BookController::class, 'update'], 'admin.books.update')
                            ->where('id', '\d+')
                            ->middlewares([IsAdminMiddleware::class]);
-        $routes[] = $router->delete('/admin/books/{id}', [BookController::class, 'destroy'], 'admin.books.delete')
+        $routes[] = $router->delete('/admin/books/{id}', [BookController::class, 'destroy'], 'admin.books.delete.php')
                            ->where('id', '\d+')
                            ->middlewares([IsAdminMiddleware::class]);
 

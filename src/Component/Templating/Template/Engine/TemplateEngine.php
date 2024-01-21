@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Template\Engine;
@@ -24,9 +25,6 @@ use Laventure\Component\Templating\Template\TemplateInterface;
  */
 class TemplateEngine implements TemplateEngineInterface
 {
-
-
-
     /**
      * @var TemplateLoaderInterface
      */
