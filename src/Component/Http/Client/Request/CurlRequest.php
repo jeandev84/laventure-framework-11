@@ -136,26 +136,23 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     }
 
 
-
-
-
     /**
-     * @return ResponseInterface
+     * @inheritdoc
      * @throws CurlException
-    */
+     */
     public function send(): ResponseInterface
     {
         // terminate options setting
         $this->flush();
 
         // returns response body
-        $body = $this->getResponseBody();
+        $body = $this->responseBody();
 
         // returns response status code
-        $statusCode = $this->getResponseStatusCode();
+        $statusCode = $this->responseStatusCode();
 
         // returns response headers
-        $headers = $this->getResponseHeaders();
+        $headers = $this->responseHeaders();
 
         // close curl
         $this->close();
@@ -272,7 +269,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     /**
      * @return array
      */
-    private function getResponseHeaders(): array
+    private function responseHeaders(): array
     {
         $this->setOptions([
             CURLOPT_HEADER => true,
@@ -292,7 +289,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
      * @return string
      * @throws CurlException
      */
-    private function getResponseBody(): string
+    private function responseBody(): string
     {
         // returns response body
         $body = $this->exec();
@@ -311,7 +308,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     /**
      * @return int
     */
-    private function getResponseStatusCode(): int
+    private function responseStatusCode(): int
     {
         return intval($this->info(CURLINFO_HTTP_CODE));
     }
