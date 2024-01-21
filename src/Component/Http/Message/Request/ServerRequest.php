@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Http\Message\Request;
 
+use Laventure\Component\Http\Message\Request\Body\RequestBody;
 use Laventure\Component\Http\Message\Request\Utils\Normalizer\FileNormalizer;
 use Laventure\Component\Http\Message\Request\Utils\Params\ServerParams;
 use Psr\Http\Message\ServerRequestInterface;
@@ -255,6 +256,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         $request = new self($server->getMethod(), $server->getUri(), $server->all());
         $request->withQueryParams($_GET)
                 ->withParsedBody($_POST)
+                ->withBody(new RequestBody())
                 ->withHeaders($server->getHeaders())
                 ->withCookieParams($_COOKIE)
                 ->withUploadedFiles(FileNormalizer::normalize($_FILES))

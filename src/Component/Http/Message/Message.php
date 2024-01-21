@@ -39,20 +39,15 @@ class Message implements MessageInterface
     protected StreamInterface $body;
 
 
-
-
     /**
      * @param string $version
      *
      * @param array $headers
-     *
-     * @param StreamInterface $body
     */
-    public function __construct(string $version, array $headers, StreamInterface $body)
+    public function __construct(string $version, array $headers)
     {
-        $this->version = $version;
-        $this->headers = $headers;
-        $this->body    = $body;
+        $this->withProtocolVersion($version)
+             ->withHeaders($headers);
     }
 
 

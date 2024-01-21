@@ -10,7 +10,7 @@ namespace PHPUnitTest\App\Services;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  PHPUnitTest\App\Service
+ * @package  PHPUnitTest\App\Factory
 */
 class FooService
 {
