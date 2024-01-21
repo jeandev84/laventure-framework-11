@@ -23,10 +23,12 @@ use Laventure\Component\Http\Client\Options\UserAgent;
 use Laventure\Component\Http\Client\Request\Exception\CurlException;
 use Laventure\Component\Http\Client\Response\CurlResponse;
 use Laventure\Component\Http\Client\Traits\HasOptionsTrait;
+use Laventure\Component\Http\Message\Request\Request;
 use Laventure\Component\Http\Message\Request\ServerRequest;
 use Laventure\Component\Http\Message\Stream\Exception\StreamException;
 use Laventure\Component\Http\Message\Stream\Stream;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -40,7 +42,7 @@ use Psr\Http\Message\UriInterface;
  *
  * @see https://snipp.ru/php/curl
 */
-class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSenderInterface
+class CurlRequest extends Request implements HasOptionInterface, RequestSenderInterface
 {
     use HasOptionsTrait;
 
@@ -49,6 +51,26 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
      * @var CurlHandle|false
     */
     protected $ch;
+
+
+
+
+
+    /**
+     * @var CURLFile[]
+    */
+    protected array $files = [];
+
+
+
+
+    /**
+     * @var array|string
+    */
+    protected mixed $data = null;
+
+
+
 
 
     /**
@@ -297,8 +319,6 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
         $this->withRequestTarget(strval($this->uri));
 
-        $this->withQueryParams($queries->all());
-
         return $this;
     }
 
@@ -310,10 +330,12 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     /**
      * @param Body $body
      * @return $this
-     */
+    */
     public function body(Body $body): static
     {
-        return $this->withParsedBody($body->data);
+        $this->data = $body->data;
+
+        return $this;
     }
 
 
@@ -326,7 +348,9 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
      */
     public function json(Json $json): static
     {
-        return $this->withParsedBody($json->data);
+        $this->data = $json->data;
+
+        return $this;
     }
 
 
@@ -416,9 +440,8 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
     /**
      * @param Upload $upload
-     * @return $this
      */
-    public function upload(Upload $upload): static
+    public function upload(Upload $upload): void
     {
         $this->flush();
 
@@ -431,7 +454,6 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
         $this->exec();
         $this->close();
-        return $this;
     }
 
 
@@ -511,7 +533,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
             $file->filename
         );
 
-        $this->withUploadedFiles([$id => $file]);
+        $this->files[$id] = $file;
 
         return $this;
     }
@@ -651,8 +673,8 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     private function getPostFields(): array
     {
         return array_merge(
-            (array)$this->parsedBody,
-            $this->uploadedFiles
+            (array)$this->data,
+            $this->files
         );
     }
 
