@@ -2,28 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Foundation\Templating\Renderer\Adapters;
+namespace Laventure\Component\Templating\Renderer\Adapters;
 
 use Laventure\Component\Templating\Renderer\RendererInterface;
 
 /**
- * TwigRendererAdapter
+ * BladeRendererAdapter
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Foundation\Templating\Renderer\Adapters
+ * @package  Laventure\Component\Templating\Renderer\Adapters
  */
-class TwigRendererAdapter implements RendererInterface
+class BladeRendererAdapter implements RendererInterface
 {
     /**
      * @inheritdoc
-     */
+    */
     public function resourcePath(string $path): static
     {
         return $this;
     }
+
 
 
 
@@ -51,7 +52,7 @@ class TwigRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-     */
+    */
     public function addExtensions(array $extensions): static
     {
         return $this;
@@ -73,7 +74,7 @@ class TwigRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-     */
+    */
     public function getGlobals(): array
     {
         return [];
@@ -84,7 +85,7 @@ class TwigRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-     */
+    */
     public function getExtensions(): array
     {
         return [];
@@ -96,7 +97,7 @@ class TwigRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-     */
+    */
     public function getPaths(): array
     {
         return [];

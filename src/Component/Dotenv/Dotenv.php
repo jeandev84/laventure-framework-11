@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Dotenv;
 
-use Laventure\Component\Dotenv\Contract\DotenvInterface;
+use Laventure\Component\Dotenv\Exception\DotenvException;
+use Laventure\Component\Dotenv\Exception\WrongProcessException;
 
 /**
  * Dotenv
@@ -24,15 +25,6 @@ class Dotenv implements DotenvInterface
 
 
 
-
-    /**
-     * @var array
-    */
-    protected array $allowedFiles = ['.env', '.env.local'];
-
-
-
-
     /**
      * @param string $basePath
     */
@@ -43,31 +35,14 @@ class Dotenv implements DotenvInterface
 
 
 
-
-
-    /**
-     * @param array $allowedFiles
-     *
-     * @return $this
-     */
-    public function withOnly(array $allowedFiles): static
-    {
-        $this->allowedFiles = array_merge($this->allowedFiles, $allowedFiles);
-
-        return $this;
-    }
-
-
-
-
-
-
     /**
      * @inheritDoc
      */
-    public function load(string $file = '.env'): void
+    public function load(string $file = ''): void
     {
-        $this->loadFromArray($this->loadEnvironments($file));
+        $this->loadFromArray(
+            $this->process($file ?: '.env')
+        );
     }
 
 
@@ -77,12 +52,10 @@ class Dotenv implements DotenvInterface
     /**
      * @inheritDoc
      */
-    public function export(string $file = '.env.local'): bool
+    public function export(string $file = ''): bool
     {
-        $this->makeSureFileIsAllowed($file);
-
         $file = $this->prepareToExport(
-            $this->loadPath($file)
+            $this->loadPath($file ?: '.env.local')
         );
 
         foreach ($_ENV as $name => $value) {
@@ -152,6 +125,8 @@ class Dotenv implements DotenvInterface
 
 
 
+
+
     /**
      * @param string $env
      *
@@ -173,20 +148,9 @@ class Dotenv implements DotenvInterface
      */
     private function loadPath(string $file): string
     {
-        return $this->basePath . DIRECTORY_SEPARATOR . trim($file, DIRECTORY_SEPARATOR);
-    }
+        $file = trim($file, DIRECTORY_SEPARATOR);
 
-
-
-
-    /**
-     * @param string $file
-     *
-     * @return bool
-     */
-    private function allowed(string $file): bool
-    {
-        return in_array($file, $this->allowedFiles);
+        return $this->basePath . DIRECTORY_SEPARATOR . $file;
     }
 
 
@@ -197,18 +161,16 @@ class Dotenv implements DotenvInterface
      * @param string $file
      * @return array
      */
-    private function loadEnvironments(string $file): array
+    private function process(string $file): array
     {
-        $this->makeSureFileIsAllowed($file);
-
         if (!$path = realpath($this->loadPath($file))) {
-            throw new \RuntimeException("File $file does not exist.");
+            throw new DotenvException("file $file does not exist.");
         }
 
         $data = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         if (empty($data)) {
-            throw new \RuntimeException("empty contents for '$file'");
+            throw new DotenvException("empty contents for '$file'");
         }
 
         return $data;
@@ -232,9 +194,7 @@ class Dotenv implements DotenvInterface
         }
 
         if (!touch($file) || empty($_ENV)) {
-            throw new \RuntimeException(
-                "Something went wrong the moment touch file or may be empty environments."
-            );
+            throw new WrongProcessException();
         }
 
         if (file_exists($file)) {

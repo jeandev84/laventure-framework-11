@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Foundation\Templating\Renderer\Adapters;
+namespace Laventure\Component\Templating\Renderer\Adapters;
 
 use Laventure\Component\Templating\Renderer\RendererInterface;
 
 /**
- * BladeRendererAdapter
+ * SmartRendererAdapter
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Foundation\Templating\Renderer\Adapters
- */
-class BladeRendererAdapter implements RendererInterface
+ * @package  Laventure\Component\Templating\Renderer\Adapters
+*/
+class SmartyRendererAdapter implements RendererInterface
 {
     /**
      * @inheritdoc
@@ -24,7 +24,6 @@ class BladeRendererAdapter implements RendererInterface
     {
         return $this;
     }
-
 
 
 
@@ -52,7 +51,7 @@ class BladeRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-    */
+     */
     public function addExtensions(array $extensions): static
     {
         return $this;
@@ -74,7 +73,7 @@ class BladeRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-    */
+     */
     public function getGlobals(): array
     {
         return [];
@@ -85,7 +84,7 @@ class BladeRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-    */
+     */
     public function getExtensions(): array
     {
         return [];
@@ -97,7 +96,7 @@ class BladeRendererAdapter implements RendererInterface
 
     /**
      * @inheritDoc
-    */
+     */
     public function getPaths(): array
     {
         return [];
