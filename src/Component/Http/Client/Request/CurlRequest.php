@@ -9,6 +9,7 @@ use Laventure\Component\Http\Client\Contract\HasOptionsInterface;
 use Laventure\Component\Http\Client\Response\CurlResponse;
 use Laventure\Component\Http\Client\Traits\HasOptionsTrait;
 use Laventure\Component\Http\Message\Request\Request;
+use Laventure\Component\Http\Message\Request\ServerRequest;
 use Laventure\Component\Http\Message\Response\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -23,7 +24,7 @@ use Psr\Http\Message\UriInterface;
  *
  * @package  Laventure\Component\Http\Client\Request
 */
-class CurlRequest extends Request implements RequestInterface, HasOptionsInterface
+class CurlRequest extends ServerRequest implements HasOptionsInterface
 {
     use HasOptionsTrait;
 
@@ -53,9 +54,10 @@ class CurlRequest extends Request implements RequestInterface, HasOptionsInterfa
     */
     public function __construct(string $method, UriInterface|string $uri, array $options = [])
     {
-        parent::__construct($method, $uri);
+        // important to initialize before
         $this->init();
         $this->initialize();
+        parent::__construct($method, $uri);
         $this->withOptions($options);
     }
 
@@ -224,9 +226,9 @@ class CurlRequest extends Request implements RequestInterface, HasOptionsInterfa
      * @param string $uri
      * @return $this
      */
-    public function init(string $uri = ''): static
+    public function init(): static
     {
-        $this->ch = curl_init($uri);
+        $this->ch = curl_init();
 
         return $this;
     }
@@ -376,7 +378,7 @@ class CurlRequest extends Request implements RequestInterface, HasOptionsInterfa
     {
         $this->setOptions([
             CURLOPT_URL        => $this->target,
-            CURLOPT_HTTPHEADER => ['X-Framework' => 'Laventure']
+            CURLOPT_HTTPHEADER => $this->headers
         ])->setPostFiles();
     }
 
@@ -392,7 +394,7 @@ class CurlRequest extends Request implements RequestInterface, HasOptionsInterfa
             case 'POST':
             case 'PUT':
             case 'PATCH':
-                $this->setOption(CURLOPT_POSTFIELDS, []);
+                $this->setOption(CURLOPT_POSTFIELDS, ['salut' => 'les amis']);
                 break;
         endswitch;
 

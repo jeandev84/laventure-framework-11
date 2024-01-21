@@ -20,7 +20,11 @@ trait HasOptionsTrait
     /**
      * @var array
     */
-    protected array $overrides = [];
+    protected array $overrides = [
+        'auth_basic'         => 'authBasic',         // type AuthBasic('YOUR_LOGIN', 'YOUR_PASSWORD')
+        'auth_token'         => 'authToken',           // type AuthToken('YOUR_ACCESS_TOKEN')
+    ];
+
 
 
 
@@ -35,6 +39,9 @@ trait HasOptionsTrait
 
         foreach ($options->all() as $key => $value) {
             if (!empty($value)) {
+                if (array_key_exists($key, $this->overrides)) {
+                    $key = $this->overrides[$key];
+                }
                 if (method_exists($this, $key)) {
                     call_user_func_array([$this, $key], [$value]);
                 }
