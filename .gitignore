@@ -5,6 +5,7 @@ public
 views
 tools
 storage/*
+config
 console.php
 .env
 .env.local
