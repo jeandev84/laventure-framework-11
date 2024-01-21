@@ -21,7 +21,8 @@ class ClientCookie
     /**
      * @param string $cookieFile
      */
-    public function __construct(public string $cookieFile) {
+    public function __construct(public string $cookieFile)
+    {
     }
 
 
