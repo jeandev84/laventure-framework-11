@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Service;
 
-use Laventure\Component\Http\Client\DTO\HttpClientOptions;
+use Laventure\Component\Http\Client\Utils\HttpClientOptions;
 use Laventure\Component\Http\Client\Request\CurlException;
 use Laventure\Component\Http\Client\Request\CurlRequest;
 use Laventure\Component\Http\Message\Response\Response;
