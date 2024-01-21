@@ -15,11 +15,8 @@ use Laventure\Component\Http\Message\Response\Utils\JsonEncoder;
  *
  * @package  Laventure\Component\Http\Client\Options
 */
-class Json
+class Json extends Body
 {
-    public string $data;
-
-
     /**
      * @param array|string $value
     */
@@ -29,6 +26,6 @@ class Json
             $value = JsonEncoder::encode($value);
         }
 
-        $this->data = $value;
+        parent::__construct($value);
     }
 }

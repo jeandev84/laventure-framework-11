@@ -348,9 +348,7 @@ class CurlRequest extends Request implements HasOptionInterface, RequestSenderIn
      */
     public function json(Json $json): static
     {
-        $this->data = $json->data;
-
-        return $this;
+        return $this->body($json);
     }
 
 
@@ -655,6 +653,7 @@ class CurlRequest extends Request implements HasOptionInterface, RequestSenderIn
     */
     private function setPostFields(): static
     {
+        #dd($this->getPostFields()[0]);
         if (in_array($this->method, ['POST', 'PUT', 'PATCH'])) {
             $this->setOption(CURLOPT_POSTFIELDS, $this->getPostFields());
         }
@@ -670,8 +669,12 @@ class CurlRequest extends Request implements HasOptionInterface, RequestSenderIn
     /**
      * @return array
     */
-    private function getPostFields(): array
+    private function getPostFields(): mixed
     {
+        if (is_string($this->data)) {
+            return $this->data;
+        }
+
         return array_merge(
             (array)$this->data,
             $this->files
