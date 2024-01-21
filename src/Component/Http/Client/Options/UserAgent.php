@@ -15,4 +15,10 @@ namespace Laventure\Component\Http\Client\Options;
  */
 class UserAgent
 {
+    public function __construct(
+        public string $name,
+        public array $headers = [],
+        public string $cookieFile = ''
+    ) {
+    }
 }

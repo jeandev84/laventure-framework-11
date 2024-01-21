@@ -19,6 +19,7 @@ use Laventure\Component\Http\Client\Options\Json;
 use Laventure\Component\Http\Client\Options\Proxy;
 use Laventure\Component\Http\Client\Options\QueryParams;
 use Laventure\Component\Http\Client\Options\Upload;
+use Laventure\Component\Http\Client\Options\UserAgent;
 use Laventure\Component\Http\Client\Request\Exception\CurlException;
 use Laventure\Component\Http\Client\Response\CurlResponse;
 use Laventure\Component\Http\Client\Traits\HasOptionsTrait;
@@ -96,7 +97,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
         'download'           => null,  // type Download()
         'files'              => null,  // type ClientFile[]
         'cookies'            => null,  // type ClientCookie[]
-        'userAgent'          => null   // type UserAgent()
+        'userAgent'          => null   // type UserAgent(...)
     ];
 
 
@@ -111,7 +112,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     {
         // important to initialize before
         $this->ch = curl_init();
-        $this->curlOptions($this->defaultOptions);
+        $this->setOptions($this->defaultOptions);
         parent::__construct($method, $uri);
         $this->withOptions(array_merge($this->options, $options));
     }
@@ -127,7 +128,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
      * @param $value
      * @return $this
     */
-    public function curlOption($id, $value): static
+    public function setOption($id, $value): static
     {
         curl_setopt($this->ch, $id, $value);
 
@@ -142,7 +143,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
      * @param array $options
      * @return $this
      */
-    public function curlOptions(array $options): static
+    public function setOptions(array $options): static
     {
         curl_setopt_array($this->ch, $options);
 
@@ -234,12 +235,12 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     {
         switch ($method):
             case 'POST':
-                $this->curlOption(CURLOPT_POST, 1);
+                $this->setOption(CURLOPT_POST, 1);
                 break;
             case 'PUT':
             case 'PATCH':
             case 'DELETE':
-                $this->curlOption(CURLOPT_CUSTOMREQUEST, $method);
+                $this->setOption(CURLOPT_CUSTOMREQUEST, $method);
                 break;
         endswitch;
 
@@ -347,6 +348,9 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
 
 
 
+
+
+
     /**
      * @param Header $header
      * @return $this
@@ -370,7 +374,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     public function proxy(Proxy $proxy): static
     {
-        return $this->curlOptions([
+        return $this->setOptions([
             CURLOPT_TIMEOUT => $proxy->timeout,
             CURLOPT_PROXY   => $proxy->value
         ]);
@@ -387,7 +391,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     public function authBasic(AuthBasic $payload): static
     {
-        return $this->curlOption(CURLOPT_USERPWD, $payload->toString());
+        return $this->setOption(CURLOPT_USERPWD, $payload->toString());
     }
 
 
@@ -418,7 +422,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     {
         $this->flush();
 
-        $this->curlOptions([
+        $this->setOptions([
             CURLOPT_PUT => true,
             CURLOPT_UPLOAD => true,
             CURLOPT_INFILESIZE => filesize($upload->file),
@@ -446,7 +450,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     {
         $this->flush();
         $resource = $download->resource;
-        $this->curlOption(CURLOPT_FILE, $resource);
+        $this->setOption(CURLOPT_FILE, $resource);
         $this->withBody(new Stream($download->resource));
         $this->exec();
         $this->close();
@@ -542,9 +546,9 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     public function cookie(ClientCookie $cookie): static
     {
-        $curl = $this->curlOptions([
+        $curl = $this->setOptions([
             CURLOPT_COOKIEFILE =>  $cookie->cookieFile,
-            CURLOPT_COOKIEJAR  =>  $cookie->cookieJar
+            CURLOPT_COOKIEJAR  =>  $cookie->cookieFile
         ]);
 
         if ($cookieParams = $cookie->toStringParams()) {
@@ -554,6 +558,26 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
         return $curl;
     }
 
+
+
+
+
+    /**
+     * @param UserAgent $agent
+     * @return $this
+     */
+    public function userAgent(UserAgent $agent): static
+    {
+        $this->setOptions([
+            CURLOPT_USERAGENT => $agent->name,
+            CURLOPT_HEADER    => true
+        ]);
+
+        $headers       = array_merge($this->browserHeaders, $agent->headers);
+        $this->headers = array_merge($this->headers, $headers);
+
+        return $this->cookie(new ClientCookie($agent->cookieFile));
+    }
 
 
 
@@ -595,7 +619,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     private function flush(): void
     {
-        $this->curlOptions([
+        $this->setOptions([
             CURLOPT_URL        => $this->target,
             CURLOPT_HTTPHEADER => array_values($this->headers)
         ])->setPostFiles();
@@ -613,7 +637,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
             case 'POST':
             case 'PUT':
             case 'PATCH':
-                $this->curlOption(CURLOPT_POSTFIELDS, $this->getPostFields());
+                $this->setOption(CURLOPT_POSTFIELDS, $this->getPostFields());
                 break;
         endswitch;
 
@@ -628,10 +652,6 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     private function getPostFields(): array
     {
-        if (is_string($this->parsedBody)) {
-            return $this->parsedBody;
-        }
-
         return array_merge(
             (array)$this->parsedBody,
             $this->uploadedFiles
@@ -648,7 +668,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
      */
     private function getResponseHeaders(): array
     {
-        $this->curlOptions([
+        $this->setOptions([
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => true
         ]);
