@@ -32,7 +32,7 @@ class LucasDotenvAdapter implements DotenvInterface
     */
     public function export(string $file = '.env.local'): bool
     {
-
+         return true;
     }
 
 

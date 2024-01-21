@@ -37,7 +37,7 @@ interface DotenvInterface
      *
      * @return bool
      */
-    public function export(string $file = '.env.local'): bool;
+    public function export(string $file = '.env.local'): mixed;
 
 
 

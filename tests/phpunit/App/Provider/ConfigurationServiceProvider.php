@@ -21,7 +21,7 @@ class ConfigurationServiceProvider extends ServiceProvider
 
     protected array $provides = [
         ConfigService::class => [
-            'config',
+            'config.php',
             ConfigServiceInterface::class
         ]
     ];

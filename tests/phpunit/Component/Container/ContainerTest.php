@@ -102,14 +102,14 @@ class ContainerTest extends TestCase
             $container->clear();
 
             $container->instance(Container::class, $container);
-            $container->bind('config', require __DIR__.'/config/app.php');
+            $container->bind('config.php', require __DIR__.'/config/app.php');
             $container->bind(FooService::class, FooService::class);
             $container->bind(ContainerInterface::class, Container::class);
             $container->bind(ConfigService::class, function (Container $app) {
-                return $app->make(ConfigService::class, ['env' => $app->get('config')]);
+                return $app->make(ConfigService::class, ['env' => $app->get('config.php')]);
             });
 
-            #dd($container->make(ConfigService::class, ['env' => $container->get('config')]));
+            #dd($container->make(ConfigService::class, ['env' => $container->get('config.php')]));
 
             $this->assertInstanceOf(FooService::class, $container->get(FooService::class));
             $this->assertInstanceOf(Container::class, $container->get(ContainerInterface::class));
@@ -181,15 +181,15 @@ class ContainerTest extends TestCase
             $container->bind('env', require __DIR__.'/config/app.php');
             $container->singleton(ConfigService::class, ConfigService::class);
             $container->aliases(ConfigService::class, [
-                'config',
-                'app.config',
+                'config.php',
+                'app.config.php',
                 ConfigServiceInterface::class
             ]);
 
 
             $config1 = $container->get(ConfigService::class);
-            $config2 = $container->get('config');
-            $config3 = $container->get('app.config');
+            $config2 = $container->get('config.php');
+            $config3 = $container->get('app.config.php');
             $config4 = $container->get(ConfigServiceInterface::class);
 
 
@@ -228,7 +228,7 @@ class ContainerTest extends TestCase
             }
 
             $this->assertInstanceOf(ConfigService::class, $container->get(ConfigService::class));
-            $this->assertInstanceOf(ConfigService::class, $container->get('config'));
+            $this->assertInstanceOf(ConfigService::class, $container->get('config.php'));
             $this->assertInstanceOf(ConfigService::class, $container->get(ConfigServiceInterface::class));
         }
 

@@ -203,19 +203,4 @@ class Dotenv implements DotenvInterface
 
         return $file;
     }
-
-
-
-
-
-    /**
-     * @param string $file
-     * @return void
-    */
-    private function makeSureFileIsAllowed(string $file): void
-    {
-        if (!$this->allowed($file)) {
-            throw new \RuntimeException("'$file' is not allowed. you must load only (". join(', ', $this->allowedFiles) . ")");
-        }
-    }
 }
