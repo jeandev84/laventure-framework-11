@@ -53,11 +53,10 @@ class HttpClient implements HttpClientInterface
     }
 
 
-
-
     /**
      * @inheritDoc
-    */
+     * @throws ClientExceptionInterface
+     */
     public function request(string $method, string $url, array $options = []): ResponseInterface
     {
         $request = $this->requestFactory->createRequest($method, $url);
@@ -141,6 +140,4 @@ class HttpClient implements HttpClientInterface
     {
         return $this->request('DELETE', $url, $options);
     }
-
-
 }

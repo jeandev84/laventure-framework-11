@@ -55,7 +55,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @var array|object|null
     */
-    protected mixed $parsedBody;
+    protected mixed $parsedBody = null;
 
 
 
@@ -163,7 +163,10 @@ class ServerRequest extends Request implements ServerRequestInterface
     */
     public function withUploadedFiles(array $uploadedFiles): static
     {
-        $this->uploadedFiles = $uploadedFiles;
+        $this->uploadedFiles = array_merge(
+            $this->uploadedFiles,
+            $uploadedFiles
+        );
 
         return $this;
     }
