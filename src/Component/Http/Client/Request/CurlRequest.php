@@ -622,7 +622,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
         $this->setOptions([
             CURLOPT_URL        => $this->target,
             CURLOPT_HTTPHEADER => array_values($this->headers)
-        ])->setPostFiles();
+        ])->setPostFields();
     }
 
 
@@ -631,18 +631,16 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     /**
      * @return $this
     */
-    private function setPostFiles(): static
+    private function setPostFields(): static
     {
-        switch ($this->method):
-            case 'POST':
-            case 'PUT':
-            case 'PATCH':
-                $this->setOption(CURLOPT_POSTFIELDS, $this->getPostFields());
-                break;
-        endswitch;
+        if (in_array($this->method, ['POST', 'PUT', 'PATCH'])) {
+            $this->setOption(CURLOPT_POSTFIELDS, $this->getPostFields());
+        }
 
         return $this;
     }
+
+
 
 
 
