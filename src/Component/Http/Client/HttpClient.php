@@ -49,7 +49,7 @@ class HttpClient implements HttpClientInterface
     */
     public static function create(): HttpClient
     {
-        return new static();
+        return new self();
     }
 
 

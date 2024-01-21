@@ -18,9 +18,12 @@ use Stringable;
  */
 class QueryParams extends Parameter implements Stringable
 {
-    public function __construct(array $params = [])
+    protected $separator = '';
+
+    public function __construct(array $params = [], string $separator = '&')
     {
         parent::__construct($params);
+        $this->separator = $separator;
     }
 
     /**
@@ -28,6 +31,6 @@ class QueryParams extends Parameter implements Stringable
     */
     public function __toString(): string
     {
-        return http_build_query($this->params);
+        return http_build_query($this->params, '', $this->separator);
     }
 }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Contract;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
- * HasOptionInterface
+ * RequestSenderInterface
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -13,11 +15,10 @@ namespace Laventure\Component\Http\Client\Contract;
  *
  * @package  Laventure\Component\Http\Client\Contract
  */
-interface HasOptionInterface
+interface RequestSenderInterface
 {
     /**
-     * @param array $options
-     * @return mixed
+     * @return ResponseInterface
     */
-    public function withOptions(array $options): mixed;
+    public function send(): ResponseInterface;
 }

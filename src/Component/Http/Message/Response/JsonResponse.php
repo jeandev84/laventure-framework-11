@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Http\Message\Response;
 
 use Laventure\Component\Http\Message\Response\Exception\JsonResponseException;
+use Laventure\Component\Http\Message\Response\Utils\JsonEncoder;
 
 /**
  * JsonResponse
@@ -36,35 +37,6 @@ class JsonResponse extends Response
 
         parent::__construct($status, $headers);
 
-        $this->setContent($this->encode($data));
-    }
-
-
-
-
-    /**
-     * @param object|array $data
-     * @return string
-    */
-    private function encode(object|array $data): string
-    {
-        $content = json_encode($data, $this->getJsonFlags());
-
-        if (json_last_error()) {
-            throw new JsonResponseException(json_last_error_msg());
-        }
-
-        return $content;
-    }
-
-
-
-
-    /**
-     * @return int
-    */
-    private function getJsonFlags(): int
-    {
-        return JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+        $this->setContent(JsonEncoder::encode($data));
     }
 }

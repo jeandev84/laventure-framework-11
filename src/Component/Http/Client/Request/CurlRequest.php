@@ -7,13 +7,14 @@ namespace Laventure\Component\Http\Client\Request;
 use CurlHandle;
 use Laventure\Component\Http\Client\Contract\HasOptionInterface;
 use Laventure\Component\Http\Client\Contract\HttpClientOptions;
+use Laventure\Component\Http\Client\Contract\RequestSenderInterface;
+use Laventure\Component\Http\Client\DTO\AuthBasic;
+use Laventure\Component\Http\Client\DTO\AuthToken;
 use Laventure\Component\Http\Client\Response\CurlResponse;
 use Laventure\Component\Http\Client\Traits\HasOptionsTrait;
-use Laventure\Component\Http\Message\Request\Request;
 use Laventure\Component\Http\Message\Request\ServerRequest;
-use Laventure\Component\Http\Message\Response\Response;
+use Laventure\Component\Http\Message\Response\Utils\JsonEncoder;
 use Laventure\Component\Http\Utils\Params\Parameter;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -26,9 +27,8 @@ use Psr\Http\Message\UriInterface;
  *
  * @package  Laventure\Component\Http\Client\Request
 */
-class CurlRequest extends ServerRequest implements HasOptionInterface
+class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSenderInterface
 {
-
     /**
      * @var CurlHandle|false
     */
@@ -48,16 +48,24 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
 
 
     /**
+     * @var mixed
+    */
+    private $data;
+
+
+
+
+    /**
      * @var array
-     */
+    */
     protected array $options = [
         'query'              => [],           // type string[]
         'body'               => '',           // type array|string
         'json'               => null,         // type array|string
         'headers'            => [],           // type string[]
         'proxy'              => '',           // type string[]
-        'auth_basic'         => null,         // type AuthBasic('YOUR_LOGIN', 'YOUR_PASSWORD')
-        'auth_token'         => '',           // type AuthToken('YOUR_ACCESS_TOKEN')
+        'authBasic'          => null,         // type AuthBasic('YOUR_LOGIN', 'YOUR_PASSWORD')
+        'authToken'          => '',           // type AuthToken('YOUR_ACCESS_TOKEN')
         'upload'             => null,         // type string
         'download'           => null,         // type string
         'files'              => [],           // type ClientFileInterface[]
@@ -139,7 +147,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
     public function send(): ResponseInterface
     {
         // terminate options setting
-        $this->terminate();
+        $this->flush();
 
         // returns response body
         $body = $this->getResponseBody();
@@ -323,8 +331,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
         string $body,
         int $statusCode,
         array $headers
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         $response = new CurlResponse($statusCode);
         $response->getBody()->write($body);
         $response->withHeaders($headers);
@@ -373,11 +380,11 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
     /**
      * @return void
     */
-    private function terminate(): void
+    private function flush(): void
     {
         $this->setOptions([
             CURLOPT_URL        => $this->target,
-            CURLOPT_HTTPHEADER => $this->headers
+            CURLOPT_HTTPHEADER => array_values($this->headers)
         ])->setPostFiles();
     }
 
@@ -393,7 +400,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
             case 'POST':
             case 'PUT':
             case 'PATCH':
-                $this->setOption(CURLOPT_POSTFIELDS, ['salut' => 'les amis']);
+                $this->setOption(CURLOPT_POSTFIELDS, $this->parsedBody);
                 break;
         endswitch;
 
@@ -425,11 +432,12 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
     public function withHeaders(array $headers): static
     {
         foreach ($headers as $key => $value) {
-             $this->withHeader($key, $value);
+            $this->withHeader($key, $value);
         }
 
         return $this;
     }
+
 
 
     /**
@@ -439,9 +447,9 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
     */
     public function withHeader($name, $value): static
     {
-         $this->headers[] = "$name: $value";
+        $this->headers[$name] = "$name: $value";
 
-         return $this;
+        return $this;
     }
 
 
@@ -456,5 +464,57 @@ class CurlRequest extends ServerRequest implements HasOptionInterface
         $this->withHeaders($headers);
 
         return $this;
+    }
+
+
+
+
+    /**
+     * @param array|string $data
+     * @return $this
+    */
+    private function body(array|string $data): static
+    {
+        return $this->withParsedBody($data);
+    }
+
+
+
+
+    /**
+     * @param array|string $data
+     * @return $this
+    */
+    private function json(array|string $data): static
+    {
+        if (is_array($data)) {
+            $data = JsonEncoder::encode($data);
+        }
+
+        return $this->withParsedBody($data);
+    }
+
+
+
+
+    /**
+     * @param AuthBasic $payload
+     * @return $this
+    */
+    private function authBasic(AuthBasic $payload): static
+    {
+        return $this->setOption(CURLOPT_USERPWD, $payload->toString());
+    }
+
+
+
+
+    /**
+     * @param AuthToken $token
+     * @return $this
+    */
+    private function authToken(AuthToken $token): static
+    {
+        return $this->withHeader('Authorization', $token->getAccessToken());
     }
 }

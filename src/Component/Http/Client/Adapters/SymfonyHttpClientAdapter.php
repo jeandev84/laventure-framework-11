@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Adapters;
@@ -18,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class SymfonyHttpClientAdapter implements HttpClientInterface
 {
-
     /**
      * @inheritDoc
      */
