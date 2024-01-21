@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Templating\Template\Engine\Loader;
+namespace Laventure\Component\Templating\Template\Loader;
 
 /**
  * TemplateEngineLoader
@@ -11,7 +11,7 @@ namespace Laventure\Component\Templating\Template\Engine\Loader;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Templating\Template\Engine\Loader
+ * @package  Laventure\Component\Templating\Template\Loader
  */
 class TemplateLoader implements TemplateLoaderInterface
 {
@@ -50,6 +50,8 @@ class TemplateLoader implements TemplateLoaderInterface
     */
     public function loadContent(string $path): string
     {
+        $path = $this->loadPath($path);
+
         if (! file_exists($path)) {
             return '';
         }
@@ -67,6 +69,10 @@ class TemplateLoader implements TemplateLoaderInterface
     {
         return $this->resourcePath;
     }
+
+
+
+
 
     /**
      * @inheritDoc

@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Templating\Renderer;
 
-use Laventure\Component\Templating\Template\Engine\Loader\TemplateLoader;
-use Laventure\Component\Templating\Template\Engine\Loader\TemplateLoaderInterface;
 use Laventure\Component\Templating\Template\Engine\TemplateEngineInterface;
-use Laventure\Component\Templating\Template\Factory\TemplateFactoryInterface;
 use Laventure\Component\Templating\Template\TemplateInterface;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Templating\Template\Engine\Loader;
+namespace Laventure\Component\Templating\Template\Loader;
 
 /**
  * TemplateEngineLoaderInterface

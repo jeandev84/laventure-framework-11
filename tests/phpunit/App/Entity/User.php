@@ -15,13 +15,15 @@ namespace PHPUnitTest\App\Entity;
 class User
 {
 
-      protected ?int $id;
-      protected ?string $email;
+      protected ?int $id = null;
+      protected ?string $email = null;
+      protected ?string $password = null;
 
 
-      public function __construct(string $email = 'john@doe.com')
+      public function __construct(string $email = 'john@doe.com', string $password = '')
       {
           $this->email = $email;
+          $this->password = $password;
       }
 
 
@@ -54,4 +56,13 @@ class User
 
           return $this;
       }
+
+
+    /**
+     * @return string|null
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
 }

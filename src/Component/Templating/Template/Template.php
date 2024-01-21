@@ -38,7 +38,7 @@ class Template implements TemplateInterface
     */
     public function getPath(): string
     {
-        return strval(realpath($this->path));
+        return $this->path;
     }
 
 
@@ -77,7 +77,7 @@ class Template implements TemplateInterface
 
         extract($this->parameters, EXTR_SKIP);
         ob_start();
-        require $this->getPath();
+        require $this->path;
         return ob_get_clean();
     }
 
