@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Options;
 
+use Laventure\Component\Http\Client\Options\Auth\AuthToken;
+
 /**
  * oAuth
  *

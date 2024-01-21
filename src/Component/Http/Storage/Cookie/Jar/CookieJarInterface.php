@@ -15,7 +15,7 @@ use Laventure\Contract\Storage\StorageInterface;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package Laventure\Component\Http\Storage\Cookie\Jar
+ * @package Laventure\Component\Http\Storage\ClientCookie\Jar
 */
 interface CookieJarInterface extends StorageInterface, CookieParamsInterface
 {

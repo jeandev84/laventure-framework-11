@@ -1,11 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Options;
 
 /**
- * Cookie
+ * Download
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -13,6 +12,19 @@ namespace Laventure\Component\Http\Client\Options;
  *
  * @package  Laventure\Component\Http\Client\Options
  */
-class Cookie
+class Download
 {
+    /**
+     * @var false|resource
+    */
+    public $resource;
+
+
+    /**
+     * @param string $path
+    */
+    public function __construct(string $path)
+    {
+        $this->resource = @fopen($path, 'w');
+    }
 }

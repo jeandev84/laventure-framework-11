@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laventure\Component\Http\Client\Options;
 
 /**
- * File
+ * ClientFile
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
@@ -13,6 +13,14 @@ namespace Laventure\Component\Http\Client\Options;
  *
  * @package  Laventure\Component\Http\Client\Options
 */
-class File
+class ClientFile
 {
+
+    public function __construct(
+        public string $path,
+        public string $mimeType,
+        public string $filename
+    )
+    {
+    }
 }

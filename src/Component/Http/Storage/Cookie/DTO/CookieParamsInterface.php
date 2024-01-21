@@ -11,7 +11,7 @@ namespace Laventure\Component\Http\Storage\Cookie\DTO;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Storage\Cookie
+ * @package  Laventure\Component\Http\Storage\ClientCookie
 */
 interface CookieParamsInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Client\Options;
+namespace Laventure\Component\Http\Client\Options\Auth;
 
 /**
  * AuthBearer
@@ -11,7 +11,7 @@ namespace Laventure\Component\Http\Client\Options;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Client\DTO
+ * @package  Laventure\Component\Http\Client\Options\Auth
  */
 class AuthBearer extends AuthToken
 {

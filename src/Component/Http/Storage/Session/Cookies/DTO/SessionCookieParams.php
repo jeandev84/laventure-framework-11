@@ -11,7 +11,7 @@ namespace Laventure\Component\Http\Storage\Session\Cookies\DTO;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Message\Request\Session\Cookie\DTO
+ * @package  Laventure\Component\Http\Message\Request\Session\ClientCookie\DTO
 */
 class SessionCookieParams
 {

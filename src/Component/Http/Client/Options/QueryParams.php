@@ -13,17 +13,31 @@ use Laventure\Component\Http\Utils\Params\Parameter;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Client\DTO
+ * @package  Laventure\Component\Http\Client\Options
  */
 class QueryParams extends Parameter
 {
-    protected $separator = '';
+    protected string $separator;
 
     public function __construct(array $params = [], string $separator = '&')
     {
         parent::__construct($params);
-        $this->separator = $separator;
+        $this->withSeparator($separator);
     }
+
+
+    /**
+     * @param string $separator
+     * @return $this
+    */
+    public function withSeparator(string $separator): static
+    {
+        $this->separator = $separator;
+
+        return $this;
+    }
+
+
 
 
     /**

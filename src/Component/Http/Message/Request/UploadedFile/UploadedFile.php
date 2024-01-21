@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Message\Request\Upload;
+namespace Laventure\Component\Http\Message\Request\UploadedFile;
 
-use Laventure\Component\Http\Message\Request\Upload\DTO\File;
-use Laventure\Component\Http\Message\Request\Upload\Exception\UploadException;
+use Laventure\Component\Http\Message\Request\UploadedFile\DTO\File;
+use Laventure\Component\Http\Message\Request\UploadedFile\Exception\UploadException;
 use Laventure\Component\Http\Message\Stream\Exception\StreamException;
 use Laventure\Component\Http\Message\Stream\Stream;
 use Psr\Http\Message\StreamInterface;

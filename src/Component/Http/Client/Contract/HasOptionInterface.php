@@ -17,7 +17,7 @@ interface HasOptionInterface
 {
     /**
      * @param array $options
-     * @return mixed
+     * @return $this
     */
-    public function withOptions(array $options): mixed;
+    public function withOptions(array $options): static;
 }

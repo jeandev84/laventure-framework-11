@@ -14,7 +14,7 @@ use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Storage\Cookie
+ * @package  Laventure\Component\Http\Storage\ClientCookie
  *
  * @see https://www.php.net/manual/en/function.setcookie.php
 */

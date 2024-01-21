@@ -16,7 +16,7 @@ use Laventure\Component\Http\Storage\Cookie\DTO\CookieParamsInterface;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Storage\Cookie\Jar
+ * @package  Laventure\Component\Http\Storage\ClientCookie\Jar
 */
 class CookieJar extends CookieParams implements CookieJarInterface
 {

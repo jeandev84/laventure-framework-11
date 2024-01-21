@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Message\Request\Upload\DTO;
+namespace Laventure\Component\Http\Message\Request\UploadedFile\DTO;
 
 /**
- * File
+ * ClientFile
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *

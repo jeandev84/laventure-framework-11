@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace Laventure\Component\Http\Client\Options;
 
 /**
- * Body
+ * ClientCookie
  *
  * @author Jean-Claude <jeanyao@ymail.com>
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
  * @package  Laventure\Component\Http\Client\Options
-*/
-class Body
+ */
+class ClientCookie
 {
     /**
-     * @param array|string $data
+     * @param string $cookieFile
+     * @param string $cookieJar
     */
-    public function __construct(public array|string $data)
+    public function __construct(
+        public string $cookieFile,
+        public string $cookieJar
+    )
     {
     }
 }

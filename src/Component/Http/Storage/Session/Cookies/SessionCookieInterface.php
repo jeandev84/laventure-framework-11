@@ -13,7 +13,7 @@ use Laventure\Component\Http\Storage\Session\Cookies\DTO\SessionCookieParams;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Http\Message\Request\Session\Cookie
+ * @package  Laventure\Component\Http\Message\Request\Session\ClientCookie
  */
 interface SessionCookieInterface
 {

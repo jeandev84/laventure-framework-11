@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Http\Message\Request\Upload\Exception;
+namespace Laventure\Component\Http\Message\Request\UploadedFile\Exception;
 
 use Exception;
 
@@ -41,7 +41,7 @@ class UploadException extends Exception
             UPLOAD_ERR_NO_FILE     => "No file was uploaded",
             UPLOAD_ERR_NO_TMP_DIR  => "Missing a temporary folder",
             UPLOAD_ERR_CANT_WRITE  => "Failed to write file to disk",
-            UPLOAD_ERR_EXTENSION   => "File upload stopped by extension",
+            UPLOAD_ERR_EXTENSION   => "ClientFile upload stopped by extension",
             default                => "Unknown upload error"
         };
     }
