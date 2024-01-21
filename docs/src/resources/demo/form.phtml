@@ -1,0 +1,49 @@
+<?php
+/** @var Parameter $data  */
+/** @var Parameter $files  */
+
+use Laventure\Component\Http\Utils\Params\Parameter;
+
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+</head>
+<body>
+<section>
+    <div class="container">
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" class="form-control" value="<?= $data->string('title') ?>">
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="form-control"><?= $data->get('content') ?></textarea>
+            </div>
+            <label for="">Upload</label>
+            <div class="form-group">
+                <input type="file" name="products[]" class="form-control" multiple>
+                <?php if (!empty($files['products'])): ?>
+                    <?php foreach ($files['products'] as $image): ?>
+                        <img src="<?php  //$image->tempName ?>" alt="" width="50">
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <label for="">Agree file</label>
+            <div class="form-group">
+                <input type="file" name="agree" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

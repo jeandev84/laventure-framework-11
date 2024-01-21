@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Dotenv\Contract;
+namespace Laventure\Component\Dotenv;
 
 /**
  * DotenvInterface
@@ -22,7 +22,7 @@ interface DotenvInterface
      *
      * @return void
      */
-    public function load(string $file = '.env'): void;
+    public function load(string $file = ''): void;
 
 
 

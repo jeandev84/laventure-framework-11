@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Laventure\Component\Templating\Template\Engine;
 
 use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
-use Laventure\Component\Templating\Template\Engine\Loader\TemplateLoaderInterface;
+use Laventure\Component\Templating\Template\Factory\TemplateFactoryInterface;
+use Laventure\Component\Templating\Template\Loader\TemplateLoaderInterface;
 use Laventure\Component\Templating\Template\TemplateInterface;
 
 /**
@@ -26,6 +27,8 @@ interface TemplateEngineInterface
      * @return $this
     */
     public function setLoader(TemplateLoaderInterface $loader): static;
+
+
 
 
 
@@ -56,4 +59,15 @@ interface TemplateEngineInterface
      * @return string
     */
     public function compile(TemplateInterface $template): string;
+
+
+
+
+
+
+
+    /**
+     * @return TemplateFactoryInterface
+    */
+    public function getTemplateFactory(): TemplateFactoryInterface;
 }

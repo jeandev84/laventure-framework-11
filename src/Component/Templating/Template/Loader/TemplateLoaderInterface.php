@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laventure\Component\Templating\Template\Engine\Loader;
+namespace Laventure\Component\Templating\Template\Loader;
 
 /**
  * TemplateEngineLoaderInterface
@@ -30,6 +30,15 @@ interface TemplateLoaderInterface
     */
     public function loadContent(string $path): string;
 
+
+
+
+
+    /**
+     * @param string $path
+     * @return $this
+    */
+    public function setResourcePath(string $path): static;
 
 
 

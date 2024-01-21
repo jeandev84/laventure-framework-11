@@ -4,9 +4,13 @@ declare(strict_types=1);
 namespace Laventure\Component\Templating\Template\Engine;
 
 use Laventure\Component\Templating\Template\Cache\TemplateCacheInterface;
+use Laventure\Component\Templating\Template\Compiler\Blocks\BlocksCompiler;
 use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
-use Laventure\Component\Templating\Template\Engine\Loader\TemplateLoaderInterface;
+use Laventure\Component\Templating\Template\Compiler\Echos\EchosCompiler;
+use Laventure\Component\Templating\Template\Compiler\Echos\EscapedEchoCompiler;
+use Laventure\Component\Templating\Template\Compiler\Php\PhpCompiler;
 use Laventure\Component\Templating\Template\Factory\TemplateFactoryInterface;
+use Laventure\Component\Templating\Template\Loader\TemplateLoaderInterface;
 use Laventure\Component\Templating\Template\TemplateInterface;
 
 /**
@@ -68,6 +72,7 @@ class TemplateEngine implements TemplateEngineInterface
         $this->loader = $loader;
         $this->cache  = $cache;
         $this->templateFactory = $templateFactory;
+        $this->addCompilers($this->getDefaultCompilers());
     }
 
 
@@ -111,6 +116,20 @@ class TemplateEngine implements TemplateEngineInterface
 
 
 
+
+    /**
+     * @inheritDoc
+    */
+    public function getTemplateFactory(): TemplateFactoryInterface
+    {
+        return $this->templateFactory;
+    }
+
+
+
+
+
+
     /**
      * @return CompilerInterface[]
      */
@@ -126,7 +145,7 @@ class TemplateEngine implements TemplateEngineInterface
      * @param CompilerInterface $compiler
      *
      * @return $this
-     */
+    */
     public function addCompiler(CompilerInterface $compiler): static
     {
         $this->compilers[] = $compiler;
@@ -140,7 +159,7 @@ class TemplateEngine implements TemplateEngineInterface
 
     /**
      * @inheritdoc
-     */
+    */
     public function addCompilers(array $compilers): static
     {
         foreach ($compilers as $compiler) {
@@ -156,7 +175,7 @@ class TemplateEngine implements TemplateEngineInterface
 
     /**
      * @inheritDoc
-     */
+    */
     public function compile(TemplateInterface $template): string
     {
         $content = $this->includePaths($template);
@@ -178,56 +197,16 @@ class TemplateEngine implements TemplateEngineInterface
 
 
 
-    /**
-     * @param TemplateInterface $template
-     *
-     * @return string
-     */
-    private function getContent(TemplateInterface $template): string
-    {
-        return $this->loadContent($this->loadPath($template->getPath()));
-    }
-
-
-
-
-
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function loadContent(string $path): string
-    {
-        return $this->loader->loadContent($path);
-    }
-
-
-
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function loadPath(string $path): string
-    {
-        return $this->loader->loadPath($path);
-    }
-
-
-
-
-
 
     /**
      * @param TemplateInterface $template
      *
      * @return string
     */
-    public function includePaths(TemplateInterface $template): string
+    private function includePaths(TemplateInterface $template): string
     {
         $pattern = '/{% ?(extends|include) ?\'?(.*?)\'? ?%}/i';
-        $content = $this->getContent($template);
+        $content = $this->loader->loadContent($template->getPath());
 
         preg_match_all($pattern, $content, $matches, PREG_SET_ORDER);
 
@@ -237,5 +216,18 @@ class TemplateEngine implements TemplateEngineInterface
         }
 
         return preg_replace('/{% ?(extends|include) ?\'?(.*?)\'? ?%}/i', '', $content);
+    }
+
+
+
+
+    private function getDefaultCompilers(): array
+    {
+        return [
+            new BlocksCompiler(),
+            new EscapedEchoCompiler(),
+            new EchosCompiler(),
+            new PhpCompiler()
+        ];
     }
 }

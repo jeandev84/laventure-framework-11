@@ -13,6 +13,6 @@ namespace Laventure\Component\Templating\Template\Cache\Exception;
  *
  * @package  Laventure\Component\Templating\Template\Cache\Exception
  */
-class TemplateCacheException
+class TemplateCacheException extends \Exception
 {
 }

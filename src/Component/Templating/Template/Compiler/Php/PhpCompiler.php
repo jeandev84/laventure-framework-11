@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Laventure\Component\Templating\Template\Compiler\PHP;
+namespace Laventure\Component\Templating\Template\Compiler\Php;
 
 use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
 
@@ -12,7 +12,7 @@ use Laventure\Component\Templating\Template\Compiler\CompilerInterface;
  *
  * @license https://github.com/jeandev84/laventure-framework/blob/master/LICENSE
  *
- * @package  Laventure\Component\Templating\Template\Compiler\PHP
+ * @package  Laventure\Component\Templating\Template\Compiler\Php
 */
 class PhpCompiler implements CompilerInterface
 {

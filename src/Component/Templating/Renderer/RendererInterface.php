@@ -65,11 +65,11 @@ interface RendererInterface
 
 
     /**
-     * @param string $template
+     * @param string $path
      * @param array $data
      * @return string
     */
-    public function render(string $template, array $data): string;
+    public function render(string $path, array $data = []): string;
 
 
 

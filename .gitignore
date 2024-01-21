@@ -4,6 +4,7 @@ vendor
 public
 views
 tools
+storage/*
 console.php
 .env
 .env.local
