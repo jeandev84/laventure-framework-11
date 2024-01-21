@@ -18,7 +18,6 @@ class Proxy
     public function __construct(
         public string $value,
         public int    $timeout = 400
-    )
-    {
+    ) {
     }
 }

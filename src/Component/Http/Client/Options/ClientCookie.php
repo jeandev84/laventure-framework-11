@@ -15,7 +15,6 @@ namespace Laventure\Component\Http\Client\Options;
  */
 class ClientCookie
 {
-
     protected array $params = [];
 
 
@@ -26,8 +25,7 @@ class ClientCookie
     public function __construct(
         public string $cookieFile,
         public string $cookieJar
-    )
-    {
+    ) {
     }
 
 
@@ -38,11 +36,11 @@ class ClientCookie
     */
     public function withParams(array $params): static
     {
-         foreach ($params as $name => $value) {
-             $this->params[] = "$name=$value";
-         }
+        foreach ($params as $name => $value) {
+            $this->params[] = "$name=$value";
+        }
 
-         return $this;
+        return $this;
     }
 
 
@@ -53,10 +51,10 @@ class ClientCookie
     */
     public function toStringParams(): string
     {
-         if (empty($this->params)) {
-             return '';
-         }
+        if (empty($this->params)) {
+            return '';
+        }
 
-         return join(', ', $this->params);
+        return join(', ', $this->params);
     }
 }

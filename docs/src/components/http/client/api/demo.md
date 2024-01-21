@@ -302,3 +302,71 @@ echo file_get_contents('php://input');
 ```
 
 
+5. New Features 
+```php 
+<?php
+
+use Laventure\Component\Http\Client\HttpClient;
+use Laventure\Component\Http\Client\Options\Body;
+use Laventure\Component\Http\Client\Options\ClientFile;
+use Laventure\Component\Http\Client\Options\Header;
+use Laventure\Component\Http\Client\Options\Json;
+
+require 'vendor/autoload.php';
+
+/*
+
+$client = HttpClient::create();
+$response = $client->post('http://localhost:8080/api/delete.php?id=3&token='. uniqid(), [
+'headers' => [
+    new Header('X-Framework', 'Laventure'),
+    new Header('Content-Type', 'application/json; charset=UTF-8;')
+],
+'body' => new Body([
+    'email'    => 'admin@admin.com',
+    'password' => '1234'
+]),
+'files' => [
+    'gomi'  => new ClientFile(__DIR__.'/storage/img/gomi.jpg', 'image/jpg', 'gomi.jpg'),
+    'hotel' => new ClientFile(__DIR__.'/storage/img/hodel.jpg', 'image/jpg', 'hodel.jpg'),
+]
+/*
+'json' => new Json([
+    'email'    => 'admin@admin.com',
+    'password' => '1234'
+])
+]);
+*/
+try {
+
+    $client = HttpClient::create();
+    $response = $client->post('http://localhost:8080/api/store.php?id=3&token='. uniqid(), [
+        'headers' => [
+            //new Header('X-Framework', 'Laventure'),
+            //new Header('Content-Type', 'application/json; charset=UTF-8;'),
+            //new Header('X-Framework', 'Laventure'),
+        ],
+        'body' => new Body([
+            'email'    => 'admin@admin.com',
+            'password' => '1234'
+        ]),
+        'files' => [
+            'gomi'  => new ClientFile(__DIR__.'/storage/img/gomi.jpg', 'image/jpg', 'gomi.jpg'),
+            'hotel' => new ClientFile(__DIR__.'/storage/img/hotel.jpg', 'image/jpg', 'hotel.jpg'),
+        ]
+        /*
+        'json' => new Json([
+            'email'    => 'admin@admin.com',
+            'password' => '1234'
+        ])
+        */
+    ]);
+
+    echo $response;
+    echo PHP_EOL;
+
+} catch (Exception $e) {
+    echo $e->getTraceAsString();
+    echo $e->getMessage(), PHP_EOL;
+}
+```

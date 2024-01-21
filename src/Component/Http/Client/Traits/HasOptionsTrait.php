@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Laventure\Component\Http\Client\Traits;
-
 
 use Laventure\Component\Http\Utils\Params\Parameter;
 
@@ -17,8 +17,6 @@ use Laventure\Component\Http\Utils\Params\Parameter;
 */
 trait HasOptionsTrait
 {
-
-
     /**
      * @param array $options
      * @return $this

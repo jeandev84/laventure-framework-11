@@ -41,7 +41,6 @@ use Psr\Http\Message\UriInterface;
 */
 class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSenderInterface
 {
-
     use HasOptionsTrait;
 
 
@@ -483,11 +482,11 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     public function files(array $files): static
     {
-         foreach ($files as $id => $file) {
-             $this->file($id, $file);
-         }
+        foreach ($files as $id => $file) {
+            $this->file($id, $file);
+        }
 
-         return $this;
+        return $this;
     }
 
 
@@ -524,11 +523,11 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     public function cookies(array $cookies): static
     {
-         foreach ($cookies as $cookie) {
-             $this->cookie($cookie);
-         }
+        foreach ($cookies as $cookie) {
+            $this->cookie($cookie);
+        }
 
-         return $this;
+        return $this;
     }
 
 

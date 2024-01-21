@@ -17,7 +17,6 @@ use Laventure\Component\Http\Client\Exception\ClientException;
 */
 class ClientFile
 {
-
     public string $path;
     public string $mimeType;
     public string $filename;
@@ -29,8 +28,7 @@ class ClientFile
         string $path,
         string $mimeType,
         string $filename
-    )
-    {
+    ) {
         if (!file_exists($path)) {
             throw new ClientException("file $path does not exist.", 409);
         }

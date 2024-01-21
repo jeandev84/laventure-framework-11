@@ -19,7 +19,6 @@ use Psr\Http\Message\RequestInterface;
  */
 class RequestException extends ClientException implements RequestExceptionInterface
 {
-
     /**
      * @var Request
      */
