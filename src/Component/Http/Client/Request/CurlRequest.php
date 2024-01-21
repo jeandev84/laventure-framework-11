@@ -60,12 +60,12 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     protected array $options = [
         'query'              => [],           // type string[]
-        'body'               => '',           // type array|string
+        'body'               => null,         // type array|string
         'json'               => null,         // type array|string
         'headers'            => [],           // type string[]
-        'proxy'              => '',           // type string[]
+        'proxy'              => [],           // type string[]
         'authBasic'          => null,         // type AuthBasic('YOUR_LOGIN', 'YOUR_PASSWORD')
-        'authToken'          => '',           // type AuthToken('YOUR_ACCESS_TOKEN')
+        'authToken'          => null,         // type AuthToken('YOUR_ACCESS_TOKEN')
         'upload'             => null,         // type string
         'download'           => null,         // type string
         'files'              => [],           // type ClientFileInterface[]
@@ -83,7 +83,6 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     public function __construct(string $method, UriInterface|string $uri, array $options = [])
     {
         // important to initialize before
-        $this->ch = curl_init();
         $this->initialize();
         parent::__construct($method, $uri);
         $this->withOptions(array_merge($this->options, $options));
@@ -371,6 +370,7 @@ class CurlRequest extends ServerRequest implements HasOptionInterface, RequestSe
     */
     private function initialize(): void
     {
+        $this->ch = curl_init();
         $this->setOptions($this->defaultOptions);
     }
 
